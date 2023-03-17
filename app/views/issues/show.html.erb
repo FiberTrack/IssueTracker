@@ -1,7 +1,7 @@
 <p style="color: green"><%= notice %></p>
 
 <%= render @issue %>
-
+<p> Description: <%= @issue.description %> </p>
 <div>
   <%= link_to "Edit this issue", edit_issue_path(@issue) %> |
   <%= link_to "Back to issues", issues_path %>

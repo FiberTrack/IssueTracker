@@ -1,17 +1,7 @@
-<div id="<%= dom_id issue %>">
-  <p>
-    <strong>Subject:</strong>
-    <%= issue.subject %>
-  </p>
-
-  <p>
-    <strong>Description:</strong>
-    <%= issue.description %>
-  </p>
-
-  <p>
-    <strong>Assign:</strong>
-    <%= issue.assign %>
-  </p>
-
+<a href="<%= url_for(action: 'show', id: issue.id) %>">
+<div class="issueitem" id="<%= dom_id issue %>">
+	<h2 class="titulo"> <%= issue.subject %> </h2>
+	<p> <%= issue.created_at.strftime("%d %B %Y") %> </p>
+	<p> <%= issue.assign %> </p>
 </div>
+</a>
