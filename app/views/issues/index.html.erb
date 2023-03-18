@@ -2,10 +2,18 @@
 
 <h1>Issues</h1>
 
-<div id="issues">
+<header>
+	<div class="barra-superior">
+		<div class="text">Issue name</div>
+		<div class="text">Creation  date</div>
+		<div class="text">Assigned to</div>
+	</div>
+</header>
+<hr>
+
+	<div id="issues">
   <% @issues.each do |issue| %>
     <%= render issue %>
   <% end %>
-</div>
-
+	</div>
 <%= link_to "New issue", new_issue_path %>
