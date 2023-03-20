@@ -6,6 +6,10 @@ class IssuesController < ApplicationController
     @issues = Issue.all
   end
 
+  def inicial
+    @issues = Issue.all
+  end
+
   # GET /issues/1 or /issues/1.json
   def show
   end
