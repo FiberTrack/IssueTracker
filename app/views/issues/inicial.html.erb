@@ -1,0 +1,44 @@
+<head>
+    <h1>Issues</h1>
+</head>
+
+<body>
+    <div class = "boto_filtres">
+        <br>
+        <button class="boto_filters" >+ Filters </button>
+    </div>
+
+    <div class = "busqueda">
+        <input type="text" placeholder="subject or reference">
+        <div class = "icon">
+            <i class="fas fa-search"></i>
+        </div>
+    </div>
+
+    <label class="switch">
+         <input type="checkbox">
+        <span class="slider"></span>
+    </label>
+
+    <div class = "tags">
+        <label for="etiqueta">Tags</label>
+    </div>
+
+    <div class = "boto_new_issue">
+        <%= link_to "<button class=boto_new_is >+ NEW ISSUE</button>".html_safe, new_issue_path, :id=>"open-contacts-dialog-btn"%>
+    </div>
+
+    <div class = "boto_new_bulk">
+        <button class="boto_new_bu" >+</button>
+    </div>
+
+    <div class = "imatge">
+        <br> <br> <br> <br>
+        <img src="/Images/inicial_taiga.png" alt="Inicial Taiga" class="center"/>
+    </div>
+
+    <div class = "text_sota_imatge">
+        <br>
+        <p style="text-align:center">There are no issues to report :-)</p>
+    </div>
+</body>
