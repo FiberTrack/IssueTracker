@@ -1,19 +1,27 @@
-<p style="color: green"><%= notice %></p>
+<head>
+    <h1>Issues</h1>
+</head>
 
-<h1>Issues</h1>
+<body>
+<div class="container">
 
-<header>
-	<div class="barra-superior">
-		<div class="text">ISSUE</div>
-		<div class="text">MODIFIED</div>
-		<div class="text">ASSIGN TO</div>
+	<div class="left-button">
+			<button class="boto_filters" >+ Filters </button>
+			<input class="busqueda" placeholder="subject or reference"></input>
 	</div>
-</header>
-<hr>
 
-	<div id="issues">
+	<div class="right-button">
+      <%= link_to "<button class=boto_new_is >+ NEW ISSUE</button>".html_safe, new_issue_path, :id=>"open-contacts-dialog-btn"%>
+      <button class="boto_new_bu" >+</button>
+	</div>
+
+</div>
+
+<br>
+
+<div id="issues">
   <% @issues.each do |issue| %>
-    <%= render issue %>
+ 		<%= render issue %>
   <% end %>
 	</div>
-<%= link_to "New issue", new_issue_path %>
+	</body>
