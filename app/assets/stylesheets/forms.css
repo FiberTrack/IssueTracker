@@ -18,26 +18,34 @@ input[type="text"], input[type="email"], textarea {
   border: 1px solid #ccc;
 }
 
-button {
-  padding: 10px;
+
+
+.crear-issue {
+  padding: 7px;
   border-radius: 5px;
   border: none;
   background-color: #007bff;
   color: #fff;
   cursor: pointer;
-}
-
-#crear-issue {
+  font-size: 14px;
   margin-right: 10px;
 }
 
 .volver {
-   padding: 10px;
+  padding: 7px;
   border-radius: 5px;
   border: none;
-  background-color: #007bff;
-  color: #fff;
+  background-color: #ccc;
+  color: #000;
   cursor: pointer;
-
+  font-size: 14.8px;
 }
+
+.volver:hover {
+  background-color: #B4B3B3;
+}
+.crear-issue:hover {
+  background-color: #0467D1;
+}
+
 

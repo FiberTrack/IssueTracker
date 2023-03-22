@@ -24,9 +24,8 @@
   <%= form.label :assign, style: "display: block" %>
   <%= form.text_field :assign %>
 
-  <%= form.submit class: "volver"%>
-      <%= link_to "<button class=volver > Back to issues</button>".html_safe,issues_path%>
-
+  <%= form.submit class: "crear-issue"%>
+  <%= link_to "Back to issues", issues_path, class: "volver" %>
 
 </div>
 <% end %>

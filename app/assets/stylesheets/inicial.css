@@ -10,7 +10,6 @@ h1 {
 	justify-content: space-between;
  	align-items: center;
 	margin: 0;
-	width: 1000000px;
 }
 
 .left-buttons {
@@ -31,6 +30,7 @@ h1 {
 		padding: 10px 10px;
 		font-size: 16px;
 		border: 0;
+		margin-right: 10px;
 }
 
 .boto_filters:hover{
@@ -80,6 +80,7 @@ h1 {
 		font-size: 16px;
 		padding: 10px 10px;
  		border: 0;
+ 		margin-right: 10px;
 }
 
 .boto_new_is:hover{
