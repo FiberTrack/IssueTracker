@@ -20,8 +20,21 @@
 <br>
 
 <div id="issues">
-  <% @issues.each do |issue| %>
- 		<%= render issue %>
-  <% end %>
-	</div>
+<% if !@issues.blank? %>
+	<% @issues.each do |issue| %>
+		<%= render issue %>
+	<% end %>
+
+<% else %>
+    <div class = "imatge">
+        <br> <br> <br> <br>
+        <img src="/Images/inicial_taiga.png" alt="Inicial Taiga" class="center"/>
+    </div>
+
+    <div class = "text_sota_imatge">
+        <br>
+        <p style="text-align:center">There are no issues to report :-)</p>
+    </div>
+<% end %>
+
 	</body>
