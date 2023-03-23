@@ -29,7 +29,7 @@ class IssuesController < ApplicationController
 
     respond_to do |format|
       if @issue.save
-        format.html { redirect_to issues_url, notice: "Issue was successfully created." }
+        format.html { redirect_to issues_url, notice: "" }
         format.json { render :show, status: :created, location: @issue }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -42,7 +42,7 @@ class IssuesController < ApplicationController
   def update
     respond_to do |format|
       if @issue.update(issue_params)
-        format.html { redirect_to issue_url(@issue), notice: "Issue was successfully updated." }
+        format.html { redirect_to issue_url(@issue), notice: "" }
         format.json { render :show, status: :ok, location: @issue }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -56,7 +56,7 @@ class IssuesController < ApplicationController
     @issue.destroy
 
     respond_to do |format|
-      format.html { redirect_to issues_url, notice: "Issue was successfully destroyed." }
+      format.html { redirect_to issues_url, notice: "" }
       format.json { head :no_content }
     end
   end
