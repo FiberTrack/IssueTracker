@@ -1,10 +1,28 @@
 <p style="color: green"><%= notice %></p>
 
-<%= render @issue %>
-<p> Description: <%= @issue.description %> </p>
-<div>
-  <%= link_to "Edit this issue", edit_issue_path(@issue) %> |
-  <%= link_to "Back to issues", issues_path %>
+<br>
 
-  <%= button_to "Destroy this issue", @issue, method: :delete %>
+<div class="issue-info">
+  <h1 class="title"><%= @issue.subject %></h1>
+  <h2 class="detail-title">Issue Description</h2>
+  <p class="description"><%= @issue.description %></p>
+  <br>
+  <div class="details">
+    <div class="detail">
+      <h2 class="detail-title">Assigned to</h2>
+      <p class="detail-value"><%= @issue.assign %></p>
+    </div>
+    <div class="detail">
+      <h2 class="detail-title">Date</h2>
+      <p class="detail-value"><%= @issue.created_at.strftime("%d %B %Y") %></p>
+    </div>
+  </div>
+  <div class="buttons">
+    <%= button_to "Back", issues_path, class: "edit-button", method: :get %>
+    <%= button_to "Edit", edit_issue_path(@issue), class: "edit-button", method: :get %>
+    <%= button_to "Delete", @issue, method: :delete, class: "delete-button" %>
+
+
+
+  </div>
 </div>

@@ -9,21 +9,23 @@ h1 {
 	display: flex;
 	justify-content: space-between;
  	align-items: center;
-	margin: 0;
+	height: 50px;
 }
 
 .left-buttons {
 	display: flex;
-	margin-right: auto;
-	align-items: center;
+  align-items: center;
+  margin-left: -54px;
 
 }
 
 .right-buttons {
 	display: flex;
-	margin-left: auto;
-	align-items: center;
+  align-items: center;
+  margin-right: -64px;
+
 }
+
 .boto_filters{
 		color: #018AAA;
 		background: #E9EFFC;
@@ -150,6 +152,7 @@ h1 {
 		font-size: 16px;
 		padding: 10px 10px;
 		border: 0;
+		margin-right: 10px;
 }
 
 .boto_new_bu:hover{
