@@ -1,3 +1,9 @@
+<% if current_user %>
+  <h2><%= current_user.email %></h2>
+    <%= image_tag(current_user.avatar_url) %>
+    <%= link_to "Edit Account", edit_user_registration_path %>
+    <%= button_to "Logout", destroy_user_session_path, data: {turbo: "false"}, method: :delete %>
+
 <head>
     <h1>Issues</h1>
 </head>
@@ -18,8 +24,6 @@
 
 </div>
 
-<br>
-
 <div id="issues">
 <% if !@issues.blank? %>
 	<% @issues.each do |issue| %>
@@ -39,3 +43,6 @@
 <% end %>
 
 	</body>
+    <% else %>
+    <%= link_to "Login", new_user_session_path %>
+<% end %>
