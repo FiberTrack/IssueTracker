@@ -1,33 +1,40 @@
- .issueitem {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-	border: 0px solid #ccc;
-	border-radius: 5px;
-	padding: 10px;
-	margin: 0px;
-	margin-bottom: 20px;
-	background-color: #f2f2f2;
+.issueitem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 0px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 0px;
+  margin-bottom: 20px;
+  background-color: #f2f2f2;
+}
+
+.indicators {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
 }
 
 
-  .indicators {
-    display: flex;
-    margin-right: 10px;
-  }
 
-
-.titulo {
-	font-size: 20px;
-	font-weight: bold;
-	margin: 0;
+.details {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 p {
-	margin: 0;
-	font-size: 16px;
-	color: #888;
+  padding: 10px 0;
+  margin-right: 16px;
+  color: #888;
+}
+
+.titulo {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 10px 0;
+  margin-right: 16px;
 }
 
 .issue-type-indicator {
