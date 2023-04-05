@@ -17,6 +17,14 @@
   <%= form.label :subject, style: "display: block" %>
   <%= form.text_field :subject %>
 
+  <%= form.label :issue_type, style: "display: block" %>
+  <%= form.select :issue_type, ['Bug', 'Question', 'Enhancement'] %>
+
+  <%= form.label :severity, style: "display: block" %>
+  <%= form.select :severity, ['Wishlist', 'Minor', 'Normal', 'Important', 'Critical'] %>
+
+  <%= form.label :priority, style: "display: block" %>
+  <%= form.select :priority, ['Low', 'Normal', 'High'] %>
 
   <%= form.label :description, style: "display: block" %>
   <%= form.text_area :description %>

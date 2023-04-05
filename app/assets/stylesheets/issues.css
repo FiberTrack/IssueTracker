@@ -11,10 +11,17 @@
 	background-color: #f2f2f2;
 }
 
+
+  .indicators {
+    display: flex;
+    margin-right: 10px;
+  }
+
+
 .titulo {
 	font-size: 20px;
 	font-weight: bold;
-	margin: 0; 
+	margin: 0;
 }
 
 p {
@@ -22,3 +29,60 @@ p {
 	font-size: 16px;
 	color: #888;
 }
+
+.issue-type-indicator {
+  width: 24px;
+  height: 24px;
+  border-radius: 12px;
+  display: inline-block;
+  margin-right: 32px;
+
+}
+
+.issue-type-Bug {
+  background-color: red;
+}
+
+.issue-type-Question {
+  background-color: blue;
+}
+
+.issue-type-Enhancement {
+  background-color: green;
+}
+
+
+.issue-severity-indicator {
+  width: 24px;
+  height: 24px;
+  border-radius: 12px;
+  display: inline-block;
+  margin-right: 32px;
+}
+
+.issue-severity-Wishlist {
+  background-color: grey;
+}
+
+.issue-severity-Minor {
+  background-color: blue;
+}
+
+.issue-severity-Normal {
+  background-color: green;
+}
+
+.issue-severity-Important {
+  background-color: orange;
+}
+
+.issue-severity-Critical {
+  background-color: red;
+}
+
+
+.issue-title-container {
+  margin-left: 10px;
+}
+
+
