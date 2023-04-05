@@ -14,26 +14,34 @@
   <br>
 
   <div class="formulario">
-  <%= form.label :subject, style: "display: block" %>
-  <%= form.text_field :subject %>
+    <div class="columna-izquierda">
+      <%= form.label :subject, style: "display: block" %>
+      <%= form.text_field :subject, size: 30 %>
 
-  <%= form.label :issue_type, style: "display: block" %>
-  <%= form.select :issue_type, ['Bug', 'Question', 'Enhancement'] %>
+      <%= form.label :description, style: "display: block" %>
+      <%= form.text_area :description, size: "30x7"%>
 
-  <%= form.label :severity, style: "display: block" %>
-  <%= form.select :severity, ['Wishlist', 'Minor', 'Normal', 'Important', 'Critical'] %>
+      <%= form.label :assign, style: "display: block" %>
+      <%= form.text_field :assign %>
+      <%= form.submit class: "crear-issue"%>
+      <%= link_to "Back", issues_path, class: "volver" %>
+    </div>
+    <div class="separador"></div>
+    <div class="columna-derecha">
+      <%= form.label :issue_type, style: "display: block" %>
+      <%= form.select :issue_type, ['Bug', 'Question', 'Enhancement'] %>
 
-  <%= form.label :priority, style: "display: block" %>
-  <%= form.select :priority, ['Low', 'Normal', 'High'] %>
+      <%= form.label :severity, style: "display: block" %>
+      <%= form.select :severity, ['Wishlist', 'Minor', 'Normal', 'Important', 'Critical'] %>
 
-  <%= form.label :description, style: "display: block" %>
-  <%= form.text_area :description %>
+      <%= form.label :priority, style: "display: block" %>
+      <%= form.select :priority, ['Low', 'Normal', 'High'] %>
 
-  <%= form.label :assign, style: "display: block" %>
-  <%= form.text_field :assign %>
+    </div>
 
-  <%= form.submit class: "crear-issue"%>
-  <%= link_to "Back", issues_path, class: "volver" %>
+    <div style="clear: both;"></div> <!-- Limpia el flotante para evitar que los elementos siguientes se muestren al lado de los desplegables -->
 
-</div>
+
+
+  </div>
 <% end %>

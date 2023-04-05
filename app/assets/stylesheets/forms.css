@@ -1,8 +1,24 @@
 .formulario {
-  width: 400px;
+  width: 800px; /* El doble del ancho original para acomodar ambas columnas */
   margin: auto;
   padding: 20px;
   border: 1px solid #ccc;
+  display: flex; /* Para usar flexbox */
+}
+.columna-izquierda {
+  width: 50%; /* La mitad del ancho total */
+  margin-right: 20px; /* Agrega un margen derecho para separar las dos columnas */
+}
+
+.columna-derecha {
+  width: 50%; /* La mitad del ancho total */
+  margin-left: 20px; /* Agrega un margen izquierdo para separar las dos columnas */
+  padding-left: 20px; /* Agrega un relleno izquierdo para compensar el margen izquierdo */
+}
+.separador {
+  width: 1px; /* Ancho de la línea separadora */
+  background-color: #ccc; /* Color de la línea separadora */
+  margin-left: 20px; /*Agrega un margen izquierdo para separar las dos columnas*/
 }
 
 label {
@@ -48,4 +64,11 @@ input[type="text"], input[type="email"], textarea {
   background-color: #0467D1;
 }
 
-
+select {
+  width: 100%;
+  height: 42;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}

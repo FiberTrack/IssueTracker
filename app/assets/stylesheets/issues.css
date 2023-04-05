@@ -59,6 +59,27 @@ p {
 }
 
 
+.issue-priority-indicator {
+  width: 24px;
+  height: 24px;
+  border-radius: 12px;
+  display: inline-block;
+  margin-right: 32px;
+
+}
+
+.issue-priority-Low {
+  background-color: green;
+}
+
+.issue-priority-Normal {
+  background-color: yellow;
+}
+
+.issue-priority-High {
+  background-color: orange;
+}
+
 .issue-severity-indicator {
   width: 24px;
   height: 24px;
