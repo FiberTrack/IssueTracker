@@ -1,7 +1,17 @@
+
+
 <a href="<%= url_for(action: 'show', id: issue.id) %>">
-<div class="issueitem" id="<%= dom_id issue %>">
-	<h2 class="titulo"> <%= issue.subject %> </h2>
-	<p> <%= issue.created_at.strftime("%d %B %Y") %> </p>
-	<p> <%= issue.assign %> </p>
-</div>
+  <div class="issueitem" id="<%= dom_id issue %>">
+    <div class="indicators">
+      <div class="issue-type-indicator <%= "issue-type-#{issue.issue_type}" %>"></div>
+      <div class="issue-severity-indicator <%= "issue-severity-#{issue.severity}" %>"></div>
+      <div class="issue-priority-indicator <%= "issue-priority-#{issue.priority}" %>"></div>
+      <h2 class="titulo"> <%= issue.subject %> </h2>
+    </div>
+    <div class="details">
+
+      <p> <%= issue.created_at.strftime("%d %B %Y") %> </p>
+      <p> <%= issue.assign %> </p>
+    </div>
+  </div>
 </a>

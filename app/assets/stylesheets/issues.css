@@ -1,24 +1,127 @@
- .issueitem {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-	border: 0px solid #ccc;
-	border-radius: 5px;
-	padding: 10px;
-	margin: 0px;
-	margin-bottom: 20px;
-	background-color: #f2f2f2;
+.issueitem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 0px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 0px;
+  margin-bottom: 20px;
+  background-color: #f2f2f2;
 }
 
-.titulo {
-	font-size: 20px;
-	font-weight: bold;
-	margin: 0; 
+.upper-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 0px solid #ccc;
+  padding-left: 10px;
+  margin: 0px;
+  margin-bottom: 5px;
+  background-color: #ffffff;
+}
+
+.indicators {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+
+
+.details {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 p {
-	margin: 0;
-	font-size: 16px;
-	color: #888;
+  padding: 10px 0;
+  margin-right: 16px;
+  color: #888;
 }
+
+.titulo {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 10px 0;
+  margin-right: 16px;
+}
+
+.issue-type-indicator {
+  width: 24px;
+  height: 24px;
+  border-radius: 12px;
+  display: inline-block;
+  margin-right: 32px;
+
+}
+
+.issue-type-Bug {
+  background-color: red;
+}
+
+.issue-type-Question {
+  background-color: blue;
+}
+
+.issue-type-Enhancement {
+  background-color: green;
+}
+
+
+.issue-priority-indicator {
+  width: 24px;
+  height: 24px;
+  border-radius: 12px;
+  display: inline-block;
+  margin-right: 32px;
+
+}
+
+.issue-priority-Low {
+  background-color: green;
+}
+
+.issue-priority-Normal {
+  background-color: yellow;
+}
+
+.issue-priority-High {
+  background-color: orange;
+}
+
+.issue-severity-indicator {
+  width: 24px;
+  height: 24px;
+  border-radius: 12px;
+  display: inline-block;
+  margin-right: 32px;
+}
+
+.issue-severity-Wishlist {
+  background-color: grey;
+}
+
+.issue-severity-Minor {
+  background-color: blue;
+}
+
+.issue-severity-Normal {
+  background-color: green;
+}
+
+.issue-severity-Important {
+  background-color: orange;
+}
+
+.issue-severity-Critical {
+  background-color: red;
+}
+
+
+.issue-title-container {
+  margin-left: 10px;
+}
+
+
