@@ -22,7 +22,7 @@
       <%= form.text_area :description, size: "30x7"%>
 
       <%= form.label :Assigned, style: "display: block" %>
-      <%= form.select :assign, User.all.pluck(:full_name, :id), include_blank: true %>
+      <%= form.select :assign, User.all.pluck(:full_name), include_blank: true %>
       <%= form.submit class: "crear-issue"%>
       <%= link_to "Back", issues_path, class: "volver" %>
     </div>
