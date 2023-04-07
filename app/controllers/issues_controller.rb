@@ -38,6 +38,21 @@ class IssuesController < ApplicationController
     end
   end
 
+  def create_multiple_issues
+  subjects = params[:subjects].split(",")
+  issues_created = []
+  subjects.each do |subject|
+    issue = Issue.new(subject: subject.strip)
+    if issue.save
+      issues_created << issue
+    end
+  end
+  redirect_to issues_path, notice: "#{issues_created.length} issues created"
+end
+
+
+
+
   # PATCH/PUT /issues/1 or /issues/1.json
   def update
     respond_to do |format|

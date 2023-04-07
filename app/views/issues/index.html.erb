@@ -34,8 +34,8 @@
     </div>
     <div class="details">
 
-      <p> created </p>
       <p> assigned </p>
+       <p> created </p>
     </div>
   </div>
 
@@ -63,4 +63,11 @@
 	</body>
     <% else %>
     <%= link_to "Login", new_user_session_path %>
+<% end %>
+
+<%= form_tag(create_multiple_issues_path) do %>
+  <label for="subjects">Enter subjects (separated by commas)</label>
+  <textarea name="subjects" id="subjects" rows="7" cols="30"></textarea>
+
+  <%= submit_tag "Create Issues" %>
 <% end %>
