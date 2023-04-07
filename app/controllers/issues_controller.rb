@@ -39,7 +39,7 @@ class IssuesController < ApplicationController
   end
 
   def create_multiple_issues
-  subjects = params[:subjects].split(",")
+  subjects = params[:subjects].split("\n")
   issues_created = []
   subjects.each do |subject|
     issue = Issue.new(subject: subject.strip)
@@ -47,7 +47,7 @@ class IssuesController < ApplicationController
       issues_created << issue
     end
   end
-  redirect_to issues_path, notice: "#{issues_created.length} issues created"
+  redirect_to issues_path
 end
 
 

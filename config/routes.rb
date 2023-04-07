@@ -10,6 +10,8 @@ Rails.application.routes.draw do
   root 'issues#index'
   get 'show', to: 'issues#show'
   post 'create_multiple_issues', to: 'issues#create_multiple_issues'
+  get 'bulk_issues', to: 'issues#bulk_issues'
+
 
 end
 
