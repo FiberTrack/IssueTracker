@@ -9,9 +9,9 @@ local:
 # Use bin/rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
 amazon:
   service: S3
-  access_key_id: "ASIARYHHCSRGY7H3GMOH"
-  secret_access_key: "wfvUbV94LMaB2ZOHItcf7PboI74GzvOSegGadZIC"
-  session_token: "FwoGZXIvYXdzEHoaDIxnFSRxQXsFwoGZXIvYXdzEHoaDIxnFSRxQXs+TtzyGyLXAYnEvU7kRfX3ypJEUgnd4qMxjXe6K7VWKRQLx1JrZYs9BjU2eLi3BdtUa/tdBhGbpeIkyTYCeDnJ+iEYnE9VQI2md7H8yWgZ1WcOcQ9jYQ4gF3Dq6GkWCXA/k1FcPz3uSFG0Q3/4QgD/vqmf5tEiEQLIABNYRfLf5zBVR0hpmaJUK5feph3VWWHY6mWp5ERXfurQX3rNRqYmE2LDO9lH9dkWRmRosGDlYHk4Ywy6P4Iw9vbw6Ges0PErghHqBc2pVq1mW7ypF0r37OOY/2CL3J+InKeBuUblKJDmwqEGMi0HVAKmZdfdbU5ulP9P8SOIVZTmRo0GNXMETQkddTeIT50Fu/79DOGPdPB9ZNk="
+  access_key_id: "ASIARYHHCSRGVXFBOUQK"
+  secret_access_key: "abFTubi+9fehlQNioj06fLjX7Yut5Eo+0/lsne3O"
+  session_token: "FwoGZXIvYXdzEIn//////////wEaDAohn9/3NPi6Q0GDGSLXAbEwXoG0ZJf0EMtyFwsUG6rd+4NCfHwLKWIq8PejHmf7HB4pkD3YQhaPKFHZMKRepY8E4qKzcXoh3ysfmbj+mA6u4l9NizJLxwfDK7BiIYx7qdrMiDMz/2btJUPClO0wrhl8VGQda/jZo8i0a61crNy3WQ+c9jQs0A5RdPaotPNnDJdQPq+w6hsiMriFNBF1atHN6aFQap68AuqYiv/yCe8IV3tTacSMzqi05pR7XDM85JtDi2hmNKLaBZ/3opX8X9MoZo6PQZnRLONtU/YlfD9FE9qFuKqyKPuOxqEGMi3wg2zrypd5222RMkp7DcW/qwpKd0E7WWc/8Ohd7fBBedG195mhaZk236i646U="
   region: "us-east-1"
   bucket: "fibertracker-bucket"
 
