@@ -1,0 +1,9 @@
+<%= form_with url: upload_avatar_path, method: :post, local: true, multipart: true do |form| %>
+  <%= form.label :avatar, "Subir foto de perfil" %>
+  <%= form.file_field :avatar %>
+  <%= form.submit "Guardar" %>
+<% end %>
+
+
+
+
