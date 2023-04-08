@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_05_184302) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_08_154428) do
   create_table "issues", force: :cascade do |t|
     t.string "subject"
     t.text "description"
@@ -20,6 +20,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_05_184302) do
     t.string "type"
     t.string "severity"
     t.string "priority"
+    t.string "issue_types"
     t.string "issue_type"
   end
 
@@ -30,6 +31,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_05_184302) do
     t.string "provider"
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
+    t.string "bio"
   end
 
 end

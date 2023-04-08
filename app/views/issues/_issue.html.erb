@@ -10,7 +10,7 @@
     </div>
     <div class="details">
 
-      <p> <%= issue.assign %> </p>
+      <p> <%= link_to issue.assign, visualize_account_path %> </p>
       <p> <%= issue.created_at.strftime("%d %B %Y") %> </p>
 
     </div>

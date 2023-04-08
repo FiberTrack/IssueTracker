@@ -2,6 +2,7 @@
   <h2><%= current_user.email %></h2>
     <%= image_tag(current_user.avatar_url) %>
     <%= link_to "Edit Account", edit_user_registration_path %>
+    <%= link_to "View Account", visualize_account_path %>
     <%= button_to "Logout", destroy_user_session_path, data: {turbo: "false"}, method: :delete %>
 
 <head>
