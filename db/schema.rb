@@ -20,6 +20,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_05_184302) do
     t.string "type"
     t.string "severity"
     t.string "priority"
+    t.string "issue_types"
     t.string "issue_type"
   end
 
