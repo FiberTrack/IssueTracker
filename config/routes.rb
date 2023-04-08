@@ -12,6 +12,11 @@ Rails.application.routes.draw do
   post 'create_multiple_issues', to: 'issues#create_multiple_issues'
   get 'bulk_issues', to: 'issues#bulk_issues'
 
+resources :issues do
+  resources :comments
+end
 
 end
+
+
 

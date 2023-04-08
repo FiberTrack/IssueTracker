@@ -1,5 +1,6 @@
 <p style="color: green"><%= notice %></p>
 
+
 <br>
 
 <div class="issue-info">
@@ -73,6 +74,25 @@
   </div>
 
   <div class= "centrado">
+
+  <% @comments.each do |comment| %>
+  <div class="comment">
+    <p><%= comment.content %></p>
+    <p>Posted on <%= comment.created_at.strftime('%B %d, %Y at %I:%M %p') %></p>
+  </div>
+<% end %>
+
+<%= form_with(model: [@issue, @comment], local: true) do |form| %>
+  <!-- Resto del código del formulario -->
+  <p>
+    <%= form.label :content %><br>
+    <%= form.text_area :content %>
+  </p>
+  <p>
+    <%= form.submit %>
+  </p>
+<% end %>
+
 
   </div>
 
