@@ -10,8 +10,9 @@
 }
 
 .centrado{
-  width: 100%;
   padding: 20px;
+  margin-top: 10px;
+
 }
 
 
@@ -127,3 +128,26 @@
    border-radius: 5px;
 }
 
+.avatar{
+  width: 59px;
+
+}
+
+.user-comment{
+  display: flex;
+
+}
+
+.comment{
+  padding-bottom: 20px;
+}
+
+.content-comment{
+  padding-left: 79px;
+  color: black;
+}
+
+.author_name{
+  padding-left: 20px;
+
+}

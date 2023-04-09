@@ -5,4 +5,8 @@ class Comment < ApplicationRecord
   def author_name
     user.full_name
   end
+
+  def author_avatar
+    user.avatar_url
+  end
 end
