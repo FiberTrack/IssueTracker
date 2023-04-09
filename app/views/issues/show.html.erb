@@ -75,13 +75,15 @@
 
   <div class= "centrado">
 
+  <h2>Comentarios:</h2>
   <% @comments.each do |comment| %>
   <div class="comment">
-    <p><%= comment.content %></p>
+    <p><strong><%= comment.author_name%>:</strong> <%= comment.content %></p>
     <p>Posted on <%= comment.created_at.strftime('%B %d, %Y at %I:%M %p') %></p>
   </div>
 <% end %>
 
+<h2>Agregar Comentario:</h2>
 <%= form_with(model: [@issue, @comment], local: true) do |form| %>
   <!-- Resto del código del formulario -->
   <p>
