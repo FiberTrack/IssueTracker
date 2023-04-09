@@ -7,12 +7,13 @@ local:
   root: <%= Rails.root.join("storage") %>
 
 # Use bin/rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
-# amazon:
-#   service: S3
-#   access_key_id: <%= Rails.application.credentials.dig(:aws, :access_key_id) %>
-#   secret_access_key: <%= Rails.application.credentials.dig(:aws, :secret_access_key) %>
-#   region: us-east-1
-#   bucket: your_own_bucket-<%= Rails.env %>
+amazon:
+  service: S3
+  access_key_id: "ASIARYHHCSRGVXFBOUQK"
+  secret_access_key: "abFTubi+9fehlQNioj06fLjX7Yut5Eo+0/lsne3O"
+  session_token: "FwoGZXIvYXdzEIn//////////wEaDAohn9/3NPi6Q0GDGSLXAbEwXoG0ZJf0EMtyFwsUG6rd+4NCfHwLKWIq8PejHmf7HB4pkD3YQhaPKFHZMKRepY8E4qKzcXoh3ysfmbj+mA6u4l9NizJLxwfDK7BiIYx7qdrMiDMz/2btJUPClO0wrhl8VGQda/jZo8i0a61crNy3WQ+c9jQs0A5RdPaotPNnDJdQPq+w6hsiMriFNBF1atHN6aFQap68AuqYiv/yCe8IV3tTacSMzqi05pR7XDM85JtDi2hmNKLaBZ/3opX8X9MoZo6PQZnRLONtU/YlfD9FE9qFuKqyKPuOxqEGMi3wg2zrypd5222RMkp7DcW/qwpKd0E7WWc/8Ohd7fBBedG195mhaZk236i646U="
+  region: "us-east-1"
+  bucket: "fibertracker-bucket"
 
 # Remember not to checkin your GCS keyfile to a repository
 # google:
