@@ -12,6 +12,9 @@ class IssuesController < ApplicationController
 
   # GET /issues/1 or /issues/1.json
   def show
+    @comment = Comment.new
+    @issue = Issue.find(params[:id])
+    @comments = @issue.comments
   end
 
   # GET /issues/new

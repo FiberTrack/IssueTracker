@@ -1,6 +1,7 @@
 class Issue < ApplicationRecord
 
     after_initialize :set_defaults
+    has_many :comments
 
   def set_defaults
     self.assign ||= "Not Assigned"
