@@ -3,7 +3,11 @@ class IssuesController < ApplicationController
 
   # GET /issues or /issues.json
   def index
-    @issues = Issue.all
+    if params[:filtro].present?
+     @issues = Issue.where("lower(subject) LIKE ? OR lower(description) LIKE ?", "%#{params[:filtro].downcase}%", "%#{params[:filtro].downcase}%")
+    else
+      @issues = Issue.all.order("#{params[:order_by]} #{params[:direction]}")
+    end
   end
 
   def inicial

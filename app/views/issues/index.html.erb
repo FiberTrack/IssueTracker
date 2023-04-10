@@ -1,11 +1,8 @@
 <% if current_user %>
   <h2><%= current_user.email %></h2>
-
-    <%= image_tag(current_user.avatar_url, class: "rounded-image") %>
+    <%= image_tag(current_user.avatar_url) %>
     <%= link_to "Edit Account", edit_user_registration_path %>
     <%= button_to "Logout", destroy_user_session_path, data: {turbo: "false"}, method: :delete %>
-    <%= button_to "Change Profile Picture", update_avatar_view_path, method: :get %>
-
 
 <head>
     <h1>Issues</h1>
@@ -13,11 +10,16 @@
 
 <body>
 <div class="container">
+  <div class="left-buttons">
+   <button class="boto_filters">Filters</button>
 
-    <div class="left-buttons">
-			<button class="boto_filters" >+ Filters </button>
-			<input class="busqueda" placeholder="subject or reference"></input>
-</div>
+
+    <%= form_tag issues_path, method: :get, class: "form-inline", style: "white-space: nowrap; padding-top: 20px" do %>
+    <%= text_field_tag :filtro, params[:filtro], class: "busqueda", placeholder: "subject or reference" %>
+    <%= button_tag "Buscar", type: :submit, class: "boto_filters" %>
+    <% end %>
+  </div>
+
 
 <div class="right-buttons">
       <%= link_to "<button class=boto_new_is >+ NEW ISSUE</button>".html_safe, new_issue_path, :id=>"open-contacts-dialog-btn"%>
@@ -28,18 +30,42 @@
 
 </div>
 
+
+
+<% sort_direction = params[:direction] == "asc" ? "desc" : "asc" %>
+
+
 <hr style="margin: 5px 0;">
 <div class="upper-bar">
     <div class="indicators">
-      <div class="issue-type-indicator"> T </div>
-      <div class="issue-severity-indicator">S </div>
-      <div class="issue-priority-indicator">P</div>
-      <h2 class="titulo"> Subject </h2>
+      <div class="Type">
+        <div class="issue-type-indicator"> T </div>
+        <div style="text-align: center; margin-left: -32px; "><%= link_to "↑ ↓", { order_by: "issue_type", direction: params[:direction] == "asc" ? "desc" : "asc" }, class: "btn btn-primary " %></div>
+      </div>
+      <div class="Severity">
+        <div class="issue-severity-indicator">S </div>
+        <div style="text-align: center; margin-left: -32px;"><%= link_to "↑  ↓", { order_by: "severity", direction: params[:direction] == "asc" ? "desc" : "asc" }, class: "btn btn-primary" %></div>
+      </div>
+      <div class="Priority">
+        <div class="issue-priority-indicator">P</div>
+        <div style="text-align: center; margin-left: -32px;"><%= link_to "↑  ↓", { order_by: "priority", direction: params[:direction] == "asc" ? "desc" : "asc" }, class: "btn btn-primary" %></div>
+      </div>
+      <div class="Subject">
+        <div class="titulo">Subject </div>
+        <div style="text-align: center; margin-left: -16px;"><%= link_to "↑  ↓", { order_by: "subject", direction: params[:direction] == "asc" ? "desc" : "asc" }, class: "btn btn-primary " %></div>
+      </div>
     </div>
     <div class="details">
 
-      <p> ASSIGN TO </p>
-      <p> CREATED </p>
+      <div>
+
+        <div class="titulo">ASSIGN TO </div>
+        <div style="text-align: center; margin-left: -16px;"><%= link_to "↑  ↓", { order_by: "assign", direction: params[:direction] == "asc" ? "desc" : "asc" }, class: "btn btn-primary" %></div>
+      </div>
+      <div>
+        <div class="titulo">CREATED </div>
+        <div style="text-align: center; margin-left: -16px;"><%= link_to "↑  ↓", { order_by: "created_at", direction: params[:direction] == "asc" ? "desc" : "asc" }, class: "btn btn-primary" %></div>
+      </div>
 
 
     </div>
@@ -70,5 +96,4 @@
     <% else %>
     <%= link_to "Login", new_user_session_path %>
 <% end %>
-
 
