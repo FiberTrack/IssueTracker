@@ -1,18 +1,42 @@
 class IssuesController < ApplicationController
-  before_action :set_issue, only: %i[ show edit update destroy ]
+  before_action :set_issue, only: %i[show edit update destroy]
 
-  # GET /issues or /issues.json
   def index
+    @issues = Issue.all
+
     if params[:filtro].present?
-     @issues = Issue.where("lower(subject) LIKE ? OR lower(description) LIKE ?", "%#{params[:filtro].downcase}%", "%#{params[:filtro].downcase}%")
+      @filtered_issues = @issues.where("lower(subject) LIKE ? OR lower(description) LIKE ?", "%#{params[:filtro].downcase}%", "%#{params[:filtro].downcase}%")
+    elsif params[:options].present?
+      options = params[:options]
+      @filtered_issues = @issues.where("severity IN (?) OR issue_type IN (?) OR priority IN (?) OR assign IN (?)", options.map(&:capitalize), options.map(&:capitalize), options.map(&:capitalize), options.map(&:capitalize))
     else
-      @issues = Issue.all.order("#{params[:order_by]} #{params[:direction]}")
+      @filtered_issues = @issues
     end
+
+    if params[:order_by].present? && params[:direction].present?
+      @ordered_issues = @filtered_issues.order("#{params[:order_by]} #{params[:direction]}")
+    else
+      @ordered_issues = @filtered_issues
+    end
+
+    @issues = @ordered_issues.page(params[:page]).per(10)
+
+    # agregar estas líneas para preservar los parámetros de búsqueda al ordenar
+    @params_without_order_by = request.query_parameters.except(:order_by, :direction)
+    @order_by_params = { order_by: params[:order_by], direction: params[:direction] }
   end
 
-  def inicial
-    @issues = Issue.all
+  private
+
+  def set_issue
+    @issue = Issue.find(params[:id])
   end
+
+
+
+
+
+
 
   # GET /issues/1 or /issues/1.json
   def show
@@ -82,9 +106,7 @@ end
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_issue
-      @issue = Issue.find(params[:id])
-    end
+
 
     # Only allow a list of trusted parameters through.
     def issue_params

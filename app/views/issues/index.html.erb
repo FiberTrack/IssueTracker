@@ -11,14 +11,99 @@
 <body>
 <div class="container">
   <div class="left-buttons">
-   <button class="boto_filters">Filters</button>
+
+
+
+<%= form_tag issues_path, method: :get do %>
+  <div>
+    <button type="button" id="show-btn" class="boto_filters">Show options</button>
+  </div>
+  <div id="checkbox-container" style="display: none;">
+    <div>
+      <h4>Severities:</h4>
+      <% severities = ['Wishlist', 'Minor', 'Normal', 'Important', 'Critical'] %>
+      <% severities.each do |option| %>
+        <div style="display: inline-block; margin-right: 10px;">
+          <%= check_box_tag "options[]", option, params[:options].present? && params[:options].include?(option) %>
+          <%= label_tag "options[]", option %>
+        </div>
+      <% end %>
+    </div>
+    <div>
+      <h4>Types:</h4>
+      <% types = ['Bug', 'Question', 'Enhancement'] %>
+      <% types.each do |option| %>
+        <div style="display: inline-block; margin-right: 10px;">
+          <%= check_box_tag "options[]", option, params[:options].present? && params[:options].include?(option) %>
+          <%= label_tag "options[]", option %>
+        </div>
+      <% end %>
+    </div>
+    <div>
+      <h4>Priorities:</h4>
+      <% priorities = ['Low', 'Normal', 'High'] %>
+      <% priorities.each do |option| %>
+        <div style="display: inline-block; margin-right: 10px;">
+          <%= check_box_tag "options[]", option, params[:options].present? && params[:options].include?(option) %>
+          <%= label_tag "options[]", option %>
+        </div>
+      <% end %>
+    </div>
+    <div>
+      <h4>Assigned to:</h4>
+      <% assigned_to = ['Gabriel Del Valle'] %>
+      <% assigned_to.each do |option| %>
+        <div style="display: inline-block; margin-right: 10px;">
+          <%= check_box_tag "options[]", option, params[:options].present? && params[:options].include?(option) %>
+          <%= label_tag "options[]", option %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <%= submit_tag "Search",class: "boto_filters", id: "search-btn" %>
+<% end %>
+
+<script>
+  var showBtn = document.getElementById('show-btn');
+  var checkboxContainer = document.getElementById('checkbox-container');
+  var searchBtn = document.getElementById('search-btn');
+
+  showBtn.addEventListener('click', function() {
+    if (checkboxContainer.style.display === 'none') {
+      checkboxContainer.style.display = 'block';
+      showBtn.textContent = 'Hide options';
+    } else {
+      checkboxContainer.style.display = 'none';
+      showBtn.textContent = 'Show options';
+    }
+  });
+
+  searchBtn.addEventListener('click', function(event) {
+    var form = event.target.form;
+    var checkboxes = form.querySelectorAll('input[type="checkbox"]');
+    var checkedValues = [];
+    checkboxes.forEach(function(checkbox) {
+      if (checkbox.checked) {
+        checkedValues.push(checkbox.value);
+      }
+    });
+    form.action += '?options=' + checkedValues.join(',');
+  });
+</script>
+
 
 
     <%= form_tag issues_path, method: :get, class: "form-inline", style: "white-space: nowrap; padding-top: 20px" do %>
     <%= text_field_tag :filtro, params[:filtro], class: "busqueda", placeholder: "subject or reference" %>
     <%= button_tag "Buscar", type: :submit, class: "boto_filters" %>
     <% end %>
+
+
+
+
   </div>
+
+
 
 
 <div class="right-buttons">
@@ -35,24 +120,25 @@
 <% sort_direction = params[:direction] == "asc" ? "desc" : "asc" %>
 
 
+
 <hr style="margin: 5px 0;">
 <div class="upper-bar">
     <div class="indicators">
       <div class="Type">
         <div class="issue-type-indicator"> T </div>
-        <div style="text-align: center; margin-left: -32px; "><%= link_to "↑ ↓", { order_by: "issue_type", direction: params[:direction] == "asc" ? "desc" : "asc" }, class: "btn btn-primary " %></div>
+        <div style="text-align: center; margin-left: -32px; "><%= link_to "↑ ↓", { order_by: "issue_type", direction: params[:direction] == "asc" ? "desc" : "asc" }.merge(@params_without_order_by), class: "btn btn-primary " %></div>
       </div>
       <div class="Severity">
         <div class="issue-severity-indicator">S </div>
-        <div style="text-align: center; margin-left: -32px;"><%= link_to "↑  ↓", { order_by: "severity", direction: params[:direction] == "asc" ? "desc" : "asc" }, class: "btn btn-primary" %></div>
+        <div style="text-align: center; margin-left: -32px;"><%= link_to "↑  ↓", { order_by: "severity", direction: params[:direction] == "asc" ? "desc" : "asc" }.merge(@params_without_order_by), class: "btn btn-primary" %></div>
       </div>
       <div class="Priority">
         <div class="issue-priority-indicator">P</div>
-        <div style="text-align: center; margin-left: -32px;"><%= link_to "↑  ↓", { order_by: "priority", direction: params[:direction] == "asc" ? "desc" : "asc" }, class: "btn btn-primary" %></div>
+        <div style="text-align: center; margin-left: -32px;"><%= link_to "↑  ↓", { order_by: "priority", direction: params[:direction] == "asc" ? "desc" : "asc" }.merge(@params_without_order_by), class: "btn btn-primary" %></div>
       </div>
       <div class="Subject">
         <div class="titulo">Subject </div>
-        <div style="text-align: center; margin-left: -16px;"><%= link_to "↑  ↓", { order_by: "subject", direction: params[:direction] == "asc" ? "desc" : "asc" }, class: "btn btn-primary " %></div>
+        <div style="text-align: center; margin-left: -16px;"><%= link_to "↑  ↓", { order_by: "subject", direction: params[:direction] == "asc" ? "desc" : "asc" }.merge(@params_without_order_by), class: "btn btn-primary " %></div>
       </div>
     </div>
     <div class="details">
@@ -60,11 +146,11 @@
       <div>
 
         <div class="titulo">ASSIGN TO </div>
-        <div style="text-align: center; margin-left: -16px;"><%= link_to "↑  ↓", { order_by: "assign", direction: params[:direction] == "asc" ? "desc" : "asc" }, class: "btn btn-primary" %></div>
+        <div style="text-align: center; margin-left: -16px;"><%= link_to "↑  ↓", { order_by: "assign", direction: params[:direction] == "asc" ? "desc" : "asc" }.merge(@params_without_order_by), class: "btn btn-primary" %></div>
       </div>
       <div>
         <div class="titulo">CREATED </div>
-        <div style="text-align: center; margin-left: -16px;"><%= link_to "↑  ↓", { order_by: "created_at", direction: params[:direction] == "asc" ? "desc" : "asc" }, class: "btn btn-primary" %></div>
+        <div style="text-align: center; margin-left: -16px;"><%= link_to "↑  ↓", { order_by: "created_at", direction: params[:direction] == "asc" ? "desc" : "asc" }.merge(@params_without_order_by), class: "btn btn-primary" %></div>
       </div>
 
 
@@ -75,10 +161,11 @@
 
 
 <div id="issues">
-<% if !@issues.blank? %>
-	<% @issues.each do |issue| %>
-		<%= render issue %>
-	<% end %>
+
+<% if !@ordered_issues.blank? %>
+  <% @ordered_issues.each do |issue| %>
+    <%= render issue %>
+  <% end %>
 
 <% else %>
     <div class = "imatge">

@@ -181,3 +181,7 @@ body {
 .filtro-boton {
   display: inline-block;
 }
+
+:target {
+    display: block;
+  }

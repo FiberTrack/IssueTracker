@@ -140,6 +140,18 @@ GEM
       activesupport (>= 5.0.0)
     jmespath (1.6.2)
     jwt (2.7.0)
+    kaminari (1.2.2)
+      activesupport (>= 4.1.0)
+      kaminari-actionview (= 1.2.2)
+      kaminari-activerecord (= 1.2.2)
+      kaminari-core (= 1.2.2)
+    kaminari-actionview (1.2.2)
+      actionview
+      kaminari-core (= 1.2.2)
+    kaminari-activerecord (1.2.2)
+      activerecord
+      kaminari-core (= 1.2.2)
+    kaminari-core (1.2.2)
     loofah (2.18.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -310,6 +322,7 @@ DEPENDENCIES
   image_processing (>= 1.2)
   importmap-rails (= 1.1.0)
   jbuilder (= 2.11.5)
+  kaminari
   omniauth
   omniauth-google-oauth2
   omniauth-rails_csrf_protection
