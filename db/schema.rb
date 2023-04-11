@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_08_154428) do
-
+ActiveRecord::Schema[7.0].define(version: 2023_04_11_164143) do
   create_table "comments", force: :cascade do |t|
     t.text "content"
     t.integer "issue_id", null: false
@@ -22,7 +21,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_08_154428) do
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
-
   create_table "issues", force: :cascade do |t|
     t.string "subject"
     t.text "description"
@@ -32,6 +30,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_08_154428) do
     t.string "type"
     t.string "severity"
     t.string "priority"
+    t.string "issue_types"
     t.string "issue_type"
     t.boolean "blocked"
   end
