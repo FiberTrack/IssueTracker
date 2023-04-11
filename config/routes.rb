@@ -22,6 +22,9 @@ Rails.application.routes.draw do
   get 'visualize_account', to: 'users#visualize'
 
 
+  put '/issues/:id/block', to: 'issues#block', as: 'block_issue'
+
+
 resources :issues do
   resources :comments
 end
