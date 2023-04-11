@@ -4,7 +4,7 @@
 
 <div class="user-info">
 
-  <%= image_tag(params[:usuari_url]) %>
+  <%= image_tag(params[:usuari_url], class: "rounded-image") %>
   <h1 class="title"><%= params[:usuari_email] %></h1>
   <h2 class="detail-title">Bio</h2>
   <p class="description"><%= params[:usuari_bio] %></p>
