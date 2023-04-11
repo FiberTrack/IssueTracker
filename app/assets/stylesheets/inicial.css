@@ -36,6 +36,7 @@ body {
 		font-size: 16px;
 		border: 0;
 		margin-right: 10px;
+
 }
 
 .boto_filters:hover{
@@ -182,6 +183,3 @@ body {
   display: inline-block;
 }
 
-:target {
-    display: block;
-  }
