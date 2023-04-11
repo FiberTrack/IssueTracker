@@ -13,10 +13,10 @@ class User < ApplicationRecord
     end
   end
 
-  after_initialize :set_defaults
+  #after_initialize :set_defaults
 
-  def set_defaults
-    self.bio ||= "Not Assigned"
-  end
+#  def set_defaults
+    #self.bio ||= "Not Assigned"
+ # end
 
 end
