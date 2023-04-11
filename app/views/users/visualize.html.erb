@@ -4,10 +4,10 @@
 
 <div class="user-info">
 
-  <%= image_tag(current_user.avatar_url) %>
-  <h1 class="title"><%= current_user.email %></h1>
+  <%= image_tag(params[:usuari_url]) %>
+  <h1 class="title"><%= params[:usuari_email] %></h1>
   <h2 class="detail-title">Bio</h2>
-  <p class="description"><%= current_user.bio %></p>
+  <p class="description"><%= params[:usuari_bio] %></p>
   <br>
 
   </div>
