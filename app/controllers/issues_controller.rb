@@ -19,7 +19,7 @@ class IssuesController < ApplicationController
       @ordered_issues = @filtered_issues
     end
 
-    @issues = @ordered_issues.page(params[:page]).per(10)
+    #@issues = @ordered_issues.page(params[:page]).per(10)
 
     # agregar estas líneas para preservar los parámetros de búsqueda al ordenar
     @params_without_order_by = request.query_parameters.except(:order_by, :direction)
