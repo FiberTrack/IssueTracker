@@ -17,6 +17,10 @@ Rails.application.routes.draw do
   get 'show', to: 'issues#show'
   post 'create_multiple_issues', to: 'issues#create_multiple_issues'
   get 'bulk_issues', to: 'issues#bulk_issues'
+  get 'bulk_issues', to: 'issues#bulk_issues'
+
+  get 'visualize_account', to: 'users#visualize'
+
 
   put '/issues/:id/block', to: 'issues#block', as: 'block_issue'
 

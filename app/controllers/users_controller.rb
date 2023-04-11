@@ -5,7 +5,8 @@ class UsersController < ApplicationController
 def update_avatar
   require 'aws-sdk-s3'
 
-  # Obtener la URL de la imagen anterior y eliminar el objeto S3 asociado
+     # Obtener la URL de la imagen anterior y eliminar el objeto S3 asociado
+
   old_avatar_url = current_user.avatar_url
   if old_avatar_url.present?
     old_object_key = URI.parse(old_avatar_url).path[1..-1]

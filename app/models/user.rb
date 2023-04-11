@@ -12,4 +12,11 @@ class User < ApplicationRecord
       user.avatar_url = auth.info.image # assuming the user model has an image
     end
   end
+
+  after_initialize :set_defaults
+
+  def set_defaults
+    self.bio ||= "Not Assigned"
+  end
+
 end
