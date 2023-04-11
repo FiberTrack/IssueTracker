@@ -30,7 +30,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_11_164143) do
     t.string "type"
     t.string "severity"
     t.string "priority"
-    t.string "issue_types"
     t.string "issue_type"
     t.boolean "blocked"
   end
