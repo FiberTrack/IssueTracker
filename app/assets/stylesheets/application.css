@@ -51,9 +51,48 @@ header {
 	text-align: center;
 }
 
+
+
+table {
+  border-collapse: collapse;
+  width: 50%;
+  margin-bottom: 1em;
+}
+
+th, td {
+  padding: 1em;
+  text-align: left;
+  vertical-align: top;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #ddd;
+}
+
+td:last-child {
+  text-align: center;
+    vertical-align: middle;
+
+}
+
+td:last-child a {
+  color: darkblue;
+}
+
 .rounded-image {
   border-radius: 50%;
   border: 2px solid #ccc;
   width: 100px;
   height: 100px;
 }
+

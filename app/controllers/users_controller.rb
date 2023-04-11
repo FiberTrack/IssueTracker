@@ -3,6 +3,7 @@ class UsersController < ApplicationController
     @users = User.all
   end
 
+
   def update_avatar
     require 'aws-sdk-s3'
 
@@ -33,5 +34,6 @@ class UsersController < ApplicationController
 
   redirect_to root_path
 end
+
 
 end

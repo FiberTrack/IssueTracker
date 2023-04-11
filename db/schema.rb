@@ -10,6 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+
+
 ActiveRecord::Schema[7.0].define(version: 2023_04_09_101943) do
   create_table "comments", force: :cascade do |t|
     t.text "content"
@@ -20,6 +22,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_09_101943) do
     t.index ["issue_id"], name: "index_comments_on_issue_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
+
 
   create_table "issues", force: :cascade do |t|
     t.string "subject"
@@ -41,6 +44,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_09_101943) do
     t.string "provider"
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
+    t.string "bio"
   end
 
   add_foreign_key "comments", "issues"
