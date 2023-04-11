@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_11_164143) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_11_180110) do
   create_table "comments", force: :cascade do |t|
     t.text "content"
     t.integer "issue_id", null: false
@@ -33,6 +33,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_11_164143) do
     t.string "issue_types"
     t.string "issue_type"
     t.boolean "blocked"
+    t.date "deadline"
   end
 
   create_table "users", force: :cascade do |t|

@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   get 'update_avatar_view', to: 'users#update_profile_avatar'
   post 'upload_avatar', to: 'users#update_avatar'
 
+  put '/issues/:id/add_deadline', to: 'issues#add_deadline', as: 'add_deadline_issue'
+  put '/issues/:id/delete_deadline', to: 'issues#delete_deadline', as: 'delete_deadline_issue'
 
 
   root 'issues#index'

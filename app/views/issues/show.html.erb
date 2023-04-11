@@ -1,3 +1,4 @@
+<body>
 <p style="color: green"><%= notice %></p>
 
 
@@ -5,8 +6,12 @@
 
 <div class="issue-info">
     <% if @issue.blocked %>
-    <p class="blocked-message">Esta issue está bloqueada.</p>
+    <p class="blocked-message"> 🔒 Blocked</p>
     <% end %>
+    <% if !@issue.deadline.nil? %>
+    <p class="deadline-message"> ⌚ Due date: <%= @issue.deadline.strftime('%d/%m/%Y') %></p>
+    <% end %>
+
   <div class= "dos-columnas">
 
   <div class="columna-izquierda">
@@ -42,6 +47,18 @@
       <% else %>
         <%= button_to "🔒", block_issue_path(@issue), method: :put, class: "block-button unblocked" %>
       <% end %>
+      <% if @issue.deadline.nil? %>
+        <%= content_tag :p, "Add deadline", style: "color: black;"  %>
+        <%= form_tag(add_deadline_issue_path(@issue), method: :put) do %>
+          <%= date_field_tag 'deadline_date', nil, id: 'deadline_date', min: Date.today %>
+          <%= submit_tag "⌚", class: "deadline_button a" %>
+         <% end %>
+      <% else %>
+        <%= form_tag(delete_deadline_issue_path(@issue), method: :put) do %>
+          <%= submit_tag "⌚", class: "deadline_button a" %>
+         <% end %>
+      <% end %>
+
     </div>
   </div>
    <div class="separador"></div>
@@ -115,3 +132,6 @@
   </div>
 
 </div>
+
+
+</body>

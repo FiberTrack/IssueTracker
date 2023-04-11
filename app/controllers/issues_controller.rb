@@ -105,6 +105,21 @@ end
   redirect_to @issue
   end
 
+  def add_deadline
+  @issue = Issue.find(params[:id])
+  if params[:deadline_date].present?
+    deadline_date = Date.parse(params[:deadline_date])
+    @issue.update(deadline: deadline_date)
+  end
+  redirect_to @issue
+  end
+
+  def delete_deadline
+    @issue = Issue.find(params[:id])
+    @issue.update(deadline: nil)
+    redirect_to @issue
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_issue
