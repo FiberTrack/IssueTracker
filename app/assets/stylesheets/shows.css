@@ -3,8 +3,18 @@
   margin: 0 auto;
   padding: 30px;
   background-color: #f5f5f5;
-  display: flex; /* Para usar flexbox */
 }
+
+.dos-columnas {
+  display: flex;
+}
+
+.centrado{
+  padding: 20px;
+  margin-top: 10px;
+
+}
+
 
  .columna-derecha-show {
     display: flex;
@@ -118,3 +128,26 @@
    border-radius: 5px;
 }
 
+.avatar{
+  width: 59px;
+
+}
+
+.user-comment{
+  display: flex;
+
+}
+
+.comment{
+  padding-bottom: 20px;
+}
+
+.content-comment{
+  padding-left: 79px;
+  color: black;
+}
+
+.author_name{
+  padding-left: 20px;
+
+}

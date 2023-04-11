@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+
+
   devise_for :users, controllers: {
     omniauth_callbacks: 'users/omniauth_callbacks',
     sessions: 'users/sessions',
@@ -6,6 +8,10 @@ Rails.application.routes.draw do
   }
   resources :issues
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  get 'update_avatar_view', to: 'users#update_profile_avatar'
+  post 'upload_avatar', to: 'users#update_avatar'
+
+
 
   root 'issues#index'
   get 'show', to: 'issues#show'
@@ -16,6 +22,11 @@ Rails.application.routes.draw do
   get 'visualize_account', to: 'users#visualize'
 
 
+resources :issues do
+  resources :comments
+end
 
 end
+
+
 

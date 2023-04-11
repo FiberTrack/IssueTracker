@@ -1,0 +1,12 @@
+
+<div class="formulario">
+<%= form_with url: upload_avatar_path, method: :post, local: true, multipart: true do |form| %>
+  <%= form.label :avatar, "Upload profile photo"%>
+  <%= form.file_field :avatar %>
+  <%= form.submit "Save", class: "crear-issue" %>
+<% end %>
+</div>
+
+
+
+

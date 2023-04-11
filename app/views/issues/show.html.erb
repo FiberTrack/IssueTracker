@@ -1,72 +1,109 @@
 <p style="color: green"><%= notice %></p>
 
+
 <br>
 
 <div class="issue-info">
 
-<div class="columna-izquierda">
-  <h1 class="title"><%= @issue.subject %></h1>
-  <h2 class="detail-title">Issue Description</h2>
-  <p class="description"><%= @issue.description %></p>
-  <br>
+  <div class= "dos-columnas">
+
+  <div class="columna-izquierda">
+    <h1 class="title"><%= @issue.subject %></h1>
+    <h2 class="detail-title">Issue Description</h2>
+    <p class="description"><%= @issue.description %></p>
+    <br>
 
 
 
-  <div class="details">
+    <div class="details">
 
-      <div class="detail">
-        <h2 class="detail-title">Assigned to</h2>
-        <p class="detail-value"><%= @issue.assign %></p>
-      </div>
-
-      <div class="detail">
-        <h2 class="detail-title">Date</h2>
-        <p class="detail-value"><%= @issue.created_at.strftime("%d %B %Y") %></p>
-      </div>
-
-  </div>
-
-
-  <div class="buttons">
-    <%= button_to "Back", issues_path, class: "edit-button", method: :get %>
-    <%= button_to "Edit", edit_issue_path(@issue), class: "edit-button", method: :get %>
-    <%= button_to "Delete", @issue, method: :delete, class: "delete-button" %>
-  </div>
-</div>
- <div class="separador"></div>
-<div class="columna-derecha-show">
-<div class="issue-indicators">
-
-
-
-   <div class="elements-in-row">
-        <h2 class="detail-title">Type: </h2>
-         <div class="detail-value-container">
-        <p class="detail-value"><%= @issue.issue_type %></p>
-      <div class="issue-type-indicator <%= "issue-type-#{@issue.issue_type}" %>"></div>
-      </div>
-    </div>
-
-  <div class="elements-in-row">
-        <h2 class="detail-title">Severity: </h2>
-           <div class="detail-value-container">
-          <p class="detail-value"><%= @issue.severity %></p>
-          <div class="issue-severity-indicator <%= "issue-severity-#{@issue.severity}" %>"></div>
-          </div>
-    </div>
-
-      <div class="elements-in-row">
-          <h2 class="detail-title">Priority: </h2>
-        <div class="detail-value-container">
-          <p class="detail-value"><%= @issue.priority %></p>
-          <div class="issue-priority-indicator <%= "issue-priority-#{@issue.priority}" %>"></div>
+        <div class="detail">
+          <h2 class="detail-title">Assigned to</h2>
+          <p class="detail-value"><%= @issue.assign %></p>
         </div>
+
+        <div class="detail">
+          <h2 class="detail-title">Date</h2>
+          <p class="detail-value"><%= @issue.created_at.strftime("%d %B %Y") %></p>
+        </div>
+
     </div>
 
 
-</div>
+    <div class="buttons">
+      <%= button_to "Back", issues_path, class: "edit-button", method: :get %>
+      <%= button_to "Edit", edit_issue_path(@issue), class: "edit-button", method: :get %>
+      <%= button_to "Delete", @issue, method: :delete, class: "delete-button" %>
+    </div>
+  </div>
+   <div class="separador"></div>
+  <div class="columna-derecha-show">
+  <div class="issue-indicators">
 
-</div>
 
+
+     <div class="elements-in-row">
+          <h2 class="detail-title">Type: </h2>
+           <div class="detail-value-container">
+          <p class="detail-value"><%= @issue.issue_type %></p>
+        <div class="issue-type-indicator <%= "issue-type-#{@issue.issue_type}" %>"></div>
+        </div>
+      </div>
+
+    <div class="elements-in-row">
+          <h2 class="detail-title">Severity: </h2>
+             <div class="detail-value-container">
+            <p class="detail-value"><%= @issue.severity %></p>
+            <div class="issue-severity-indicator <%= "issue-severity-#{@issue.severity}" %>"></div>
+            </div>
+      </div>
+
+        <div class="elements-in-row">
+            <h2 class="detail-title">Priority: </h2>
+          <div class="detail-value-container">
+            <p class="detail-value"><%= @issue.priority %></p>
+            <div class="issue-priority-indicator <%= "issue-priority-#{@issue.priority}" %>"></div>
+          </div>
+      </div>
+
+
+  </div>
+
+  </div>
+
+  </div>
+
+  <div class= "centrado">
+
+  <h2>Add comment:</h2>
+<%= form_with(model: [@issue, @comment], local: true) do |form| %>
+  <p>
+  <%= form.text_area :content %>
+  </p>
+  <p>
+    <%= form.submit %>
+  </p>
+
+<% end %>
+  <h2>Comments:</h2><br>
+  <% @comments.each do |comment| %>
+  <div class="comment">
+    <div class="user-comment">
+      <% if comment.user.avatar_url.present? %>
+          <%= image_tag comment.user.avatar_url, class: "avatar" %>
+        <% end %>
+
+      <p class = author_name><strong><%= comment.author_name%></strong> </p>
+      <p><%= comment.created_at.strftime('%d %B %Y %I:%M %p') %></p>
+    </div>
+    <p class= content-comment><%=comment.content %></p>
+
+  </div>
+<% end %>
+
+
+
+
+  </div>
 
 </div>

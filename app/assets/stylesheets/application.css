@@ -52,6 +52,7 @@ header {
 }
 
 
+
 table {
   border-collapse: collapse;
   width: 50%;
@@ -87,3 +88,11 @@ td:last-child {
 td:last-child a {
   color: darkblue;
 }
+
+.rounded-image {
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  width: 100px;
+  height: 100px;
+}
+

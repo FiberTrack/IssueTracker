@@ -6,4 +6,6 @@ Students:
 
 * Surname_2, First_name_2
 
+Synch branch
+
 Your deployed webapp at Fly.io|Heroku|... (task #6): <https://*********.***.***/>
