@@ -54,7 +54,7 @@ header {
 
 table {
   border-collapse: collapse;
-  width: 100%;
+  width: 50%;
   margin-bottom: 1em;
 }
 
@@ -80,8 +80,10 @@ tr:hover {
 
 td:last-child {
   text-align: center;
+    vertical-align: middle;
+
 }
 
 td:last-child a {
-  color: red;
+  color: darkblue;
 }
