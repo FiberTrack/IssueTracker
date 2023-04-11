@@ -99,6 +99,12 @@ end
     end
   end
 
+  def block
+  @issue = Issue.find(params[:id])
+  @issue.update(blocked: !@issue.blocked)
+  redirect_to @issue
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_issue

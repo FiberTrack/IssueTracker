@@ -152,3 +152,7 @@ p {
   color: black;
   background-color: #387e90;
 }
+
+.bloqueado {
+  background-color: #ffdfd4;
+}
