@@ -16,5 +16,6 @@ Rails.application.routes.draw do
   get 'visualize_account', to: 'users#visualize'
 
 
+
 end
 

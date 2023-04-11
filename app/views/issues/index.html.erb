@@ -69,4 +69,25 @@
     <%= link_to "Login", new_user_session_path %>
 <% end %>
 
+<br>
+<h1>Users</h1>
+<table>
+
+  <tbody>
+    <% User.all.each do |user| %>
+      <tr>
+        <!--<td><%#= user.email %></td>-->
+        <!--<td><%#= user.bio %></td>-->
+        <td><%= image_tag(user.avatar_url) %></td>
+        <td><%= link_to user.email, visualize_account_path(:usuari_url => user.avatar_url, :usuari_bio => user.bio, :usuari_email => user.email) %>
+        <br> <br>
+        <%= user.bio %>
+        </td>
+
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br>
+
 
