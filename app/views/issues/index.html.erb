@@ -175,6 +175,8 @@
 
 	</body>
     <% else %>
-    <%= link_to "Login", new_user_session_path %>
+    <script>
+    window.location.href = "<%= new_user_session_path %>";
+    </script>
 <% end %>
 
