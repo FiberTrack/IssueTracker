@@ -190,13 +190,10 @@
   <tbody>
     <% User.all.each do |user| %>
       <tr>
-        <!--<td><%#= user.email %></td>-->
-        <!--<td><%#= user.bio %></td>-->
         <td><%= image_tag(user.avatar_url) %></td>
-        <td><%= link_to user.full_name, visualize_account_path(:usuari_url => user.avatar_url, :usuari_bio => user.bio, :usuari_email => user.email) %><br>
+        <td><%= link_to user.full_name, visualize_account_path(:usuari_url => user.avatar_url, :usuari_bio => "Prova de bio", :usuari_email => user.email) %><br>
         <%= user.email %>
         <br><br>
-        <%= user.bio %>
         </td>
 
       </tr>
