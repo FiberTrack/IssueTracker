@@ -114,4 +114,24 @@
 
   </div>
 
+
+
 </div>
+
+
+<div class = "issue-attachments">
+
+                    <h2>Attachments</h2>
+                    <% if @issue.attachments.any? %>
+                      <ul class="attachment-list">
+                        <% @issue.attachments.each do |attachment| %>
+                          <li>
+                            <%= link_to attachment.name, attachment.url, target: "_blank" %>
+                          </li>
+                        <% end %>
+                      </ul>
+                    <% else %>
+                      <p>No attachments found.</p>
+                    <% end %>
+
+                  </div>
