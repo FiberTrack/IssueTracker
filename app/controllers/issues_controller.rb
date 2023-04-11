@@ -26,17 +26,9 @@ class IssuesController < ApplicationController
     @order_by_params = { order_by: params[:order_by], direction: params[:direction] }
   end
 
-  private
-
-  def set_issue
-    @issue = Issue.find(params[:id])
+def inicial
+    @issues = Issue.all
   end
-
-
-
-
-
-
 
   # GET /issues/1 or /issues/1.json
   def show
@@ -109,8 +101,9 @@ end
 
   private
     # Use callbacks to share common setup or constraints between actions.
-
-
+    def set_issue
+      @issue = Issue.find(params[:id])
+    end
     # Only allow a list of trusted parameters through.
     def issue_params
       params.require(:issue).permit(:subject, :description, :assign, :issue_type, :severity, :priority)
