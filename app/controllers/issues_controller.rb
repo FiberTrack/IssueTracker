@@ -15,20 +15,25 @@ class IssuesController < ApplicationController
     @comment = Comment.new
     @issue = Issue.find(params[:id])
     @comments = @issue.comments
+    @selected_users = @issue.users.pluck(:name)
+
   end
 
   # GET /issues/new
   def new
     @issue = Issue.new
+    @users = User.all
   end
 
   # GET /issues/1/edit
   def edit
+    @users = User.all
   end
 
   # POST /issues or /issues.json
   def create
     @issue = Issue.new(issue_params)
+
 
     respond_to do |format|
       if @issue.save
@@ -87,6 +92,6 @@ end
 
     # Only allow a list of trusted parameters through.
     def issue_params
-      params.require(:issue).permit(:subject, :description, :assign, :issue_type, :severity, :priority)
+      params.require(:issue).permit(:subject, :description, :assign, :issue_type, :severity, :priority, user_ids: [])
     end
 end

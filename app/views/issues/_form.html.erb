@@ -37,6 +37,15 @@
       <%= form.label :priority, style: "display: block" %>
       <%= form.select :priority, ['Low', 'Normal', 'High'] %>
 
+      <%= form.label :user_id, 'Add watchers' %>
+      <%= form.collection_select :user_id, User.all, :id, :full_name, { multiple: true } %>
+
+    <div class="field">
+      <%= form.label :user_ids, "Usuarios" %>
+      <%= form.collection_select :user_ids, User.all, :id, :full_name, {}, {multiple: true} %>
+    </div>
+
+
     </div>
 
     <div style="clear: both;"></div> <!-- Limpia el flotante para evitar que los elementos siguientes se muestren al lado de los desplegables -->

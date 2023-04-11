@@ -101,6 +101,15 @@
   </div>
 <% end %>
 
+    <h3>Usuarios seleccionados:</h3>
+    <ul>
+  <% @issue.selected_users.each do |user| %>
+    <li><%= user.full_name %></li>
+  <% end %>
+    </ul>
+
+
+
 
 
 

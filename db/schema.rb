@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_09_101943) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_11_083213) do
   create_table "comments", force: :cascade do |t|
     t.text "content"
     t.integer "issue_id", null: false
@@ -32,6 +32,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_09_101943) do
     t.string "priority"
     t.string "issue_types"
     t.string "issue_type"
+  end
+
+  create_table "issues_users", id: false, force: :cascade do |t|
+    t.integer "issue_id", null: false
+    t.integer "user_id", null: false
+    t.string "writing"
+    t.index ["issue_id", "user_id"], name: "index_issues_users_on_issue_id_and_user_id"
+    t.index ["user_id", "issue_id"], name: "index_issues_users_on_user_id_and_issue_id"
   end
 
   create_table "users", force: :cascade do |t|
