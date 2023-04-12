@@ -7,7 +7,7 @@
     <%= button_to "Change Profile Picture", update_avatar_view_path, method: :get %>
 
 <head>
-    <h1>Issues</h1>
+    <h1 style= "color: #018AAA; font-size: 40px; font-weight: bold;">Issues</h1>
 </head>
 
 <body>
@@ -82,8 +82,11 @@
 
 
 <div id ="Abajo">
-<hr style="margin: 5px 0;">
-<div class="upper-bar">
+<div class="hr-container">
+  <hr class="hr-color">
+  <hr class="hr-margin">
+</div>
+<div class="upper-bar" style="background-color: #E9EFFC">
     <div class="indicators">
       <div class="Type">
         <div class="issue-type-indicator"> T </div>
@@ -118,7 +121,7 @@
     </div>
   </div>
 
-<hr style="margin: 5px 0;">
+<hr style="margin: 5px 0; background-color:#018AAA">
 
 
 <div id="issues">
@@ -150,10 +153,10 @@
   showBtn.addEventListener('click', function() {
     if (checkboxContainer.style.display === 'none') {
       checkboxContainer.style.display = 'block';
-      showBtn.textContent = 'Hide options';
+      showBtn.textContent = 'Hide filters';
     } else {
       checkboxContainer.style.display = 'none';
-      showBtn.textContent = 'Show options';
+      showBtn.textContent = 'Show filters';
     }
   });
 
@@ -194,7 +197,13 @@
 
       </tr>
     <% end %>
+    <style>
+    tr:hover {
+    background-color: #E9EFFC;
+    }
+</style>
   </tbody>
+
 </table>
 <br>
 
