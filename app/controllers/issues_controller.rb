@@ -85,7 +85,7 @@ end
       if @issue.update(issue_params)
         format.html { redirect_to issue_url(@issue), notice: "" }
         format.json { render :show, status: :ok, location: @issue }
-          #record_activity(current_user, 'updated')
+        record_activity(current_user.id, @issue.id, 'modified')
 
       else
         format.html { render :edit, status: :unprocessable_entity }
