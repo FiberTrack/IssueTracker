@@ -87,6 +87,7 @@ end
       priority_antic = @issue.priority
       subject_antic = @issue.subject
       description_antic = @issue.description
+      assign_antic = @issue.assign
 
       if @issue.update(issue_params)
         format.html { redirect_to issue_url(@issue), notice: "" }
@@ -97,6 +98,9 @@ end
       end
       if (description_antic != issue_params[:description])
         record_activity(current_user.id, @issue.id, 'changed description of')
+      end
+      if (assign_antic != issue_params[:assign])
+        record_activity(current_user.id, @issue.id, 'changed assignation of')
       end
       if (type_antic != issue_params[:issue_type])
         record_activity(current_user.id, @issue.id, 'changed type of')
