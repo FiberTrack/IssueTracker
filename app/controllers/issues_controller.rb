@@ -35,15 +35,18 @@ def inicial
     @comment = Comment.new
     @issue = Issue.find(params[:id])
     @comments = @issue.comments
+    @attachments = Attachment.new
   end
 
   # GET /issues/new
   def new
     @issue = Issue.new
+    @attachment = Attachment.new
   end
 
   # GET /issues/1/edit
   def edit
+    @attachment = Attachment.new
   end
 
   # POST /issues or /issues.json
@@ -126,12 +129,20 @@ end
 
   # DELETE /issues/1 or /issues/1.json
   def destroy
-    @issue.destroy
+    attachments_controller = AttachmentsController.new
 
+  @issue.attachments.each do |attachment|
+    attachments_controller.destroy_attachment(attachment)
+  end
+  # Delete all associated attachments first
+  @issue.attachments.destroy_all
+
+    @issue.destroy
     respond_to do |format|
       format.html { redirect_to issues_url, notice: "" }
       format.json { head :no_content }
     end
+
   end
 
   def block
@@ -140,7 +151,16 @@ end
       record_activity(current_user.id, @issue.id, @issue.blocked ? 'blocked' : 'unblocked')
   redirect_to @issue
   end
+def destroy_single_attachment
+      attachment = Attachment.find(params[:id])
+      attachments_controller = AttachmentsController.new
+      attachments_controller.destroy_attachment(attachment)
 
+
+      flash[:notice] = "Attachment successfully deleted."
+      redirect_to issue_path(attachment.issue)
+end
+    
   def add_deadline
   @issue = Issue.find(params[:id])
   if params[:deadline_date].present?
@@ -175,4 +195,7 @@ end
     def issue_params
       params.require(:issue).permit(:subject, :description, :assign, :issue_type, :severity, :priority)
     end
+
+
+
 end
