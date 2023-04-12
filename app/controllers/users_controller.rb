@@ -32,6 +32,9 @@ class UsersController < ApplicationController
   current_user.update_attribute(:avatar_url, object.public_url)
 
   redirect_to root_path
-end
+  end
+
+
+
 
 end

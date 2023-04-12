@@ -22,6 +22,27 @@
           <p class="detail-value"><%= @issue.assign %></p>
         </div>
 
+       <div class="detail">
+        <h2 class="detail-title">Watched by</h2>
+        <% if @issue.watcher.present? %>
+          <% users = @issue.watcher.split(',').map(&:strip).reject(&:blank?) %>
+          <% if users.any? %>
+            <% user_names = users.join("\n").gsub(/\[\"\"|\"]/, '').gsub(/, /, "\n").gsub(/[\]]/, 'Not Watched').gsub(/[" "]/, ' ') %>
+            <%= user_names.split("\n").map { |name| "<p class='detail-value'>#{name.strip}</p>" }.join("\n").html_safe %>
+          <% else %>
+            <p class="detail-value">Not Watched</p>
+          <% end %>
+
+
+        <% else %>
+          <p class="detail-value">Not watched</p>
+        <% end %>
+      </div>
+
+
+
+
+
         <div class="detail">
           <h2 class="detail-title">Date</h2>
           <p class="detail-value"><%= @issue.created_at.strftime("%d %B %Y") %></p>
@@ -101,12 +122,8 @@
   </div>
 <% end %>
 
-    <h3>Usuarios seleccionados:</h3>
-    <ul>
-  <% @issue.selected_users.each do |user| %>
-    <li><%= user.full_name %></li>
-  <% end %>
-    </ul>
+
+
 
 
 

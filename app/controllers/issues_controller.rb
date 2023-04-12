@@ -15,26 +15,21 @@ class IssuesController < ApplicationController
     @comment = Comment.new
     @issue = Issue.find(params[:id])
     @comments = @issue.comments
-    @selected_users = @issue.users.pluck(:name)
-
   end
 
   # GET /issues/new
   def new
     @issue = Issue.new
-    @users = User.all
   end
 
   # GET /issues/1/edit
   def edit
-    @users = User.all
   end
 
   # POST /issues or /issues.json
   def create
     @issue = Issue.new(issue_params)
-
-
+    puts "Params received: #{issue_params}"
     respond_to do |format|
       if @issue.save
         format.html { redirect_to issues_url, notice: "" }
@@ -45,6 +40,8 @@ class IssuesController < ApplicationController
       end
     end
   end
+
+
 
   def create_multiple_issues
   subjects = params[:subjects].split("\n")
@@ -63,6 +60,7 @@ end
 
   # PATCH/PUT /issues/1 or /issues/1.json
   def update
+    puts "Params received: #{issue_params}"
     respond_to do |format|
       if @issue.update(issue_params)
         format.html { redirect_to issue_url(@issue), notice: "" }
@@ -92,6 +90,6 @@ end
 
     # Only allow a list of trusted parameters through.
     def issue_params
-      params.require(:issue).permit(:subject, :description, :assign, :issue_type, :severity, :priority, user_ids: [])
+      params.require(:issue).permit(:subject, :description, :assign, :issue_type, :severity, :priority, watcher: [])
     end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_11_083213) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_11_214544) do
   create_table "comments", force: :cascade do |t|
     t.text "content"
     t.integer "issue_id", null: false
@@ -32,6 +32,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_11_083213) do
     t.string "priority"
     t.string "issue_types"
     t.string "issue_type"
+    t.string "watcher"
   end
 
   create_table "issues_users", id: false, force: :cascade do |t|
