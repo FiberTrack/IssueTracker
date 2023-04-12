@@ -94,22 +94,25 @@ end
         format.json { render :show, status: :ok, location: @issue }
 
       if (subject_antic != issue_params[:subject])
-        record_activity(current_user.id, @issue.id, 'changed subject of')
+        record_activity(current_user.id, @issue.id, "changed subject from #{subject_antic} to #{issue_params[:subject]} of")
       end
       if (description_antic != issue_params[:description])
         record_activity(current_user.id, @issue.id, 'changed description of')
       end
       if (assign_antic != issue_params[:assign])
-        record_activity(current_user.id, @issue.id, 'changed assignation of')
+        if (assign_antic.nil? or assign_antic.empty?)
+          assign_antic = "unassigned"
+        end
+        record_activity(current_user.id, @issue.id, "changed assignation from #{assign_antic} to #{issue_params[:assign]} of")
       end
       if (type_antic != issue_params[:issue_type])
-        record_activity(current_user.id, @issue.id, 'changed type of')
+        record_activity(current_user.id, @issue.id, "changed type from #{type_antic} to #{issue_params[:issue_type]} of")
       end
       if (severity_antic != issue_params[:severity])
-        record_activity(current_user.id, @issue.id, 'changed severity of')
+        record_activity(current_user.id, @issue.id, "changed severity from #{severity_antic} to #{issue_params[:severity]} of")
       end
       if (priority_antic != issue_params[:priority])
-        record_activity(current_user.id, @issue.id, 'changed priority of')
+        record_activity(current_user.id, @issue.id, "changed priority from #{priority_antic} to #{issue_params[:priority]} of")
       end
 
         #record_activity(current_user.id, @issue.id, 'modified')
@@ -143,7 +146,7 @@ end
   if params[:deadline_date].present?
     deadline_date = Date.parse(params[:deadline_date])
     @issue.update(deadline: deadline_date)
-    record_activity(current_user.id, @issue.id, 'added deadline for')
+    record_activity(current_user.id, @issue.id, "added deadline of #{deadline_date} for")
   end
   redirect_to @issue
   end
