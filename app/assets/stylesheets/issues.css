@@ -42,9 +42,8 @@ p {
 }
 
 .titulo {
-  font-size: 20px;
+  font-size: 16px;
   font-weight: bold;
-  padding: 10px 0;
   margin-right: 16px;
 }
 
@@ -54,6 +53,8 @@ p {
   border-radius: 12px;
   display: inline-block;
   margin-right: 32px;
+  display: flex;
+  justify-content: center;
 
 }
 
@@ -76,6 +77,8 @@ p {
   border-radius: 12px;
   display: inline-block;
   margin-right: 32px;
+  display: flex;
+  justify-content: center;
 
 }
 
@@ -97,6 +100,8 @@ p {
   border-radius: 12px;
   display: inline-block;
   margin-right: 32px;
+  display: flex;
+  justify-content: center;
 }
 
 .issue-severity-Wishlist {
@@ -119,9 +124,35 @@ p {
   background-color: red;
 }
 
+.issue-subject-indicator {
+  width: 24px;
+  height: 24px;
+  border-radius: 12px;
+  display: inline-block;
+  margin-right: 32px;
+  display: flex;
+  justify-content: center;
+}
+
 
 .issue-title-container {
   margin-left: 10px;
 }
 
+.btn {
+  color: black;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 10px; /* Agregar el border-radius para hacer los bordes redondos */
+  padding: 5px 10px;
+  text-decoration: none;
+}
 
+.btn:hover {
+  color: black;
+  background-color: #387e90;
+}
+
+.bloqueado {
+  background-color: #ffdfd4;
+}

@@ -1,4 +1,9 @@
 class CommentsController < ApplicationController
+  def new
+    @issue = Issue.find(params[:issue_id])
+    @comment = @issue.comments.build
+  end
+
   def create
     @issue = Issue.find(params[:issue_id])
     @comment = @issue.comments.create(comment_params.merge(user: current_user))

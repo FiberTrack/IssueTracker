@@ -77,6 +77,11 @@
   margin-right: 10px;
 }
 
+.container {
+  display: flex;
+  align-items: center; /* Para centrar verticalmente los elementos */
+}
+
 .elements-in-row > * {
   margin-left: 30px; /* Separación horizontal entre elementos */
   margin-top: 10px; /* Separación vertical entre elementos */
@@ -128,10 +133,14 @@
    border-radius: 5px;
 }
 
-.avatar{
+.rounded-image-avatar{
   width: 59px;
+  height: 59px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
 
 }
+
 
 .user-comment{
   display: flex;
@@ -150,4 +159,64 @@
 .author_name{
   padding-left: 20px;
 
+}
+
+.block-button {
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+   margin-left: 10px;
+   border-radius: 5px;
+}
+
+.block-button.blocked {
+    background-color: #aacaff;
+
+}
+
+.block-button.unblocked {
+  background-color:  #ffdfd4;
+}
+
+.blocked-message{
+  font-size: 16px;
+  font-weight: bold;
+  color: black;
+  background-color: #ffdfd4;
+  margin-bottom: 10px;
+  padding-left: 5px;
+}
+
+.deadline_button {
+   background-color: yellow;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+   margin-left: 10px;
+   border-radius: 5px;
+}
+
+.deadline_button.a{
+   background-color: #f5f6ab;
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+   margin-left: 10px;
+   border-radius: 5px;
+}
+
+.deadline-message{
+  font-size: 16px;
+  font-weight: bold;
+  color: black;
+  background-color:  #f5f6ab;
+  margin-bottom: 10px;
+  padding-left: 5px;
 }

@@ -1,16 +1,20 @@
-
-
 <a href="<%= url_for(action: 'show', id: issue.id) %>">
-  <div class="issueitem" id="<%= dom_id issue %>">
+  <div class="issueitem <%= 'bloqueado' if issue.blocked? %>" id="<%= dom_id issue %>">
     <div class="indicators">
       <div class="issue-type-indicator <%= "issue-type-#{issue.issue_type}" %>"></div>
       <div class="issue-severity-indicator <%= "issue-severity-#{issue.severity}" %>"></div>
       <div class="issue-priority-indicator <%= "issue-priority-#{issue.priority}" %>"></div>
       <h2 class="titulo"> <%= issue.subject %> </h2>
+      <% if issue.blocked? %>
+        <span class="bloqueado-label">🔒</span>
+      <% end %>
+      <% if !issue.deadline.nil? %>
+        <span class="bloqueado-label">⌚</span>
+      <% end %>
     </div>
     <div class="details">
 
-      <p> <%= issue.assign %> </p>
+      <p style="display: flex; justify-content: center;"> <%= issue.assign %> </p>
       <p> <%= issue.created_at.strftime("%d %B %Y") %> </p>
 
     </div>

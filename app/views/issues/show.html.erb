@@ -1,14 +1,22 @@
+<body>
 <p style="color: green"><%= notice %></p>
 
 
 <br>
 
 <div class="issue-info">
+    <% if @issue.blocked %>
+    <p class="blocked-message"> 🔒 Blocked</p>
+    <% end %>
+    <% if !@issue.deadline.nil? %>
+    <p class="deadline-message"> ⌚ Due date: <%= @issue.deadline.strftime('%d/%m/%Y') %></p>
+    <% end %>
 
   <div class= "dos-columnas">
 
   <div class="columna-izquierda">
     <h1 class="title"><%= @issue.subject %></h1>
+
     <h2 class="detail-title">Issue Description</h2>
     <p class="description"><%= @issue.description %></p>
     <br>
@@ -55,6 +63,23 @@
       <%= button_to "Back", issues_path, class: "edit-button", method: :get %>
       <%= button_to "Edit", edit_issue_path(@issue), class: "edit-button", method: :get %>
       <%= button_to "Delete", @issue, method: :delete, class: "delete-button" %>
+      <% if @issue.blocked %>
+        <%= button_to "🔓", block_issue_path(@issue), method: :put, class: "block-button blocked" %>
+      <% else %>
+        <%= button_to "🔒", block_issue_path(@issue), method: :put, class: "block-button unblocked" %>
+      <% end %>
+      <% if @issue.deadline.nil? %>
+        <%= content_tag :p, "Add deadline", style: "color: black;"  %>
+        <%= form_tag(add_deadline_issue_path(@issue), method: :put) do %>
+          <%= date_field_tag 'deadline_date', nil, id: 'deadline_date', min: Date.today %>
+          <%= submit_tag "⌚", class: "deadline_button a" %>
+         <% end %>
+      <% else %>
+        <%= form_tag(delete_deadline_issue_path(@issue), method: :put) do %>
+          <%= submit_tag "⌚", class: "deadline_button a" %>
+         <% end %>
+      <% end %>
+
     </div>
   </div>
    <div class="separador"></div>
@@ -111,7 +136,7 @@
   <div class="comment">
     <div class="user-comment">
       <% if comment.user.avatar_url.present? %>
-          <%= image_tag comment.user.avatar_url, class: "avatar" %>
+         <%= image_tag(comment.user.avatar_url, class: "rounded-image-avatar") %>
         <% end %>
 
       <p class = author_name><strong><%= comment.author_name%></strong> </p>
@@ -120,8 +145,24 @@
     <p class= content-comment><%=comment.content %></p>
 
   </div>
-<% end %>
 
+<% end %>
+<div>
+                    <hr style="border-top: 1px solid black; margin: 20px 0;">
+                    <h2>Attachments:</h2><br>
+                    <% if @issue.attachments.any? %>
+                      <ul class="attachment-list">
+                        <% @issue.attachments.each do |attachment| %>
+                          <li>
+                            <%= link_to attachment.name, attachment.url, target: "_blank" %>
+                          </li>
+                        <% end %>
+                      </ul>
+                    <% else %>
+                      <p>No attachments found.</p>
+                    <% end %>
+
+</div>
 
 
 
@@ -132,4 +173,17 @@
 
   </div>
 
+
+
+  <br>
+  <h2>Activities:</h2>
+  <% @issue.activities.each do |activity| %>
+  <br>
+  <li><%= activity.user.full_name %> <%= activity.action %> the issue on <%= activity.created_at.strftime('%I:%M %p %d %B %Y') %>.</li>
+  <% end %>
+
 </div>
+
+
+</body>
+

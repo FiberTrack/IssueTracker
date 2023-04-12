@@ -1,7 +1,10 @@
 class Issue < ApplicationRecord
 
     after_initialize :set_defaults
+    has_many :attachments
     has_many :comments, dependent: :destroy
+    has_many :activities
+
 
 
 
@@ -16,11 +19,6 @@ class Issue < ApplicationRecord
     self.issue_type ||= "Bug"
     self.severity ||= "Wishlist"
     self.priority ||= "Low"
-  end
-
-
-  def selected_users
-    users.map(&:name).join("\n")
   end
 
 

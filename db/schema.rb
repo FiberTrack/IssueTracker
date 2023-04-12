@@ -10,7 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_11_214544) do
+
+ActiveRecord::Schema[7.0].define(version: 2023_04_12_084213) do
+  create_table "activities", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "issue_id"
+    t.string "action"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "attachments", force: :cascade do |t|
+    t.string "name"
+    t.string "url"
+    t.integer "issue_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["issue_id"], name: "index_attachments_on_issue_id"
+  end
+
+
   create_table "comments", force: :cascade do |t|
     t.text "content"
     t.integer "issue_id", null: false
@@ -33,14 +52,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_11_214544) do
     t.string "issue_types"
     t.string "issue_type"
     t.string "watcher"
-  end
-
-  create_table "issues_users", id: false, force: :cascade do |t|
-    t.integer "issue_id", null: false
-    t.integer "user_id", null: false
-    t.string "writing"
-    t.index ["issue_id", "user_id"], name: "index_issues_users_on_issue_id_and_user_id"
-    t.index ["user_id", "issue_id"], name: "index_issues_users_on_user_id_and_issue_id"
+    t.boolean "blocked"
+    t.date "deadline"
   end
 
   create_table "users", force: :cascade do |t|
@@ -50,8 +63,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_11_214544) do
     t.string "provider"
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
+    t.string "bio"
   end
 
+  add_foreign_key "attachments", "issues"
   add_foreign_key "comments", "issues"
   add_foreign_key "comments", "users"
 end

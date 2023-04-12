@@ -5,25 +5,43 @@ h1 {
 
 }
 
+body {
+	min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background-image: url('/Images/Fondo.png');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+  z-index: -1;
+}
+
 .container {
-	display: flex;
-	justify-content: space-between;
- 	align-items: center;
-	height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 50px;
+  width: 100%;
+  max-width: 100%;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .left-buttons {
-	display: flex;
+  display: flex;
   align-items: center;
-  margin-left: -54px;
-
+  text-align: left;
 }
 
 .right-buttons {
-	display: flex;
+  display: flex;
   align-items: center;
-  margin-right: -64px;
-
+  text-align: right;
 }
 
 .boto_filters{
@@ -33,9 +51,25 @@ h1 {
 		font-size: 16px;
 		border: 0;
 		margin-right: 10px;
+
 }
 
 .boto_filters:hover{
+	background-color: #018AAA;
+	color: #FFFFFF;
+}
+
+
+.boto_filtrar{
+		color: #018AAA;
+		background: #E9EFFC;
+		padding: 10px 10px;
+		font-size: 16px;
+		border: 0;
+		margin-right: 10px;
+}
+
+.boto_filtrar:hover{
 		background-color: #D8DEE9;
 }
 
@@ -47,6 +81,7 @@ h1 {
 		border-radius: 0px;
 		border: 3;
 		border-color: #E9EFFC;
+		margin-right: 10px;
 }
 
 .busqueda input {
@@ -159,3 +194,36 @@ h1 {
 	background-color: #018AAA;
 	color: #FFFFFF;
 }
+
+.filtro-input,
+.filtro-boton {
+  display: inline-block;
+}
+
+.hr-container {
+  position: relative;
+}
+.hr-color {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: #018AAA;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.hr-margin {
+  position: absolute;
+  top: -5px;
+  left: 0;
+  width: 100%;
+  height: 10px;
+  background-color: #E9EFFC;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
