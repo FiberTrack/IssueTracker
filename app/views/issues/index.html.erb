@@ -11,18 +11,13 @@
 </head>
 
 <body>
-<div class="container">
+
+<div class="button-container">
   <div class="left-buttons">
 
-    <%= form_tag issues_path, method: :get, class: "form-inline", style: "white-space: nowrap; padding-top: 20px" do %>
-    <%= text_field_tag :filtro, params[:filtro], class: "busqueda", placeholder: "subject or reference" %>
-    <%= button_tag "Buscar", type: :submit, class: "boto_filters" %>
-    <% end %>
-  </div>
-
-  <%= form_tag issues_path, method: :get do %>
+ <%= form_tag issues_path, method: :get do %>
   <div>
-    <button type="button" id="show-btn" class="boto_filters">Show options</button>
+    <button type="button" id="show-btn" class="boto_filters">Show filters</button>
   </div>
   <div id="checkbox-container" style="display: none; background-color: #E9EFFC;">
     <div>
@@ -66,17 +61,19 @@
       <% end %>
     </div>
   </div>
-  <%= submit_tag "Search",class: "boto_filters", id: "search-btn", style: "margin-bottom: 20px;"%>
+  <%= submit_tag "Filter",class: "boto_filters", id: "search-btn", style: "margin-bottom: 20px;"%>
 <% end %>
 
+  <%= form_tag issues_path, method: :get, class: "form-inline", style: "white-space: nowrap; padding-top: 20px" do %>
+    <%= text_field_tag :filtro, params[:filtro], class: "busqueda", placeholder: "subject or reference" %>
+    <%= button_tag "Buscar", type: :submit, class: "boto_filters" %>
+    <% end %>
+  </div>
 
 <div class="right-buttons">
       <%= link_to "<button class=boto_new_is >+ NEW ISSUE</button>".html_safe, new_issue_path, :id=>"open-contacts-dialog-btn"%>
       <%= link_to '+Bulk', bulk_issues_path, class: 'boto_new_bu' %>
-
-      </div>
-
-
+</div>
 </div>
 
 
@@ -153,11 +150,9 @@
   showBtn.addEventListener('click', function() {
     if (checkboxContainer.style.display === 'none') {
       checkboxContainer.style.display = 'block';
-      resultados.style.marginTop = '175px';
       showBtn.textContent = 'Hide options';
     } else {
       checkboxContainer.style.display = 'none';
-      resultados.style.marginTop = 0;
       showBtn.textContent = 'Show options';
     }
   });
