@@ -25,6 +25,8 @@
       <%= form.select :assign, User.all.pluck(:full_name), include_blank: true %>
       <%= form.submit class: "crear-issue"%>
       <%= link_to "Back", issues_path, class: "volver" %>
+
+
     </div>
     <div class="separador"></div>
     <div class="columna-derecha">
@@ -47,32 +49,42 @@
 
 <% end %>
 
-
+<div class="formulario">
+  <div class="columna-izquierda">
 <% if issue.persisted? %>
-  <div class="form-group">
-    <%= form_with(url: createatt_path(issue.id), local: true, html: { enctype: "multipart/form-data" }) do |attachment_form| %>
-      <%= attachment_form.label :file, "Add Attachment" %>
-      <%= attachment_form.file_field :file, name: "attachment[file]", class: "form-control-file" %> <!-- Add name: "attachment[file]" -->
-      <%= attachment_form.submit "Upload Attachment", class: "btn btn-primary mt-2" %>
-    <% end %>
-  </div>
+        <div>
+          <%= form_with(url: create_at_path(issue.id), local: true, html: { enctype: "multipart/form-data" }) do |attachment_form| %>
+            <%= attachment_form.label :file, "Add Attachment" %>
+            <div class="container">
+            <%= attachment_form.file_field :file, name: "attachment[file]" %>
+            <%= attachment_form.submit "Upload Attachment", class: "crear-issue" %>
+            </div>
+          <% end %>
+        </div>
 <% end %>
+
+
 <% if issue.attachments.any? %>
-  <div class="attachments">
+  <div>
     <h3>Attachments:</h3>
     <ul>
       <% issue.attachments.each do |attachment| %>
         <li>
+          <div class="container">
           <%= attachment.name %>
-
-   <%= button_to "Delete", { controller: "issues", action: "destroy_single_attachment", id: attachment.id }, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger btn-sm" %>
-
-
-
+          <%= button_to "Delete", { controller: "issues", action: "destroy_single_attachment", id: attachment.id }, method: :delete, class: "delete-button" %>
+         </div>
         </li>
       <% end %>
     </ul>
   </div>
 <% end %>
+</div>
+</div>
+
+
+
+
+
 
 

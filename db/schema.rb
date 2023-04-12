@@ -51,6 +51,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_11_184659) do
     t.string "provider"
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
+    t.string "bio"
   end
 
   add_foreign_key "attachments", "issues"

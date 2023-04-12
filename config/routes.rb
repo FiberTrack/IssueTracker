@@ -20,5 +20,5 @@ Rails.application.routes.draw do
   post 'upload_avatar', to: 'users#update_avatar'
   post 'create_multiple_issues', to: 'issues#create_multiple_issues'
   get 'bulk_issues', to: 'issues#bulk_issues'
-  post '/issues/:issue_id/attachments', to: 'attachments#create', as: "createatt"
+  post '/issues/:issue_id/attachments', to: 'attachments#create', as: "create_at"
 end
