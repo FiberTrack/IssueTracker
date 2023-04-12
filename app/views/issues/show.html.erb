@@ -115,7 +115,7 @@
   <div class="comment">
     <div class="user-comment">
       <% if comment.user.avatar_url.present? %>
-         <%= image_tag(current_user.avatar_url, class: "rounded-image-avatar") %>
+         <%= image_tag(coment.user.avatar_url, class: "rounded-image-avatar") %>
         <% end %>
 
       <p class = author_name><strong><%= comment.author_name%></strong> </p>
