@@ -82,10 +82,33 @@ end
   # PATCH/PUT /issues/1 or /issues/1.json
   def update
     respond_to do |format|
+      type_antic = @issue.issue_type
+      severity_antic = @issue.severity
+      priority_antic = @issue.priority
+      subject_antic = @issue.subject
+      description_antic = @issue.description
+
       if @issue.update(issue_params)
         format.html { redirect_to issue_url(@issue), notice: "" }
         format.json { render :show, status: :ok, location: @issue }
-        record_activity(current_user.id, @issue.id, 'modified')
+
+      if (type_antic != issue_params[:issue_type])
+        record_activity(current_user.id, @issue.id, 'changed type of')
+      end
+      if (priority_antic != issue_params[:priority])
+        record_activity(current_user.id, @issue.id, 'changed priority of')
+      end
+      if (severity_antic != issue_params[:severity])
+        record_activity(current_user.id, @issue.id, 'changed severity of')
+      end
+      if (subject_antic != issue_params[:subject])
+        record_activity(current_user.id, @issue.id, 'changed subject of')
+      end
+      if (description_antic != issue_params[:description])
+        record_activity(current_user.id, @issue.id, 'changed description of')
+      end
+
+        #record_activity(current_user.id, @issue.id, 'modified')
 
       else
         format.html { render :edit, status: :unprocessable_entity }
