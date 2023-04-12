@@ -7,8 +7,8 @@ class IssuesController < ApplicationController
     if params[:filtro].present?
       @filtered_issues = @issues.where("lower(subject) LIKE ? OR lower(description) LIKE ?", "%#{params[:filtro].downcase}%", "%#{params[:filtro].downcase}%")
     elsif params[:options].present?
-      options = params[:options]
-      @filtered_issues = @issues.where("severity IN (?) OR issue_type IN (?) OR priority IN (?) OR assign IN (?)", options.map(&:capitalize), options.map(&:capitalize), options.map(&:capitalize), options.map(&:capitalize))
+      options = params[:options].map(&:downcase)
+      @filtered_issues = @issues.where("severity IN (?) OR issue_type IN (?) OR priority IN (?) OR assign IN (?)", options.map(&:capitalize), options.map(&:capitalize), options.map(&:capitalize), options.map(&:titleize))
     else
       @filtered_issues = @issues
     end

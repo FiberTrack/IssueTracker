@@ -56,8 +56,8 @@
     </div>
     <div>
       <h4>Assigned to:</h4>
-      <% assigned_to = ['Gabriel Del Valle'] %>
-      <% assigned_to.each do |option| %>
+      <% assigns = ['Abel Batalla','Abdelrahim Chelh El Azzaoui', 'Arnau Gracia','Gabriel Del Valle'] %>
+      <% assigns.each do |option| %>
         <div style="display: inline-block; margin-right: 10px;">
           <%= check_box_tag "options[]", option, params[:options].present? && params[:options].include?(option) %>
           <%= label_tag "options[]", option %>
