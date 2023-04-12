@@ -40,7 +40,6 @@ def inicial
   # GET /issues/new
   def new
     @issue = Issue.new
-    #record_activity(current_user, 'New')
   end
 
   # GET /issues/1/edit
@@ -55,7 +54,7 @@ def inicial
       if @issue.save
         format.html { redirect_to issues_url, notice: "" }
         format.json { render :show, status: :created, location: @issue }
-          #record_activity(current_user, 'Create')
+    record_activity(current_user.id, @issue.id, 'created')
 
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -71,7 +70,7 @@ def inicial
     issue = Issue.new(subject: subject.strip)
     if issue.save
       issues_created << issue
-      #record_activity(current_user, 'Created in bulk')
+    record_activity(current_user.id, issue.id, 'created in bulk')
     end
   end
   redirect_to issues_path
@@ -108,9 +107,7 @@ end
   def block
   @issue = Issue.find(params[:id])
   @issue.update(blocked: !@issue.blocked)
-      puts "Inici"
       record_activity(current_user.id, @issue.id, @issue.blocked ? 'blocked' : 'unblocked')
-      puts "Fi"
   redirect_to @issue
   end
 
@@ -119,6 +116,7 @@ end
   if params[:deadline_date].present?
     deadline_date = Date.parse(params[:deadline_date])
     @issue.update(deadline: deadline_date)
+    record_activity(current_user.id, @issue.id, 'added deadline for')
   end
   redirect_to @issue
   end
@@ -126,15 +124,14 @@ end
   def delete_deadline
     @issue = Issue.find(params[:id])
     @issue.update(deadline: nil)
+    record_activity(current_user.id, @issue.id, 'removed deadline for')
     redirect_to @issue
   end
 
 
     def record_activity(user, issue, action)
-          puts "Invoked"
           Activity.create(action: action, issue_id: issue, user_id: user)
-    #Activity.create(user: user, action: action)
-            puts "Done"
+
 
     end
 
