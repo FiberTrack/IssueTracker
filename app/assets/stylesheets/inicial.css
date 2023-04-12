@@ -1,13 +1,20 @@
 h1 {
 	color: #018AAA;
-	font-size: 20px;
+	font-size: 100px;
 	font-weight: bold;
 
 }
 
 body {
+	min-height: 100vh;
   margin: 0;
   padding: 0;
+  background-image: url('/Images/Fondo.png');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+  z-index: -1;
 }
 
 .container {
@@ -48,8 +55,10 @@ body {
 }
 
 .boto_filters:hover{
-		background-color: #D8DEE9;
+	background-color: #018AAA;
+	color: #FFFFFF;
 }
+
 
 .boto_filtrar{
 		color: #018AAA;
