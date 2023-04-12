@@ -92,20 +92,20 @@ end
         format.html { redirect_to issue_url(@issue), notice: "" }
         format.json { render :show, status: :ok, location: @issue }
 
-      if (type_antic != issue_params[:issue_type])
-        record_activity(current_user.id, @issue.id, 'changed type of')
-      end
-      if (priority_antic != issue_params[:priority])
-        record_activity(current_user.id, @issue.id, 'changed priority of')
-      end
-      if (severity_antic != issue_params[:severity])
-        record_activity(current_user.id, @issue.id, 'changed severity of')
-      end
       if (subject_antic != issue_params[:subject])
         record_activity(current_user.id, @issue.id, 'changed subject of')
       end
       if (description_antic != issue_params[:description])
         record_activity(current_user.id, @issue.id, 'changed description of')
+      end
+      if (type_antic != issue_params[:issue_type])
+        record_activity(current_user.id, @issue.id, 'changed type of')
+      end
+      if (severity_antic != issue_params[:severity])
+        record_activity(current_user.id, @issue.id, 'changed severity of')
+      end
+      if (priority_antic != issue_params[:priority])
+        record_activity(current_user.id, @issue.id, 'changed priority of')
       end
 
         #record_activity(current_user.id, @issue.id, 'modified')
