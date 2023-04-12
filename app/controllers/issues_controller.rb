@@ -7,8 +7,8 @@ class IssuesController < ApplicationController
     if params[:filtro].present?
       @filtered_issues = @issues.where("lower(subject) LIKE ? OR lower(description) LIKE ?", "%#{params[:filtro].downcase}%", "%#{params[:filtro].downcase}%")
     elsif params[:options].present?
-      options = params[:options]
-      @filtered_issues = @issues.where("severity IN (?) OR issue_type IN (?) OR priority IN (?) OR assign IN (?)", options.map(&:capitalize), options.map(&:capitalize), options.map(&:capitalize), options.map(&:capitalize))
+      options = params[:options].map(&:downcase)
+      @filtered_issues = @issues.where("severity IN (?) OR issue_type IN (?) OR priority IN (?) OR assign IN (?)", options.map(&:capitalize), options.map(&:capitalize), options.map(&:capitalize), options.map(&:titleize))
     else
       @filtered_issues = @issues
     end
@@ -19,7 +19,7 @@ class IssuesController < ApplicationController
       @ordered_issues = @filtered_issues
     end
 
-    @issues = @ordered_issues.page(params[:page]).per(10)
+    #@issues = @ordered_issues.page(params[:page]).per(10)
 
     # agregar estas líneas para preservar los parámetros de búsqueda al ordenar
     @params_without_order_by = request.query_parameters.except(:order_by, :direction)
@@ -57,6 +57,8 @@ def inicial
       if @issue.save
         format.html { redirect_to issues_url, notice: "" }
         format.json { render :show, status: :created, location: @issue }
+    record_activity(current_user.id, @issue.id, 'created')
+
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @issue.errors, status: :unprocessable_entity }
@@ -71,6 +73,7 @@ def inicial
     issue = Issue.new(subject: subject.strip)
     if issue.save
       issues_created << issue
+    record_activity(current_user.id, issue.id, 'created in bulk')
     end
   end
   redirect_to issues_path
@@ -82,9 +85,41 @@ end
   # PATCH/PUT /issues/1 or /issues/1.json
   def update
     respond_to do |format|
+      type_antic = @issue.issue_type
+      severity_antic = @issue.severity
+      priority_antic = @issue.priority
+      subject_antic = @issue.subject
+      description_antic = @issue.description
+      assign_antic = @issue.assign
+
       if @issue.update(issue_params)
         format.html { redirect_to issue_url(@issue), notice: "" }
         format.json { render :show, status: :ok, location: @issue }
+
+      if (subject_antic != issue_params[:subject])
+        record_activity(current_user.id, @issue.id, "changed subject from #{subject_antic} to #{issue_params[:subject]} of")
+      end
+      if (description_antic != issue_params[:description])
+        record_activity(current_user.id, @issue.id, 'changed description of')
+      end
+      if (assign_antic != issue_params[:assign])
+        if (assign_antic.nil? or assign_antic.empty?)
+          assign_antic = "unassigned"
+        end
+        record_activity(current_user.id, @issue.id, "changed assignation from #{assign_antic} to #{issue_params[:assign]} of")
+      end
+      if (type_antic != issue_params[:issue_type])
+        record_activity(current_user.id, @issue.id, "changed type from #{type_antic} to #{issue_params[:issue_type]} of")
+      end
+      if (severity_antic != issue_params[:severity])
+        record_activity(current_user.id, @issue.id, "changed severity from #{severity_antic} to #{issue_params[:severity]} of")
+      end
+      if (priority_antic != issue_params[:priority])
+        record_activity(current_user.id, @issue.id, "changed priority from #{priority_antic} to #{issue_params[:priority]} of")
+      end
+
+        #record_activity(current_user.id, @issue.id, 'modified')
+
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @issue.errors, status: :unprocessable_entity }
@@ -113,6 +148,7 @@ end
   def block
   @issue = Issue.find(params[:id])
   @issue.update(blocked: !@issue.blocked)
+      record_activity(current_user.id, @issue.id, @issue.blocked ? 'blocked' : 'unblocked')
   redirect_to @issue
   end
 def destroy_single_attachment
@@ -120,9 +156,36 @@ def destroy_single_attachment
       attachments_controller = AttachmentsController.new
       attachments_controller.destroy_attachment(attachment)
 
+
       flash[:notice] = "Attachment successfully deleted."
       redirect_to issue_path(attachment.issue)
+end
+    
+  def add_deadline
+  @issue = Issue.find(params[:id])
+  if params[:deadline_date].present?
+    deadline_date = Date.parse(params[:deadline_date])
+    @issue.update(deadline: deadline_date)
+    record_activity(current_user.id, @issue.id, "added deadline of #{deadline_date} for")
+  end
+  redirect_to @issue
+  end
+
+  def delete_deadline
+    @issue = Issue.find(params[:id])
+    @issue.update(deadline: nil)
+    record_activity(current_user.id, @issue.id, 'removed deadline for')
+    redirect_to @issue
+  end
+
+
+    def record_activity(user, issue, action)
+          Activity.create(action: action, issue_id: issue, user_id: user)
+
+
     end
+
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_issue

@@ -8,6 +8,9 @@
       <% if issue.blocked? %>
         <span class="bloqueado-label">🔒</span>
       <% end %>
+      <% if !issue.deadline.nil? %>
+        <span class="bloqueado-label">⌚</span>
+      <% end %>
     </div>
     <div class="details">
 

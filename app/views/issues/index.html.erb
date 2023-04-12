@@ -2,26 +2,22 @@
   <h2><%= current_user.email %></h2>
     <%= image_tag(current_user.avatar_url, class: "rounded-image") %>
     <%= link_to "Edit Account", edit_user_registration_path %>
+    <%= link_to "View Account", visualize_account_path(:usuari_url => current_user.avatar_url, :usuari_bio => current_user.bio, :usuari_email => current_user.email) %>
     <%= button_to "Logout", destroy_user_session_path, data: {turbo: "false"}, method: :delete %>
     <%= button_to "Change Profile Picture", update_avatar_view_path, method: :get %>
 
 <head>
-    <h1>Issues</h1>
+    <h1 style= "color: #018AAA; font-size: 40px; font-weight: bold;">Issues</h1>
 </head>
 
 <body>
-<div class="container">
+
+<div class="button-container">
   <div class="left-buttons">
 
-    <%= form_tag issues_path, method: :get, class: "form-inline", style: "white-space: nowrap; padding-top: 20px" do %>
-    <%= text_field_tag :filtro, params[:filtro], class: "busqueda", placeholder: "subject or reference" %>
-    <%= button_tag "Buscar", type: :submit, class: "boto_filters" %>
-    <% end %>
-  </div>
-
-  <%= form_tag issues_path, method: :get do %>
+ <%= form_tag issues_path, method: :get do %>
   <div>
-    <button type="button" id="show-btn" class="boto_filters">Show options</button>
+    <button type="button" id="show-btn" class="boto_filters">Show filters</button>
   </div>
   <div id="checkbox-container" style="display: none; background-color: #E9EFFC;">
     <div>
@@ -56,8 +52,8 @@
     </div>
     <div>
       <h4>Assigned to:</h4>
-      <% assigned_to = ['Gabriel Del Valle'] %>
-      <% assigned_to.each do |option| %>
+      <% assigns = ['Abel Batalla','Abdelrahim Chelh El Azzaoui', 'Arnau Gracia','Gabriel Del Valle'] %>
+      <% assigns.each do |option| %>
         <div style="display: inline-block; margin-right: 10px;">
           <%= check_box_tag "options[]", option, params[:options].present? && params[:options].include?(option) %>
           <%= label_tag "options[]", option %>
@@ -65,17 +61,19 @@
       <% end %>
     </div>
   </div>
-  <%= submit_tag "Search",class: "boto_filters", id: "search-btn", style: "margin-bottom: 20px;"%>
+  <%= submit_tag "Filter",class: "boto_filters", id: "search-btn", style: "margin-bottom: 20px;"%>
 <% end %>
 
+  <%= form_tag issues_path, method: :get, class: "form-inline", style: "white-space: nowrap; padding-top: 20px" do %>
+    <%= text_field_tag :filtro, params[:filtro], class: "busqueda", placeholder: "subject or reference" %>
+    <%= button_tag "Buscar", type: :submit, class: "boto_filters" %>
+    <% end %>
+  </div>
 
 <div class="right-buttons">
       <%= link_to "<button class=boto_new_is >+ NEW ISSUE</button>".html_safe, new_issue_path, :id=>"open-contacts-dialog-btn"%>
       <%= link_to '+Bulk', bulk_issues_path, class: 'boto_new_bu' %>
-
-      </div>
-
-
+</div>
 </div>
 
 
@@ -84,8 +82,11 @@
 
 
 <div id ="Abajo">
-<hr style="margin: 5px 0;">
-<div class="upper-bar">
+<div class="hr-container">
+  <hr class="hr-color">
+  <hr class="hr-margin">
+</div>
+<div class="upper-bar" style="background-color: #E9EFFC">
     <div class="indicators">
       <div class="Type">
         <div class="issue-type-indicator"> T </div>
@@ -120,7 +121,7 @@
     </div>
   </div>
 
-<hr style="margin: 5px 0;">
+<hr style="margin: 5px 0; background-color:#018AAA">
 
 
 <div id="issues">
@@ -152,12 +153,10 @@
   showBtn.addEventListener('click', function() {
     if (checkboxContainer.style.display === 'none') {
       checkboxContainer.style.display = 'block';
-      resultados.style.marginTop = '175px';
-      showBtn.textContent = 'Hide options';
+      showBtn.textContent = 'Hide filters';
     } else {
       checkboxContainer.style.display = 'none';
-      resultados.style.marginTop = 0;
-      showBtn.textContent = 'Show options';
+      showBtn.textContent = 'Show filters';
     }
   });
 
@@ -180,4 +179,32 @@
     window.location.href = "<%= new_user_session_path %>";
     </script>
 <% end %>
+
+
+<br>
+<h1>Users</h1>
+<table>
+
+  <tbody>
+    <% User.all.each do |user| %>
+      <tr>
+        <td><%= image_tag(user.avatar_url, class: "rounded-image") %></td>
+        <td><%= link_to user.full_name, visualize_account_path(:usuari_url => user.avatar_url, :usuari_bio => user.bio, :usuari_email => user.email) %><br>
+        <%= user.email %>
+        <br><br>
+        <%= user.bio %>
+        </td>
+
+      </tr>
+    <% end %>
+    <style>
+    tr:hover {
+    background-color: #E9EFFC;
+    }
+</style>
+  </tbody>
+
+</table>
+<br>
+
 

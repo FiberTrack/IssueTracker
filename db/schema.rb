@@ -10,6 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+
 ActiveRecord::Schema[7.0].define(version: 2023_04_11_184659) do
   create_table "attachments", force: :cascade do |t|
     t.string "name"
@@ -18,6 +19,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_11_184659) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["issue_id"], name: "index_attachments_on_issue_id"
+
+ActiveRecord::Schema[7.0].define(version: 2023_04_12_084213) do
+  create_table "activities", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "issue_id"
+    t.string "action"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+
   end
 
   create_table "comments", force: :cascade do |t|
@@ -42,6 +52,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_11_184659) do
     t.string "issue_types"
     t.string "issue_type"
     t.boolean "blocked"
+    t.date "deadline"
   end
 
   create_table "users", force: :cascade do |t|
