@@ -19,14 +19,22 @@ body {
   max-width: 100%;
 }
 
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .left-buttons {
   display: flex;
   align-items: center;
+  text-align: left;
 }
 
 .right-buttons {
   display: flex;
   align-items: center;
+  text-align: right;
 }
 
 .boto_filters{
