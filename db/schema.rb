@@ -10,7 +10,6 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
 ActiveRecord::Schema[7.0].define(version: 2023_04_12_084213) do
   create_table "activities", force: :cascade do |t|
     t.integer "user_id"
@@ -28,7 +27,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_12_084213) do
     t.datetime "updated_at", null: false
     t.index ["issue_id"], name: "index_attachments_on_issue_id"
   end
-
 
   create_table "comments", force: :cascade do |t|
     t.text "content"
@@ -51,9 +49,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_12_084213) do
     t.string "priority"
     t.string "issue_types"
     t.string "issue_type"
-    t.string "watcher"
     t.boolean "blocked"
     t.date "deadline"
+    t.string "watcher"
+  end
+
+  create_table "issues_users", id: false, force: :cascade do |t|
+    t.integer "issue_id", null: false
+    t.integer "user_id", null: false
   end
 
   create_table "users", force: :cascade do |t|
