@@ -1,14 +1,26 @@
-<% if current_user %>
-  <h2><%= current_user.email %></h2>
-    <%= image_tag(current_user.avatar_url, class: "rounded-image") %>
-    <%= link_to "Edit Account", edit_user_registration_path %>
-    <%= link_to "View Account", visualize_account_path(:usuari_url => current_user.avatar_url, :usuari_bio => current_user.bio, :usuari_email => current_user.email) %>
-    <%= button_to "Logout", destroy_user_session_path, data: {turbo: "false"}, method: :delete %>
-    <%= button_to "Change Profile Picture", update_avatar_view_path, method: :get %>
-
-<head>
-    <h1 style= "color: #018AAA; font-size: 40px; font-weight: bold;">Issues</h1>
-</head>
+ <div class="topbar">
+   <h1 style= "color: #018AAA; font-size: 40px; font-weight: bold;">Issues</h1>
+    <div class="profile-container">
+      <div class="profile-picture">
+         <% if current_user %>
+        <%= image_tag(current_user.avatar_url, class: "rounded-image-profile") %>
+        <div class="profile-menu">
+          <div class="menu-item">
+            <span><%= current_user.full_name %></span>
+          </div>
+          <div class="menu-item">
+            <%= link_to "Edit Account", update_avatar_view_path, method: :get %>
+          </div>
+          <div class="menu-item">
+            <%= link_to "View Account", visualize_account_path(:usuari_url => current_user.avatar_url, :usuari_bio => current_user.bio, :usuari_email => current_user.email) %>
+          </div>
+          <div class="menu-item">
+              <%= button_to "Logout", destroy_user_session_path, data: {turbo: "false"}, method: :delete, class:"button-basic"%>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <body>
 
@@ -86,7 +98,7 @@
   <hr class="hr-color">
   <hr class="hr-margin">
 </div>
-<div class="upper-bar" style="background-color: #E9EFFC">
+<div class="barra-superior" style="background-color: #E9EFFC">
     <div class="indicators">
       <div class="Type">
         <div class="issue-type-indicator"> T </div>
@@ -121,7 +133,7 @@
     </div>
   </div>
 
-<hr style="margin: 5px 0; background-color:#018AAA">
+<hr style="margin: 10px 0; background-color:#018AAA">
 
 
 <div id="issues">
