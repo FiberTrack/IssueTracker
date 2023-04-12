@@ -6,11 +6,20 @@ class Issue < ApplicationRecord
     has_many :activities
 
 
+
+
+
+
+
+
+
   def set_defaults
+
     self.assign ||= "Not Assigned"
     self.issue_type ||= "Bug"
     self.severity ||= "Wishlist"
     self.priority ||= "Low"
   end
+
 
 end

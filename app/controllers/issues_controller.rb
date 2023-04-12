@@ -52,7 +52,7 @@ def inicial
   # POST /issues or /issues.json
   def create
     @issue = Issue.new(issue_params)
-
+    
     respond_to do |format|
       if @issue.save
         format.html { redirect_to issues_url, notice: "" }
@@ -65,6 +65,8 @@ def inicial
       end
     end
   end
+
+
 
   def create_multiple_issues
   subjects = params[:subjects].split("\n")
@@ -193,9 +195,11 @@ end
     end
     # Only allow a list of trusted parameters through.
     def issue_params
-      params.require(:issue).permit(:subject, :description, :assign, :issue_type, :severity, :priority)
+      params.require(:issue).permit(:subject, :description, :assign, :issue_type, :severity, :priority, watcher: [])
     end
 
 
 
+
 end
+
