@@ -16,7 +16,6 @@ Rails.application.routes.draw do
       delete :destroy_single_attachment
     end
     resources :attachments
-    put :block, on: :member
   end
 
   get 'update_avatar_view', to: 'users#update_profile_avatar'
@@ -25,11 +24,12 @@ Rails.application.routes.draw do
   get 'bulk_issues', to: 'issues#bulk_issues'
 
   post '/issues/:issue_id/attachments', to: 'attachments#create', as: "create_at"
- 
+
 
   get 'visualize_account', to: 'users#visualize'
 
-
   put '/issues/:id/block', to: 'issues#block', as: 'block_issue'
+
+
 
 end
