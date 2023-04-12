@@ -124,12 +124,22 @@
     <p class= content-comment><%=comment.content %></p>
 
   </div>
+
 <% end %>
 
 
 
 
   </div>
+
+
+
+  <br>
+  <h2>Activities:</h2>
+  <% @issue.activities.each do |activity| %>
+  <br>
+  <li><%= activity.user.full_name %> <%= activity.action %> the issue on <%= activity.created_at %>.</li>
+  <% end %>
 
 </div>
 
