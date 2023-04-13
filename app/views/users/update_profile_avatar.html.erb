@@ -7,6 +7,14 @@
 <% end %>
 </div>
 
+<div class="formulario">
+<%= form_with url: upload_bio_path, method: :post, local: true, multipart: true do |form| %>
+  <%= form.label :biografia, "Update bio"%>
+  <%= form.text_field :biografia %>
+  <%= form.submit "Save", class: "crear-issue" %>
+<% end %>
+</div>
+
 
 
 

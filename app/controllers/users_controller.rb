@@ -35,4 +35,15 @@ def update_avatar
 end
 
 
+def update_bio
+   bio = params[:biografia]
+
+   current_user.update_attribute(:bio, bio)
+
+   redirect_to root_path
+end
+
+
+
+
 end
