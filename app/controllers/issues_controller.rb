@@ -60,6 +60,9 @@ def inicial
         format.html { redirect_to issues_url, notice: "" }
         format.json { render :show, status: :created, location: @issue }
     record_activity(current_user.id, @issue.id, 'created')
+    issue_params[:watcher_ids].each do |user|
+      IssueWatcher.create(issue_id: @issue.id, user_id: user)
+    end
 
 
       else
@@ -96,6 +99,7 @@ end
       subject_antic = @issue.subject
       description_antic = @issue.description
       assign_antic = @issue.assign
+      watcher_ids_antic = @issue.watcher_ids
 
       if @issue.update(issue_params)
         format.html { redirect_to issue_url(@issue), notice: "" }
@@ -122,8 +126,15 @@ end
       if (priority_antic != issue_params[:priority])
         record_activity(current_user.id, @issue.id, "changed priority from #{priority_antic} to #{issue_params[:priority]} of")
       end
-
-        #record_activity(current_user.id, @issue.id, 'modified')
+      if (watcher_ids_antic != issue_params[:watcher_ids])
+        record_activity(current_user.id, @issue.id, "changed watchers from #{watcher_ids_antic} to #{issue_params[:watcher_ids]} of")
+        #borrar totes les antigues
+        @watchs = IssueWatcher.where(issue_id: @issue.id)
+        @watchs.each(&:destroy!)
+        issue_params[:watcher_ids].each do |user|
+          IssueWatcher.create(issue_id: @issue.id, user_id: user)
+        end
+      end      #record_activity(current_user.id, @issue.id, 'modified')
 
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -141,6 +152,10 @@ end
   end
   # Delete all associated attachments first
   @issue.attachments.destroy_all
+  @watchs = IssueWatcher.where(issue_id: @issue.id)
+  @watchs.each(&:destroy!)
+  @activities = Activity.where(issue_id: @issue.id)
+  @activities.each(&:destroy!)
 
     @issue.destroy
     respond_to do |format|
