@@ -36,6 +36,11 @@ def update_avatar(avatar)
 end
 
 
+
+def visualize
+  @user = User.find(params[:usuari_id])
+end
+
 def update_profile
 
   biog = params[:bio]
