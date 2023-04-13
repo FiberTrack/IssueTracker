@@ -30,6 +30,22 @@
           <p class="detail-value"><%= @issue.assign %></p>
         </div>
 
+       <div class="detail">
+        <h2 class="detail-title">Watched by</h2>
+
+          <% if @watchers.empty? %>
+            <p>Not watched</p>
+          <% else %>
+            <% @watchers.each do |watcher| %>
+              <p><%= watcher %></p>
+            <% end %>
+          <% end %>
+      </div>
+
+
+
+
+
         <div class="detail">
           <h2 class="detail-title">Date</h2>
           <p class="detail-value"><%= @issue.created_at.strftime("%d %B %Y") %></p>
@@ -145,7 +161,13 @@
 
 
 
+
+
+
+
+
   </div>
+
 
 
   <br>
@@ -158,4 +180,8 @@
 </div>
 
 
+
+
+
 </body>
+

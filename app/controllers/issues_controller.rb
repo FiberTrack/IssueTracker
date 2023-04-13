@@ -36,6 +36,7 @@ def inicial
     @issue = Issue.find(params[:id])
     @comments = @issue.comments
     @attachments = Attachment.new
+    @watchers = User.where(id: @issue.watcher_ids).pluck(:full_name)
   end
 
   # GET /issues/new
@@ -65,6 +66,8 @@ def inicial
       end
     end
   end
+
+
 
   def create_multiple_issues
   subjects = params[:subjects].split("\n")
@@ -160,7 +163,7 @@ def destroy_single_attachment
       flash[:notice] = "Attachment successfully deleted."
       redirect_to issue_path(attachment.issue)
 end
-    
+
   def add_deadline
   @issue = Issue.find(params[:id])
   if params[:deadline_date].present?
@@ -193,9 +196,11 @@ end
     end
     # Only allow a list of trusted parameters through.
     def issue_params
-      params.require(:issue).permit(:subject, :description, :assign, :issue_type, :severity, :priority)
+      params.require(:issue).permit(:subject, :description, :assign, :issue_type, :severity, :priority, :watcher_ids => [])
     end
 
 
 
+
 end
+

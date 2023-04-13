@@ -23,6 +23,11 @@
 
       <%= form.label :Assigned, style: "display: block" %>
       <%= form.select :assign, User.all.pluck(:full_name), include_blank: true %>
+
+
+      <%= form.label :watcher_ids, "Watched" %>
+      <%= form.select :watcher_ids, User.all.map { |user| [user.full_name, user.id] }, {include_blank: "Not watched"}, { multiple: true } %>
+
       <%= form.submit class: "crear-issue"%>
       <%= link_to "Back", issues_path, class: "volver" %>
 
@@ -46,6 +51,7 @@
 
 
   </div>
+
 
 <% end %>
 
@@ -81,6 +87,7 @@
 <% end %>
 </div>
 </div>
+
 
 
 
