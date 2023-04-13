@@ -2,7 +2,9 @@ class UsersController < ApplicationController
   def index
     @users = User.all
   end
-def update_avatar
+
+
+def update_avatar(avatar)
   require 'aws-sdk-s3'
 
      # Obtener la URL de la imagen anterior y eliminar el objeto S3 asociado
@@ -17,7 +19,7 @@ def update_avatar
   end
 
   # Obtener el archivo subido por el usuario
-  file = params[:avatar]
+  file = avatar
 
   # Generar un nombre único para el archivo
   filename = SecureRandom.hex(10) + File.extname(file.original_filename)
@@ -31,12 +33,24 @@ def update_avatar
   # Actualizar la URL de la imagen en la base de datos del usuario
   current_user.update_attribute(:avatar_url, object.public_url)
 
-  redirect_to root_path
 end
 
 
+def update_profile
 
+  biog = params[:bio]
+  avatar = params[:avatar]
 
+  if avatar.present?
+    update_avatar(avatar)
+  end
+
+  if biog.present?
+    current_user.update_attribute(:bio, biog)
+  end
+
+  redirect_to root_path
+end
 
 
 end
