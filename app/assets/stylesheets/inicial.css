@@ -316,3 +316,9 @@ body {
   .button-basic:hover {
     background-color: #0069d9;
   }
+
+
+  .form-actions {
+  display: inline-block;
+  margin-left: 10px;
+}

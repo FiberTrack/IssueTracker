@@ -3,6 +3,7 @@
   margin: auto;
   padding: 20px;
   border: 1px solid #ccc;
+  background-color: white;
   display: flex; /* Para usar flexbox */
 }
 .columna-izquierda {
@@ -71,4 +72,27 @@ select {
   margin-bottom: 20px;
   border-radius: 5px;
   border: 1px solid #ccc;
+}
+
+
+.formulario-center {
+  flex-direction: column;
+  align-items: center;
+   width: 800px; /* El doble del ancho original para acomodar ambas columnas */
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  background-color: white;
+  display: flex; /* Para usar flexbox */
+}
+
+.buttons-center {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  padding: 10px;
+}
+
+.buttons-center a:first-child {
+  margin-right: 10px;
 }

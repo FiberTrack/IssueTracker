@@ -1,19 +1,23 @@
+<br>
+<center><h1>Edit Account</h1></center>
+<br>
 
-<div class="formulario">
-<%= form_with url: upload_avatar_path, method: :post, local: true, multipart: true do |form| %>
-  <%= form.label :avatar, "Upload profile photo"%>
-  <%= form.file_field :avatar %>
-  <%= form.submit "Save", class: "crear-issue" %>
+<div class="formulario-center">
+<%= form_with url: update_profile_path, method: :post, local: true, multipart: true do |form| %>
+    <%= form.label :bio, "Update bio"%>
+    <%= form.text_field :bio %>
+
+    <%= form.label :avatar, "Upload profile photo"%>
+    <%= form.file_field :avatar %>
+
+    <div class="buttons-center">
+      <%= link_to "Back", issues_path, class: "volver" %>
+      <%= form.submit "Save", class: "crear-issue" %>
+    </div>
+
 <% end %>
 </div>
 
-<div class="formulario">
-<%= form_with url: upload_bio_path, method: :post, local: true, multipart: true do |form| %>
-  <%= form.label :biografia, "Update bio"%>
-  <%= form.text_field :biografia %>
-  <%= form.submit "Save", class: "crear-issue" %>
-<% end %>
-</div>
 
 
 
