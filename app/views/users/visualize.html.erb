@@ -4,14 +4,13 @@
 
 <div class="user-info">
 
-  <%= image_tag(params[:usuari_url], class: "rounded-image") %>
-  <h1 class="title"><%= params[:usuari_email] %></h1>
+  <%= image_tag(@user.avatar_url, class: "rounded-image") %>
+  <h1 class="title"><%= @user.email %></h1>
   <h2 class="detail-title">Bio</h2>
-  <p class="description"><%= params[:usuari_bio] %></p>
+  <p class="description"><%= @user.bio %></p>
   <br><br>
 
   <h2 class="detail-title">Activities</h2><br>
-  <%@user = User.find(params[:usuari_id])%>
   <% @user.activities.each do |activity| %>
   <li><%= activity.user.full_name %> <%= activity.action %> an issue.</li>
 <% end %>

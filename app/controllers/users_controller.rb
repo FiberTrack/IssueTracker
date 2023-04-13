@@ -35,7 +35,9 @@ def update_avatar
   end
 
 
-
+def visualize
+  @user = User.find(params[:usuari_id])
+end
 
 
 
