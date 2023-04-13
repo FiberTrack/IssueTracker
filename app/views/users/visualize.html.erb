@@ -11,16 +11,14 @@
   <br><br>
 
   <h2 class="detail-title">Watching</h2><br>
-    <%= puts "ESTIC WATCHERS" %>
   <% @user.issue_watchers.each do |iswatch| %>
-  <%= puts "ESTIC AQUI" %>
-  <li><%= iswatch.issue.subject %></li>
+  <li><%= link_to iswatch.issue.subject, issue_path(iswatch.issue.id)%></li>
 <% end %>
 <br><br>
 
   <h2 class="detail-title">Activities</h2><br>
   <% @user.activities.each do |activity| %>
-  <li><%= activity.user.full_name %> <%= activity.action %> an issue.</li>
+  <li><%= activity.user.full_name %> <%= activity.action %> the issue <%= link_to activity.issue.subject, issue_path(activity.issue.id)%> on <%= activity.created_at.strftime('%I:%M %p %d %B %Y')%>.</li>
 <% end %>
 
 

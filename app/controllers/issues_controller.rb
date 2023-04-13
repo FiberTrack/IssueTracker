@@ -53,6 +53,8 @@ def inicial
   # POST /issues or /issues.json
   def create
     @issue = Issue.new(issue_params)
+    #IssueWatcher.create(issue_id: @issue.id, user_id: issue_params.watcher_ids)
+
 
     respond_to do |format|
       if @issue.save
@@ -125,7 +127,7 @@ end
         record_activity(current_user.id, @issue.id, "changed watchers from #{watcher_ids_antic} to #{issue_params[:watcher_ids]} of")
         #borrar totes les antigues
         @watchs = IssueWatcher.where(issue_id: @issue.id)
-        @watchs.destroy_all
+        @watchs.each(&:destroy!)
         issue_params[:watcher_ids].each do |user|
           IssueWatcher.create(issue_id: @issue.id, user_id: user)
         end
@@ -147,6 +149,8 @@ end
   end
   # Delete all associated attachments first
   @issue.attachments.destroy_all
+  @watchs = IssueWatcher.where(issue_id: @issue.id)
+  @watchs.each(&:destroy!)
 
     @issue.destroy
     respond_to do |format|
