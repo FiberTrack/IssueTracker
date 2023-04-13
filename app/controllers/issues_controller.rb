@@ -53,12 +53,14 @@ def inicial
   # POST /issues or /issues.json
   def create
     @issue = Issue.new(issue_params)
+    @issue.created_by = current_user.full_name
 
     respond_to do |format|
       if @issue.save
         format.html { redirect_to issues_url, notice: "" }
         format.json { render :show, status: :created, location: @issue }
     record_activity(current_user.id, @issue.id, 'created')
+
 
       else
         format.html { render :new, status: :unprocessable_entity }

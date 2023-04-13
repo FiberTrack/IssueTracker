@@ -122,10 +122,15 @@
     <div class="details">
 
       <div>
+          <div class="titulo">STATUS </div>
+        <div style="text-align: center; margin-left: -16px;"><%= link_to "↑  ↓", { order_by: "status", direction: params[:direction] == "asc" ? "desc" : "asc" }.merge(@params_without_order_by), class: "btn btn-primary" %></div>
+      </div>
 
+      <div>
         <div class="titulo">ASSIGN TO </div>
         <div style="text-align: center; margin-left: -16px;"><%= link_to "↑  ↓", { order_by: "assign", direction: params[:direction] == "asc" ? "desc" : "asc" }.merge(@params_without_order_by), class: "btn btn-primary" %></div>
       </div>
+
       <div>
         <div class="titulo">CREATED </div>
         <div style="text-align: center; margin-left: -16px;"><%= link_to "↑  ↓", { order_by: "created_at", direction: params[:direction] == "asc" ? "desc" : "asc" }.merge(@params_without_order_by), class: "btn btn-primary" %></div>
