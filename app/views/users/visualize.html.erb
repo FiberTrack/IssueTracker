@@ -10,4 +10,10 @@
   <p class="description"><%= params[:usuari_bio] %></p>
   <br>
 
-  </div>
+</div>
+
+<div class="issues">
+  <% @issues.each do |issue| %>
+    <h3><%= issue.subject %></h3>
+  <% end %>
+</div>
