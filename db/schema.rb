@@ -41,8 +41,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_13_155504) do
   create_table "issue_watchers", force: :cascade do |t|
     t.integer "issue_id", null: false
     t.integer "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.index ["issue_id"], name: "index_issue_watchers_on_issue_id"
     t.index ["user_id"], name: "index_issue_watchers_on_user_id"
   end
@@ -58,18 +56,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_13_155504) do
     t.string "priority"
     t.string "issue_types"
     t.string "issue_type"
-    t.string "watcher"
     t.boolean "blocked"
     t.date "deadline"
+    t.string "watcher"
     t.text "watcher_ids"
   end
 
   create_table "issues_users", id: false, force: :cascade do |t|
     t.integer "issue_id", null: false
     t.integer "user_id", null: false
-    t.string "writing"
-    t.index ["issue_id", "user_id"], name: "index_issues_users_on_issue_id_and_user_id"
-    t.index ["user_id", "issue_id"], name: "index_issues_users_on_user_id_and_issue_id"
   end
 
   create_table "users", force: :cascade do |t|
