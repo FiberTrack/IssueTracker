@@ -53,7 +53,7 @@ def inicial
   # POST /issues or /issues.json
   def create
     @issue = Issue.new(issue_params)
-    @issue.created_by = current_user.full_name
+
 
     respond_to do |format|
       if @issue.save
@@ -198,7 +198,7 @@ end
     end
     # Only allow a list of trusted parameters through.
     def issue_params
-      params.require(:issue).permit(:subject, :description, :assign, :issue_type, :severity, :priority, :watcher_ids => [])
+      params.require(:issue).permit(:subject, :description, :assign, :issue_type, :severity, :priority, :status, :created_by, :watcher_ids => [])
     end
 
 

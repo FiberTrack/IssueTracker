@@ -18,6 +18,8 @@
       <%= form.label :subject, style: "display: block" %>
       <%= form.text_field :subject, size: 30 %>
 
+      <%= form.hidden_field :created_by, value: current_user.full_name %>
+
 
       <%= form.label :description, style: "display: block" %>
       <%= form.text_area :description, size: "30x7"%>
