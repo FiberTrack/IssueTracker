@@ -2,10 +2,12 @@
 
 Students:
 
-* Surname_1, First_name_1
+* Batalla, Abel 
 
-* Surname_2, First_name_2
+* Chelh, Abdelrahim
 
-Synch branch
+* Del Valle, Gabriel 
 
-Your deployed webapp at Fly.io|Heroku|... (task #6): <https://*********.***.***/>
+* Gracia, Arnau
+
+https://issuetrackerv1.herokuapp.com/
