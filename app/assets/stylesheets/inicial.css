@@ -227,3 +227,98 @@ body {
   padding: 0;
 }
 
+.profile-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Añade un espacio entre los elementos del contenedor */
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  flex-direction: row-reverse; /* Cambia la dirección de flexión a 'row-reverse' */
+}
+
+.rounded-image-profile {
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  width: 70px;
+  height: 70px;
+}
+
+.profile-picture {
+  position: relative;
+}
+
+.profile-menu {
+  display: none; /* oculta el menú */
+  position: absolute; /* se posiciona encima de la imagen */
+  top: calc(100% + 2px); /* coloca el menú debajo de la imagen */
+  right: 0; /* coloca el menú a la derecha de la imagen */
+  width: 200px; /* establece el ancho del menú */
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.profile-container:hover .profile-menu {
+  display: block; /* muestra el menú cuando se pasa el ratón sobre la imagen */
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.menu-item:last-child {
+  margin-bottom: 0;
+}
+
+.menu-item a {
+  display: inline-block;
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  font-size: 14px;
+  color: #333;
+  text-decoration: none;
+}
+
+.menu-item a:hover {
+  background-color: #f5f5f5;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: transparent;
+}
+
+.topbar-title h1 {
+  margin: 0;
+}
+
+.button-basic {
+    display: inline-block;
+    padding: 10px;
+    border: 0;
+    border-radius: 3px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.2s ease-in-out;
+  }
+
+  .button-basic:hover {
+    background-color: #0069d9;
+  }
+
+
+  .form-actions {
+  display: inline-block;
+  margin-left: 10px;
+}
