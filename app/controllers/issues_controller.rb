@@ -53,14 +53,15 @@ def inicial
   # POST /issues or /issues.json
   def create
     @issue = Issue.new(issue_params)
-    #IssueWatcher.create(issue_id: @issue.id, user_id: issue_params.watcher_ids)
-
 
     respond_to do |format|
       if @issue.save
         format.html { redirect_to issues_url, notice: "" }
         format.json { render :show, status: :created, location: @issue }
     record_activity(current_user.id, @issue.id, 'created')
+    issue_params[:watcher_ids].each do |user|
+      IssueWatcher.create(issue_id: @issue.id, user_id: user)
+    end
 
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -151,6 +152,8 @@ end
   @issue.attachments.destroy_all
   @watchs = IssueWatcher.where(issue_id: @issue.id)
   @watchs.each(&:destroy!)
+  @activities = Activity.where(issue_id: @issue.id)
+  @activities.each(&:destroy!)
 
     @issue.destroy
     respond_to do |format|
