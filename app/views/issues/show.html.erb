@@ -32,19 +32,14 @@
 
        <div class="detail">
         <h2 class="detail-title">Watched by</h2>
-        <% if @issue.watcher.present? %>
-          <% users = @issue.watcher.split(',').map(&:strip).reject(&:blank?) %>
-          <% if users.any? %>
-            <% user_names = users.join("\n").gsub(/\[\"\"|\"]/, '').gsub(/, /, "\n").gsub(/[\]]/, 'Not Watched').gsub(/[" "]/, ' ') %>
-            <%= user_names.split("\n").map { |name| "<p class='detail-value'>#{name.strip}</p>" }.join("\n").html_safe %>
+
+          <% if @watchers.empty? %>
+            <p>Not watched</p>
           <% else %>
-            <p class="detail-value">Not Watched</p>
+            <% @watchers.each do |watcher| %>
+              <p><%= watcher %></p>
+            <% end %>
           <% end %>
-
-
-        <% else %>
-          <p class="detail-value">Not watched</p>
-        <% end %>
       </div>
 
 
@@ -183,6 +178,9 @@
   <% end %>
 
 </div>
+
+
+
 
 
 </body>
