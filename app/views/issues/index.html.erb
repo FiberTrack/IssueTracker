@@ -189,7 +189,7 @@
     <% User.all.each do |user| %>
       <tr>
         <td><%= image_tag(user.avatar_url, class: "rounded-image") %></td>
-        <td><%= link_to user.full_name, visualize_account_path(:usuari_url => user.avatar_url, :usuari_bio => user.bio, :usuari_email => user.email) %><br>
+        <td><%= link_to user.full_name, visualize_account_path(:usuari_url => user.avatar_url, :usuari_bio => user.bio, :usuari_email => user.email, :usuari_id => user.id) %><br>
         <%= user.email %>
         <br><br>
         <%= user.bio %>

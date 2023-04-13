@@ -8,6 +8,13 @@
   <h1 class="title"><%= params[:usuari_email] %></h1>
   <h2 class="detail-title">Bio</h2>
   <p class="description"><%= params[:usuari_bio] %></p>
-  <br>
+  <br><br>
+
+  <h2 class="detail-title">Activities</h2><br>
+  <%@user = User.find(params[:usuari_id])%>
+  <% @user.activities.each do |activity| %>
+  <li><%= activity.user.full_name %> <%= activity.action %> an issue.</li>
+<% end %>
+
 
   </div>
