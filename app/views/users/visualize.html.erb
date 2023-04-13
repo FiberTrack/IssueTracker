@@ -10,6 +10,14 @@
   <p class="description"><%= @user.bio %></p>
   <br><br>
 
+  <h2 class="detail-title">Watching</h2><br>
+    <%= puts "ESTIC WATCHERS" %>
+  <% @user.issue_watchers.each do |iswatch| %>
+  <%= puts "ESTIC AQUI" %>
+  <li><%= iswatch.issue.subject %></li>
+<% end %>
+<br><br>
+
   <h2 class="detail-title">Activities</h2><br>
   <% @user.activities.each do |activity| %>
   <li><%= activity.user.full_name %> <%= activity.action %> an issue.</li>

@@ -5,6 +5,7 @@ class User < ApplicationRecord
   :omniauthable, omniauth_providers: [:google_oauth2]
 
   has_many :activities
+  has_many :issue_watchers
 
 
   def self.from_omniauth(auth)
