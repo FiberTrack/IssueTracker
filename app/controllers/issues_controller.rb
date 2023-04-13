@@ -75,7 +75,7 @@ def inicial
   subjects = params[:subjects].split("\n")
   issues_created = []
   subjects.each do |subject|
-    issue = Issue.new(subject: subject.strip)
+    issue = Issue.new(subject: subject.strip, created_by: current_user.full_name, status: 'New')
     if issue.save
       issues_created << issue
     record_activity(current_user.id, issue.id, 'created in bulk')

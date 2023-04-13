@@ -7,7 +7,6 @@
 
   <%= form_tag(create_multiple_issues_path) do %>
   <textarea name="subjects" id="subjects" rows="15" cols="80" placeholder="Enter subjects (separated by line breaks)"></textarea>
-
   <%= submit_tag "Create Issues", class: "crear-issue" %>
   <%= link_to "Back", issues_path, class: "volver" %>
 <% end %>
