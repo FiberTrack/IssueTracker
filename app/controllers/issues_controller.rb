@@ -54,11 +54,13 @@ def inicial
   def create
     @issue = Issue.new(issue_params)
 
+
     respond_to do |format|
       if @issue.save
         format.html { redirect_to issues_url, notice: "" }
         format.json { render :show, status: :created, location: @issue }
     record_activity(current_user.id, @issue.id, 'created')
+
 
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -196,7 +198,7 @@ end
     end
     # Only allow a list of trusted parameters through.
     def issue_params
-      params.require(:issue).permit(:subject, :description, :assign, :issue_type, :severity, :priority, :watcher_ids => [])
+      params.require(:issue).permit(:subject, :description, :assign, :issue_type, :severity, :priority, :status, :created_by, :watcher_ids => [])
     end
 
 

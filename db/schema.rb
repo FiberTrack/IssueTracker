@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_13_155504) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_13_200548) do
   create_table "activities", force: :cascade do |t|
     t.integer "user_id"
     t.integer "issue_id"
@@ -60,6 +60,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_13_155504) do
     t.date "deadline"
     t.string "watcher"
     t.text "watcher_ids"
+    t.string "status"
+    t.string "created_by"
   end
 
   create_table "issues_users", id: false, force: :cascade do |t|

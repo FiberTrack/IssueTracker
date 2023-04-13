@@ -30,6 +30,11 @@
           <p class="detail-value"><%= @issue.assign %></p>
         </div>
 
+              <div class="detail">
+          <h2 class="detail-title">Created by</h2>
+          <p class="detail-value"><%= @issue.created_by %></p>
+        </div>
+
        <div class="detail">
         <h2 class="detail-title">Watched by</h2>
 
@@ -105,6 +110,11 @@
             <p class="detail-value"><%= @issue.priority %></p>
             <div class="issue-priority-indicator <%= "issue-priority-#{@issue.priority}" %>"></div>
           </div>
+      </div>
+
+        <div class="elements-in-row">
+            <h2 class="detail-title">Status: </h2>
+            <p class="detail-value"><%= @issue.status %></p>
       </div>
 
 

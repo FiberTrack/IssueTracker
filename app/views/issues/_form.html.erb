@@ -18,6 +18,9 @@
       <%= form.label :subject, style: "display: block" %>
       <%= form.text_field :subject, size: 30 %>
 
+      <%= form.hidden_field :created_by, value: current_user.full_name %>
+
+
       <%= form.label :description, style: "display: block" %>
       <%= form.text_area :description, size: "30x7"%>
 
@@ -43,6 +46,9 @@
 
       <%= form.label :priority, style: "display: block" %>
       <%= form.select :priority, ['Low', 'Normal', 'High'] %>
+
+      <%= form.label :status, style: "display: block" %>
+      <%= form.select :status, ['New', 'In progress', 'Ready for test', 'Postponed', 'Closed', 'Information needed', 'Rejected' ] %>
 
     </div>
 
