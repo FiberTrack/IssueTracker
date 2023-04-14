@@ -1,25 +1,38 @@
 <p style="color: green"><%= notice %></p>
 
-<br>
+<div class="user-info-box">
+  <div class="user-photo">
+    <%= image_tag(@user.avatar_url, class: "rounded-image") %>
+  </div>
+  <div class="user-info">
+    <h2 class="user-name"><%= @user.full_name %></h2>
+    <p class="user-email"><%= @user.email %></p>
+    <p class="user-bio"><%= @user.bio %></p>
+  </div>
 
-<div class="user-info">
+  <div class="list-grid">
 
-  <%= image_tag(@user.avatar_url, class: "rounded-image") %>
-  <h1 class="title"><%= @user.email %></h1>
-  <h2 class="detail-title">Bio</h2>
-  <p class="description"><%= @user.bio %></p>
-  <br><br>
+    <div class="item2">
+    <h3 class="list-title">Activities</h3>
+        <div class="list-container">
+    <ul class="list-items">
+      <% @user.activities.each do |activity| %>
+      <li><%= activity.user.full_name %> <%= activity.action %> the issue <%= link_to activity.issue.subject, issue_path(activity.issue.id)%> on <%= activity.created_at.strftime('%I:%M %p %d %B %Y')%>.</li>
+      <% end %>
+    </ul>
+      </div>
 
-  <h2 class="detail-title">Watching</h2><br>
-  <% @user.issue_watchers.each do |iswatch| %>
-  <li><%= link_to iswatch.issue.subject, issue_path(iswatch.issue.id)%></li>
-<% end %>
-<br><br>
-
-  <h2 class="detail-title">Activities</h2><br>
-  <% @user.activities.each do |activity| %>
-  <li><%= activity.user.full_name %> <%= activity.action %> the issue <%= link_to activity.issue.subject, issue_path(activity.issue.id)%> on <%= activity.created_at.strftime('%I:%M %p %d %B %Y')%>.</li>
-<% end %>
+  </div>
+  <div class="item1">
+    <h3 class="list-title">Watched</h3>
+    <div class="list-container2">
+    <ul class="list-items">
+      <% @user.issue_watchers.each do |iswatch| %>
+      <li><%= link_to iswatch.issue.subject, issue_path(iswatch.issue.id)%></li>
+      <% end %>
+    </ul>
+    </div>
+    </div>
 
 
 </div>
