@@ -99,6 +99,7 @@ end
       subject_antic = @issue.subject
       description_antic = @issue.description
       assign_antic = @issue.assign
+      status_antic = @issue.status
       watcher_ids_antic = @issue.watcher_ids
 
       if @issue.update(issue_params)
@@ -125,6 +126,9 @@ end
       end
       if (priority_antic != issue_params[:priority])
         record_activity(current_user.id, @issue.id, "changed priority from #{priority_antic} to #{issue_params[:priority]} of")
+      end
+      if (status_antic != issue_params[:status])
+        record_activity(current_user.id, @issue.id, "changed status from #{status_antic} to #{issue_params[:status]} of")
       end
       if (watcher_ids_antic != issue_params[:watcher_ids])
         record_activity(current_user.id, @issue.id, "changed watchers of")
