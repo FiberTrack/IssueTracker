@@ -4,6 +4,7 @@ class IssuesController < ApplicationController
   def index
     @issues = Issue.all
 
+
     if params[:filtro].present?
       @filtered_issues = @issues.where("lower(subject) LIKE ? OR lower(description) LIKE ?", "%#{params[:filtro].downcase}%", "%#{params[:filtro].downcase}%")
     elsif params[:options].present?
