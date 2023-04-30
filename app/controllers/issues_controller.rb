@@ -19,16 +19,18 @@ class IssuesController < ApplicationController
       @ordered_issues = @filtered_issues
     end
 
-    #@issues = @ordered_issues.page(params[:page]).per(10)
+
 
     # agregar estas líneas para preservar los parámetros de búsqueda al ordenar
     @params_without_order_by = request.query_parameters.except(:order_by, :direction)
     @order_by_params = { order_by: params[:order_by], direction: params[:direction] }
+
   end
 
 def inicial
     @issues = Issue.all
-  end
+    render json: @issues
+end
 
   # GET /issues/1 or /issues/1.json
   def show
