@@ -21,7 +21,7 @@ class IssuesController < ApplicationController
     end
 
 
-    render json: @ordered_issues, only: [:id, :subject, :description, :assign, :created_at, :updated_at, :severity, :priority, :issue_types, :issue_type, :blocked, :deadline, :watcher, :watcher_ids, :status, :created_by]
+
     # agregar estas líneas para preservar los parámetros de búsqueda al ordenar
     @params_without_order_by = request.query_parameters.except(:order_by, :direction)
     @order_by_params = { order_by: params[:order_by], direction: params[:direction] }
