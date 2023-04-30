@@ -20,6 +20,7 @@ gem "omniauth-rails_csrf_protection"
 gem "image_processing", ">= 1.2"
 gem "aws-sdk-s3",'~> 1.112', require: false
 gem 'kaminari'
+gem 'rack-cors'
 
 group :development, :test do
   gem "sqlite3", "1.4.2"
