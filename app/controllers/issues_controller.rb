@@ -29,7 +29,6 @@ class IssuesController < ApplicationController
 
 def inicial
     @issues = Issue.all
-    render json: @issues
 end
 
   # GET /issues/1 or /issues/1.json
@@ -222,8 +221,10 @@ end
       params.require(:issue).permit(:subject, :description, :assign, :issue_type, :severity, :priority, :status, :created_by, :watcher_ids => [])
     end
 
-
-
+    def all_issues_as_json
+    @issues = Issue.all
+    render json: @issues
+    end
 
 end
 
