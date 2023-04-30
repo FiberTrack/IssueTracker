@@ -212,6 +212,11 @@ end
     end
 
 
+  def all_issues_as_json
+    @issues = Issue.all
+    render json: @issues, only: [:id, :subject, :description, :assign, :created_at, :updated_at, :severity, :priority, :issue_types, :issue_type, :blocked, :deadline, :watcher, :watcher_ids, :status, :created_by]
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_issue
@@ -222,10 +227,6 @@ end
       params.require(:issue).permit(:subject, :description, :assign, :issue_type, :severity, :priority, :status, :created_by, :watcher_ids => [])
     end
 
-    def all_issues_as_json
-    @issues = Issue.all
-    render json: @issues, only: [:id, :subject, :description, :assign, :created_at, :updated_at, :severity, :priority, :issue_types, :issue_type, :blocked, :deadline, :watcher, :watcher_ids, :status, :created_by]
-    end
 
 end
 
