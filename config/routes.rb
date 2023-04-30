@@ -33,5 +33,7 @@ Rails.application.routes.draw do
   put '/issues/:id/block', to: 'issues#block', as: 'block_issue'
 
 
+  ##API
+  get '/issues.json', to: 'issues#all_issues_as_json'
 
 end
