@@ -3,6 +3,7 @@ class IssuesController < ApplicationController
 
   def index
     @issues = Issue.all
+    render json: @issues, only: [:id, :subject, :description, :assign, :created_at, :updated_at, :severity, :priority, :issue_types, :issue_type, :blocked, :deadline, :watcher, :watcher_ids, :status, :created_by]
 
 
     if params[:filtro].present?
@@ -25,11 +26,6 @@ class IssuesController < ApplicationController
     # agregar estas líneas para preservar los parámetros de búsqueda al ordenar
     @params_without_order_by = request.query_parameters.except(:order_by, :direction)
     @order_by_params = { order_by: params[:order_by], direction: params[:direction] }
-
-    #Per generar el json
-    json_data = @issues.as_json(only: [:id, :subject, :description, :assign, :created_at, :updated_at, :severity, :priority, :issue_types, :issue_type, :blocked, :deadline, :watcher, :watcher_ids, :status, :created_by])
-    json_string = JSON.generate(json_data)
-    return json_string
 
   end
 
@@ -216,6 +212,11 @@ end
 
     end
 
+
+  def all_issues_as_json
+    @issues = Issue.all
+    render json: @issues, only: [:id, :subject, :description, :assign, :created_at, :updated_at, :severity, :priority, :issue_types, :issue_type, :blocked, :deadline, :watcher, :watcher_ids, :status, :created_by]
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
