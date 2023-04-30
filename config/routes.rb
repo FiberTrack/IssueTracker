@@ -34,6 +34,6 @@ Rails.application.routes.draw do
 
 
   ##API
-  get '/issues.json', to: 'issues#all_issues_as_json'
+  get '/issues.json', to: 'issues#index'
 
 end
