@@ -6,7 +6,7 @@ info:
 servers:
   - url: 'https://issuetrackerv1.herokuapp.com/'
 paths:
-  /:
+  /issues:
     get:
       tags:
         - Issues
@@ -21,6 +21,125 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Issue'
+
+  /issues/{IssueId}:
+    get:
+      tags:
+        - Issues
+      summary: Finds a Issue by its ID
+      description: Returns a single Issue
+      operationId: show
+      parameters:
+      - name: IssueId
+        in: path
+        description: ID of Issue to return
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Issue'
+
+  /issues/:
+    get:
+      tags:
+        - Issues
+      summary: Get a list of filtered, ordered or searched issues
+      operationId: index
+      parameters:
+        - in: query
+          name: direction
+          schema:
+            type: string
+          description: Direction to sort the issues by (asc or desc)
+        - in: query
+          name: order_by
+          schema:
+            type: string
+          description: Attribute to sort the issues by (Type, Severity, Priority, Subject, Status, Assign or Created)
+        - in: query
+          name: options[]
+          schema:
+            type: array
+            items:
+              type: string
+          description: List of options of Type, Severity, Priority, Subject, Status, Assign and Created to filter by
+        - in: query
+          name: filtro
+          schema:
+            type: string
+          description: Filter to search issues by subject or description
+
+      responses:
+        200:
+          description: List of issues
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Issue'
+
+
+
+  /issues/new:
+    post:
+      tags:
+        - Issues
+      summary: Adds a new Issues to the IssueTracker
+      operationId: create
+      requestBody:
+        description: Provide the Subject, Description, Assigned, Type, Severity, Priority Status and Watched of the new Issue
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                subject:
+                  type: string
+                  example: 'Subject'
+                description:
+                  type: string
+                  example: 'Description'
+                assign:
+                  type: string
+                  example: 'Assign'
+                severity:
+                  type: string
+                  example: 'Wishlist'
+                priority:
+                  type: string
+                  example: 'High'
+                issue_type:
+                  type: string
+                  example: 'Bug'
+                status:
+                  type: string
+                  example: 'New'
+                watcher:
+                  type: array
+                  items:
+                    type: string
+                  example: 'Gabriel del Valle'
+      responses:
+        200:
+          description: Issue created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Issue'
+        422:
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
 
 components:
   schemas:
@@ -50,15 +169,15 @@ components:
           example: 'Wed, 12 Apr 2023 13:52:06.671832000 UTC +00:00'
         severity:
           type: string
+          enum: ['Wishlist', 'Minor', 'Normal', 'Important', 'Critical']
           example: 'Wishlist'
         priority:
           type: string
+          enum: ['Low', 'Normal', 'High']
           example: 'High'
-        issue_types:
-          type: string
-          example: ''
         issue_type:
           type: string
+          enum: ['Bug', 'Question', 'Enhancement']
           example: 'Bug'
         blocked:
           type: boolean
@@ -68,15 +187,36 @@ components:
           format: date-time
           example: '05/05/2023'
         watcher:
-          type: string
+          type: array
+          items:
+            type: string
           example: 'Gabriel del Valle'
         watcher_ids:
           type: array
           items:
             type: integer
+            example: 1
         status:
           type: string
+          enum: ['New', 'In Progress', 'Ready For Test', 'Postponed', 'Closed', 'Information Needed', 'Rejected']
           example: 'New'
         created_by:
           type: string
           example: 'Gabriel del Valle'
+      required:
+        - id
+        - created_at
+        - severity
+        - priority
+        - issue_type
+        - status
+
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+        errors:
+          type: object
+
+
