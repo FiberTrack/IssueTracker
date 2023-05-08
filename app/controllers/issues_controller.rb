@@ -54,7 +54,8 @@ end
 
   # POST /issues or /issues.json
   def create
-    @issue = Issue.new(issue_params)
+    watcher_ids = params[:issue][:watcher_ids].presence || []
+    @issue = Issue.new(issue_params.merge(watcher_ids: watcher_ids))
     Rails.logger.info "issue_params: #{issue_params.inspect}"
 
 
