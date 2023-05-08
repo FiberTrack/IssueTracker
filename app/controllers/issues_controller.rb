@@ -5,7 +5,6 @@ class IssuesController < ApplicationController
     @issues = Issue.all
 
 
-
     if params[:filtro].present?
       @filtered_issues = @issues.where("lower(subject) LIKE ? OR lower(description) LIKE ?", "%#{params[:filtro].downcase}%", "%#{params[:filtro].downcase}%")
     elsif params[:options].present?
@@ -26,6 +25,7 @@ class IssuesController < ApplicationController
     # agregar estas líneas para preservar los parámetros de búsqueda al ordenar
     @params_without_order_by = request.query_parameters.except(:order_by, :direction)
     @order_by_params = { order_by: params[:order_by], direction: params[:direction] }
+
   end
 
 def inicial
@@ -213,7 +213,8 @@ end
 
 
   def all_issues_as_json
-
+    @issues = Issue.all
+    render json: @issues
   end
 
   private
