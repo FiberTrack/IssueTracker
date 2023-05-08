@@ -26,6 +26,8 @@ class IssuesController < ApplicationController
     @params_without_order_by = request.query_parameters.except(:order_by, :direction)
     @order_by_params = { order_by: params[:order_by], direction: params[:direction] }
 
+    @issues = @ordered_issues
+
   end
 
 def inicial
