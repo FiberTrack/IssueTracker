@@ -26,8 +26,6 @@ class IssuesController < ApplicationController
     @order_by_params = { order_by: params[:order_by], direction: params[:direction] }
 
     @issues = @ordered_issues
-
-
   end
 
 def inicial
