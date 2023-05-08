@@ -213,8 +213,7 @@ end
 
 
   def all_issues_as_json
-    @issues = Issue.all
-    render json: @issues
+
   end
 
   private
