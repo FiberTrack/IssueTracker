@@ -21,10 +21,12 @@ class IssuesController < ApplicationController
     end
 
 
-
     # agregar estas líneas para preservar los parámetros de búsqueda al ordenar
     @params_without_order_by = request.query_parameters.except(:order_by, :direction)
     @order_by_params = { order_by: params[:order_by], direction: params[:direction] }
+
+    @issues = @ordered_issues
+
 
   end
 
