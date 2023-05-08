@@ -55,6 +55,7 @@ end
   # POST /issues or /issues.json
   def create
     @issue = Issue.new(issue_params)
+    Rails.logger.info "issue_params: #{issue_params.inspect}"
 
 
     respond_to do |format|
