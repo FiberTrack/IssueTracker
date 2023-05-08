@@ -28,6 +28,7 @@ class IssuesController < ApplicationController
 
     @issues = @ordered_issues
 
+
   end
 
 def inicial
