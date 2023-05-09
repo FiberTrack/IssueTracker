@@ -8,7 +8,17 @@ class UsersController < ApplicationController
   end
 
   def new_issue
-    IssuesController.new.create
+    IssuesController.new.create(
+      subject: params[:subject],
+      description: params[:description],
+      assign: params[:assign],
+      severity: params[:severity],
+      priority: params[:priority],
+      issue_type: params[:issue_type],
+      status: params[:status],
+      watcher: params[:watcher]
+    )
+    head :ok
   end
 
 def update_avatar(avatar)
@@ -66,9 +76,7 @@ end
 
 def authenticate_api_key
     user = User.find_by(api_key: request.headers['api_key'])
-    if user.nil?
-      render json: { error: 'API key inválida' }, status: :unauthorized
-    end
+    head :unauthorized unless user.present?
 end
 
 
