@@ -26,6 +26,7 @@ class User < ApplicationRecord
 
   def generate_api_key
     self.api_key ||= SecureRandom.uuid
+    params.require(:user).permit(:api_key)
   end
 
 end
