@@ -22,6 +22,7 @@ gem "aws-sdk-s3",'~> 1.112', require: false
 gem 'kaminari'
 gem 'rack-cors'
 
+
 group :development, :test do
   gem "sqlite3", "1.4.2"
   gem "debug",   "1.5.0", platforms: %i[ mri mingw x64_mingw ]
