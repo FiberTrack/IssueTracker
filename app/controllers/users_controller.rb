@@ -1,7 +1,6 @@
 require 'issues_controller.rb'
 
 class UsersController < ApplicationController
-
   before_action :authenticate_api_key, only: %i[new_issue]
 
   def index
