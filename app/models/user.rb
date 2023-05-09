@@ -21,6 +21,7 @@ class User < ApplicationRecord
 
   def set_defaults
     self.bio ||= "Not Assigned"
+    self.api_key = SecureRandom.uuid
   end
 
 end
