@@ -8,8 +8,7 @@ class UsersController < ApplicationController
   end
 
   def new_issue
-    issue_controller = IssuesController.new
-    issue_controller.create
+    IssuesController.new.create
   end
 
 def update_avatar(avatar)
