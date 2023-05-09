@@ -1,10 +1,17 @@
+require 'issues_controller.rb'
+
 class UsersController < ApplicationController
 
+  before_action :authenticate_api_key, only: %i[new_issue]
 
   def index
     @users = User.all
   end
 
+  def new_issue
+    issue_controller = IssuesController.new
+    issue_controller.create
+  end
 
 def update_avatar(avatar)
   require 'aws-sdk-s3'
@@ -57,6 +64,13 @@ def update_profile
   end
 
   redirect_to root_path
+end
+
+def authenticate_api_key
+    user = User.find_by(api_key: request.headers['api_key'])
+    if user.nil?
+      render json: { error: 'API key inválida' }, status: :unauthorized
+    end
 end
 
 
