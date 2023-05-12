@@ -82,8 +82,12 @@ def authenticate_api_key
 end
 
 def authenticate_api_key
-    user = User.find_by(api_key: request.headers['Authorization'])
-    head :unauthorized unless user.present?
+  user = User.find_by(api_key: request.headers['Authorization'])
+  if user.present?
+    head :ok
+  else
+    head :unauthorized
+  end
 end
 
 
