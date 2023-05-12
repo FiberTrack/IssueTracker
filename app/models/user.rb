@@ -7,6 +7,9 @@ class User < ApplicationRecord
   has_many :activities
   has_many :issue_watchers
 
+  before_validation :generate_api_key, on: :create
+  validates :api_key, presence: true
+  after_initialize :set_defaults
 
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
@@ -17,11 +20,12 @@ class User < ApplicationRecord
     end
   end
 
-  after_initialize :set_defaults
-
   def set_defaults
     self.bio ||= "Not Assigned"
-    self.api_key = SecureRandom.uuid
+  end
+
+  def generate_api_key
+    self.api_key ||= SecureRandom.uuid
   end
 
 end

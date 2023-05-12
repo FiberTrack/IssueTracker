@@ -5,6 +5,8 @@ info:
   description: "This is the Open API documentation for the REST API of our beloved application **IssueTracker** deployed at <https://issuetrackerv1.herokuapp.com/>. <br>All operations are executable. Operations that make changes to the domain require authentication. In this case, you must **Authorize** your request by providing the token value you got when you created the tweet."
 servers:
   - url: 'https://issuetrackerv1.herokuapp.com/'
+
+
 paths:
   /issues:
     get:
@@ -92,7 +94,7 @@ paths:
       tags:
         - Issues
       summary: Adds a new Issues to the IssueTracker
-      operationId: create
+      operationId: new_issue
       requestBody:
         description: Provide the Subject, Description, Assigned, Type, Severity, Priority Status and Watched of the new Issue
         content:
@@ -125,7 +127,10 @@ paths:
                   type: array
                   items:
                     type: string
-                  example: 'Gabriel del Valle'
+                  example: ['Gabriel del Valle']
+      security:
+        - api_key: []
+
       responses:
         200:
           description: Issue created
@@ -133,12 +138,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Issue'
-        422:
-          description: Unprocessable Entity
+        401:
+          description: 'Error: Unauthorized'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error401'
+        403:
+          description: 'Error: Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error403'
+
 
 
 components:
@@ -190,12 +208,12 @@ components:
           type: array
           items:
             type: string
-          example: 'Gabriel del Valle'
+          example: ['Gabriel del Valle']
         watcher_ids:
           type: array
           items:
             type: integer
-            example: 1
+            example: [1]
         status:
           type: string
           enum: ['New', 'In Progress', 'Ready For Test', 'Postponed', 'Closed', 'Information Needed', 'Rejected']
@@ -211,12 +229,31 @@ components:
         - issue_type
         - status
 
-    Error:
+    ErrorResult:
       type: object
       properties:
         message:
           type: string
-        errors:
-          type: object
+          example: 'Content is too long (maximum is 280 characters)'
+      required:
+        - message
 
+  examples:
+    error400:
+      value:
+        message: "Content is too long (maximum is 280 characters)"
+    error401:
+      value:
+        message: "You provided no token"
+    error403:
+      value:
+        message: "You provided an invalid token"
+    error404:
+      value:
+        message: "There is no tweet with 'id'=8"
 
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: Authorization
+      in: header
