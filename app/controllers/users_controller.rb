@@ -21,6 +21,7 @@ def new_issue
   head :ok
 end
 
+
 def update_avatar(avatar)
   require 'aws-sdk-s3'
 
@@ -79,6 +80,12 @@ def authenticate_api_key
     user = User.find_by(api_key: request.headers['Authorization'])
     head :unauthorized unless user.present?
 end
+
+def authenticate_api_key
+    user = User.find_by(api_key: request.headers['Authorization'])
+    head :unauthorized unless user.present?
+end
+
 
 end
 

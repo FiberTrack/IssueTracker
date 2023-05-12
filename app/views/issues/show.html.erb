@@ -62,7 +62,7 @@
     <div class="buttons">
       <%= button_to "Back", issues_path, class: "edit-button", method: :get %>
       <%= button_to "Edit", edit_issue_path(@issue), class: "edit-button", method: :get %>
-      <%= button_to "Delete", @issue, method: :delete, class: "delete-button" %>
+      <%= button_to "Delete", "/issues/#{@issue.id}", method: :delete, class: "delete-button" %>
       <% if @issue.blocked %>
         <%= button_to "🔓", block_issue_path(@issue), method: :put, class: "block-button blocked" %>
       <% else %>
