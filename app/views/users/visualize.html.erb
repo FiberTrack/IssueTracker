@@ -8,7 +8,11 @@
     <h2 class="user-name"><%= @user.full_name %></h2>
     <p class="user-email"><%= @user.email %></p>
     <p class="user-bio"><%= @user.bio %></p>
-    <p class="user-api-key"><%= @user.api_key %></p>
+    <p class="user-api-key"><%=
+    if (@current_user.api_key == @user.api_key)
+      @current_user.api_key
+    end
+    %></p>
   </div>
 
   <div class="list-grid">
