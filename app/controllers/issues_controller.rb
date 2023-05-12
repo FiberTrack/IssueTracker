@@ -94,6 +94,7 @@ end
 
 
 
+
   # PATCH/PUT /issues/1 or /issues/1.json
   def update
     respond_to do |format|
@@ -168,7 +169,7 @@ end
     @issue.destroy
     respond_to do |format|
       format.html { redirect_to issues_url, notice: "" }
-      format.json { head :no_content }
+      format.json {  render json: { message: "Issue deleted successfully" }, status: :ok  }
     end
 
   end
