@@ -6,7 +6,7 @@ class IssuesController < ApplicationController
 
   def authenticate_api_key
     # Llama a la función authenticate_api_key del UsersController
-    UsersController.new.authenticate_api_key()
+    UsersController.new.authenticate_api_key(api_key)
   end
 
   def index
