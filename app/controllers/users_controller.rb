@@ -75,7 +75,7 @@ def update_profile
 end
 
 def authenticate_api_key
-    user = User.find_by(api_key: request.headers['api_key'])
+    user = User.find_by(api_key: request.headers['Authorization'])
     head :unauthorized unless user.present?
 end
 
