@@ -91,7 +91,7 @@ end
   redirect_to issues_path
 end
 
-def issue_params
+  def issue_params
     params.require(:issue).permit(
       :subject,
       :description,

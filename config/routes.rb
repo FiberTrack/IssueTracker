@@ -35,6 +35,6 @@ Rails.application.routes.draw do
 
   ##API
   get '/issues', to: 'issues#all_issues_as_json'
-  post '/issues/new', to: 'users#new_issue'
+  post '/issues', to: 'users#new_issue'
 
 end
