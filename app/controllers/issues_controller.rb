@@ -1,6 +1,13 @@
+require 'users_controller.rb'
 class IssuesController < ApplicationController
   before_action :set_issue, only: %i[show edit update destroy]
+  before_action :authenticate_api_key, only: [:destroy]
 
+
+  def authenticate_api_key
+    # Llama a la función authenticate_api_key del UsersController
+    UsersController.new.authenticate_api_key()
+  end
 
   def index
     @issues = Issue.all
@@ -155,6 +162,7 @@ end
 
   # DELETE /issues/1 or /issues/1.json
   def destroy
+
     attachments_controller = AttachmentsController.new
 
   @issue.attachments.each do |attachment|

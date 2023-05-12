@@ -6,6 +6,7 @@ class UsersController < ApplicationController
   end
 
 
+
 def update_avatar(avatar)
   require 'aws-sdk-s3'
 
@@ -57,6 +58,12 @@ def update_profile
   end
 
   redirect_to root_path
+end
+
+
+def authenticate_api_key
+    user = User.find_by(api_key: request.headers['Authorization'])
+    head :unauthorized unless user.present?
 end
 
 
