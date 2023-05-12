@@ -91,6 +91,19 @@ end
   redirect_to issues_path
 end
 
+def issue_params
+    params.require(:issue).permit(
+      :subject,
+      :description,
+      :assign,
+      :severity,
+      :priority,
+      :issue_type,
+      :status,
+      watcher_ids: []
+    )
+  end
+
 
 
 

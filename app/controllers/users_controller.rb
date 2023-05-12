@@ -7,19 +7,19 @@ class UsersController < ApplicationController
     @users = User.all
   end
 
-  def new_issue
-    IssuesController.new.create(
-      subject: params[:subject],
-      description: params[:description],
-      assign: params[:assign],
-      severity: params[:severity],
-      priority: params[:priority],
-      issue_type: params[:issue_type],
-      status: params[:status],
-      watcher: params[:watcher]
-    )
-    head :ok
-  end
+def new_issue
+  IssuesController.new.create(
+    subject: params[:subject],
+    description: params[:description],
+    assign: params[:assign],
+    severity: params[:severity],
+    priority: params[:priority],
+    issue_type: params[:issue_type],
+    status: params[:status],
+    watcher: params[:watcher]
+  )
+  head :ok
+end
 
 def update_avatar(avatar)
   require 'aws-sdk-s3'
@@ -78,7 +78,6 @@ def authenticate_api_key
     user = User.find_by(api_key: request.headers['api_key'])
     head :unauthorized unless user.present?
 end
-
 
 end
 
