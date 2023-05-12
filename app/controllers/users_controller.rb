@@ -56,6 +56,7 @@ end
 
 def visualize
   @user = User.find(params[:usuari_id])
+  @current_user = current_user
 end
 
 def update_profile
