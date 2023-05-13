@@ -77,18 +77,20 @@ def update_profile
 end
 
 
-
+# UsersController
 def authenticate_api_key(request, response)
   Rails.logger.debug(request.headers['Authorization'])
   user = User.find_by(api_key: request.headers['Authorization'])
+
   if user.present?
     response.status = :ok
-    return
   else
-   response.status = :unauthorized
-    return
+    response.status = :unauthorized
   end
 end
+end
+
+
 
 
 end

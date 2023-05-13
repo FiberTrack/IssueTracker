@@ -4,12 +4,9 @@ class IssuesController < ApplicationController
   before_action :authenticate_api_key, only: [:destroy]
 
 
-  def authenticate_api_key
-    # Llama a la función authenticate_api_key del UsersController
-     request = self.request
-     response = self.response
-    UsersController.new.authenticate_api_key(request, response)
-  end
+def authenticate_api_key
+  UsersController.new.authenticate_api_key(request, response) # Pasar referencia del response
+end
 
   def index
     @issues = Issue.all
