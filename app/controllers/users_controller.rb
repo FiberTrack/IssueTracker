@@ -76,12 +76,10 @@ def update_profile
   redirect_to root_path
 end
 
-def authenticate_api_key
-    user = User.find_by(api_key: request.headers['Authorization'])
-    head :unauthorized unless user.present?
-end
+
 
 def authenticate_api_key(request, response)
+  Rails.logger.debug(request.headers['Authorization'])
   user = User.find_by(api_key: request.headers['Authorization'])
   if user.present?
     response.status = :ok
