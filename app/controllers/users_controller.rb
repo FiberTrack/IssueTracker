@@ -81,7 +81,7 @@ def authenticate_api_key
     head :unauthorized unless user.present?
 end
 
-def authenticate_api_key(request)
+def authenticate_api_key(request, response)
   user = User.find_by(api_key: request.headers['Authorization'])
   if user.present?
     response.status = :ok
