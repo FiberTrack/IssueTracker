@@ -88,7 +88,7 @@ def authenticate_api_key(request, response)
     response.status = :unauthorized
   end
 end
-end
+
 
 
 
