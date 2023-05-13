@@ -2,11 +2,20 @@ require 'users_controller.rb'
 class IssuesController < ApplicationController
   before_action :set_issue, only: %i[show edit update destroy]
   before_action :authenticate_api_key, only: [:destroy]
+ rescue_from ActiveRecord::RecordNotFound, with: :issue_not_found
 
 
-def authenticate_api_key
-  UsersController.new.authenticate_api_key(request, response) # Pasar referencia del response
-end
+def issue_not_found
+    render json: { error: 'Issue not found' }, status: :not_found
+  end
+
+
+ def authenticate_api_key
+    response_status = UsersController.new.authenticate_api_key(request)
+    if response_status == :unauthorized
+      render json: { error: 'Unauthorized' }, status: :unauthorized
+    end
+  end
 
   def index
     @issues = Issue.all
@@ -175,7 +184,7 @@ end
   # DELETE /issues/1 or /issues/1.json
   def destroy
 
-    attachments_controller = AttachmentsController.new
+  attachments_controller = AttachmentsController.new
 
   @issue.attachments.each do |attachment|
     attachments_controller.destroy_attachment(attachment)
@@ -193,7 +202,9 @@ end
       format.json {  render json: { message: "Issue deleted successfully" }, status: :ok  }
     end
 
-  end
+
+
+end
 
   def block
   @issue = Issue.find(params[:id])

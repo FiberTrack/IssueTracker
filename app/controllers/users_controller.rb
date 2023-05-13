@@ -78,20 +78,21 @@ end
 
 
 # UsersController
-def authenticate_api_key(request, response)
-  Rails.logger.debug(request.headers['Authorization'])
-  user = User.find_by(api_key: request.headers['Authorization'])
+def authenticate_api_key(request)
+    puts request.headers['Authorization']
+    user = User.find_by(api_key: request.headers['Authorization'])
 
-  if user.present?
-    response.status = :ok
-  else
-    response.status = :unauthorized
+    if user.present?
+      puts "authorized"
+      :ok
+    else
+      puts "unauthorized"
+      :unauthorized
+    end
   end
-end
-
-
 
 
 
 end
+
 

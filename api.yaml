@@ -47,6 +47,29 @@ paths:
               schema:
                 $ref: '#/components/schemas/Issue'
 
+    delete:
+      tags:
+      - Issues
+      summary: If the Issue exists, deletes it if the token is present and valid. If it does not exist, returns 404 .
+      operationId: destroy
+      parameters:
+      - name: IssueId
+        in: path
+        description: Issue id to delete
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        404:
+          description: 'Error: Non-Existent'
+        401:
+          description: 'Error: Unauthorized'
+        403:
+          description: 'Error: Forbidden'
+      security:
+      - api_key: []
+
 
 
 
