@@ -13,6 +13,7 @@ module Waslab04
     config.load_defaults 7.0
 
     config.action_controller.forgery_protection_origin_check = false
+    config.action_controller.allow_forgery_protection = false
 
     config.action_dispatch.default_headers = {
     'Access-Control-Allow-Origin' => '*',

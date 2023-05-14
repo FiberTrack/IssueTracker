@@ -76,20 +76,23 @@ def update_profile
   redirect_to root_path
 end
 
-def authenticate_api_key
+
+# UsersController
+def authenticate_api_key(request)
+    puts request.headers['Authorization']
     user = User.find_by(api_key: request.headers['Authorization'])
-    head :unauthorized unless user.present?
-end
 
-def authenticate_api_key
-  user = User.find_by(api_key: request.headers['Authorization'])
-  if user.present?
-    head :ok
-  else
-    head :unauthorized
+    if user.present?
+      puts "authorized"
+      :ok
+    else
+      puts "unauthorized"
+      :unauthorized
+    end
   end
-end
 
 
+
 end
+
 
