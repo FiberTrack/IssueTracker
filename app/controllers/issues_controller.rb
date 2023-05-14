@@ -76,7 +76,7 @@ end
     puts request.headers['Authorization']
     user_created = User.find_by(api_key: request.headers['Authorization'])
 
-    Rails.logger.info 'Esta es mi id: #{user_created.id}'
+    Rails.logger.debug 'Esta es mi id: #{user_created.id}'
 
     respond_to do |format|
       if @issue.save
