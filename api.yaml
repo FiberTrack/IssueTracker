@@ -61,6 +61,8 @@ paths:
           type: integer
           format: int64
       responses:
+        200:
+          description: Issue deleted
         404:
           description: 'Error: Non-Existent'
         401:
