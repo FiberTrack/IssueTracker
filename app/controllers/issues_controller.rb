@@ -79,11 +79,15 @@ end
       if @issue.save
         format.html { redirect_to issues_url, notice: "" }
         format.json { render :show, status: :created, location: @issue }
-    record_activity(current_user.id, @issue.id, 'created')
+    if current_user
+      record_activity(current_user.id, @issue.id, 'created')
+    else
+       user = User.find_by(api_key: request.headers['Authorization'])
+       record_activity(user.id, @issue.id, 'created')
+    end
     issue_params[:watcher_ids].each do |user|
       IssueWatcher.create(issue_id: @issue.id, user_id: user)
     end
-
 
       else
         format.html { render :new, status: :unprocessable_entity }
