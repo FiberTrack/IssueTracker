@@ -1,7 +1,7 @@
 require 'users_controller.rb'
 class IssuesController < ApplicationController
   before_action :set_issue, only: %i[show edit update destroy]
-  before_action :authenticate_api_key, only: [:destroy]
+  before_action -> { authenticate_api_key(request.headers['Authorization'].present?) }, only: [:destroy, :create]
  rescue_from ActiveRecord::RecordNotFound, with: :issue_not_found
 
 
@@ -9,13 +9,14 @@ def issue_not_found
     render json: { error: 'Issue not found' }, status: :not_found
   end
 
-
- def authenticate_api_key
-    response_status = UsersController.new.authenticate_api_key(request)
-    if response_status == :unauthorized
+  def authenticate_api_key(verify_key = true)
+  if verify_key
+    @authenticated_user = UsersController.new.authenticate_api_key(request)
+    if @authenticated_user == :unauthorized
       render json: { error: 'Unauthorized' }, status: :unauthorized
     end
   end
+end
 
   def index
     @issues = Issue.all
@@ -73,18 +74,23 @@ end
     watcher_ids = params[:issue][:watcher_ids].presence || []
     @issue = Issue.new(issue_params.merge(watcher_ids: watcher_ids))
     Rails.logger.info "issue_params: #{issue_params.inspect}"
+    puts request.headers['Authorization']
 
+    if current_user
+    record_activity(current_user.id, @issue.id, 'created')
+    @issue.created_by = current_user.full_name
+    else
+    record_activity(@authenticated_user.id, @issue.id, 'created')
+    @issue.created_by = @authenticated_user.full_name
+    end
+    issue_params[:watcher_ids].each do |user|
+    IssueWatcher.create(issue_id: @issue.id, user_id: user)
+    end
 
     respond_to do |format|
       if @issue.save
         format.html { redirect_to issues_url, notice: "" }
         format.json { render :show, status: :created, location: @issue }
-    record_activity(current_user.id, @issue.id, 'created')
-    issue_params[:watcher_ids].each do |user|
-      IssueWatcher.create(issue_id: @issue.id, user_id: user)
-    end
-
-
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @issue.errors, status: :unprocessable_entity }
@@ -106,23 +112,6 @@ end
   end
   redirect_to issues_path
 end
-
-  def issue_params
-    params.require(:issue).permit(
-      :subject,
-      :description,
-      :assign,
-      :severity,
-      :priority,
-      :issue_type,
-      :status,
-      watcher_ids: []
-    )
-  end
-
-
-
-
 
   # PATCH/PUT /issues/1 or /issues/1.json
   def update
