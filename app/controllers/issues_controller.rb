@@ -11,8 +11,8 @@ def issue_not_found
 
 
  def authenticate_api_key
-    response_status = UsersController.new.authenticate_api_key(request)
-    if response_status == :unauthorized
+    @authenticated_user = UsersController.new.authenticate_api_key(request)
+    if authenticated_user  == :unauthorized
       render json: { error: 'Unauthorized' }, status: :unauthorized
     end
   end
