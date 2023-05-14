@@ -79,7 +79,7 @@ end
     @issue.created_by = current_user.full_name
     else
     record_activity(@authenticated_user.id, @issue.id, 'created')
-    @issue.created_by = @authenticated_user.fullname
+    @issue.created_by = @authenticated_user.full_name
     end
     issue_params[:watcher_ids].each do |user|
     IssueWatcher.create(issue_id: @issue.id, user_id: user)
