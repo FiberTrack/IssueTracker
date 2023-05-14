@@ -75,9 +75,9 @@ end
     puts request.headers['Authorization']
 
     if current_user
-    record_activity(1, @issue.id, 'created')
+    record_activity(1, @issue.id, 'created_by')
     else
-    record_activity(1, @issue.id, 'created')
+    record_activity(1, @issue.id, 'created_by')
     end
     issue_params[:watcher_ids].each do |user|
     IssueWatcher.create(issue_id: @issue.id, user_id: user)
