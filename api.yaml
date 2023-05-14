@@ -121,7 +121,7 @@ paths:
       tags:
         - Issues
       summary: Adds a new Issues to the IssueTracker
-      operationId: new_issue
+      operationId: create
       requestBody:
         description: Provide the Subject, Description, Assigned, Type, Severity, Priority Status and Watched of the new Issue
         content:
@@ -140,21 +140,25 @@ paths:
                   example: 'Assign'
                 severity:
                   type: string
+                  enum: ['Wishlist', 'Minor', 'Normal', 'Important', 'Critical']
                   example: 'Wishlist'
                 priority:
                   type: string
+                  enum: ['Low', 'Normal', 'High']
                   example: 'High'
                 issue_type:
                   type: string
+                  enum: ['Bug', 'Question', 'Enhancement']
                   example: 'Bug'
                 status:
                   type: string
+                  enum: ['New', 'In Progress', 'Ready For Test', 'Postponed', 'Closed', 'Information Needed', 'Rejected']
                   example: 'New'
-                watcher:
+                watcher_ids:
                   type: array
                   items:
-                    type: string
-                  example: ['Gabriel del Valle']
+                    type: integer
+                  example: [1]
       security:
         - api_key: []
 
@@ -183,7 +187,6 @@ paths:
               examples:
                 errorExample:
                   $ref: '#/components/examples/error403'
-
 
 
 components:
