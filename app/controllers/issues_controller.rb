@@ -1,7 +1,7 @@
 require 'users_controller.rb'
 class IssuesController < ApplicationController
   before_action :set_issue, only: %i[show edit update destroy]
-  before_action :authenticate_api_key, only: [:destroy]
+  before_action :authenticate_api_key, only: [:destroy, :create]
  rescue_from ActiveRecord::RecordNotFound, with: :issue_not_found
 
 
