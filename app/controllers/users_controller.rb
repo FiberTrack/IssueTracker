@@ -66,6 +66,8 @@ def authenticate_api_key(request)
     puts request.headers['Authorization']
     user = User.find_by(api_key: request.headers['Authorization'])
 
+    Rails.logger.info "{user.id}"
+
     if user.present?
       puts "authorized"
       user

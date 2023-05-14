@@ -79,9 +79,9 @@ end
         format.html { redirect_to issues_url, notice: "" }
         format.json { render :show, status: :created, location: @issue }
         if current_user
-        record_activity(current_user.id, @issue.id, 'created')
+        record_activity(1, @issue.id, 'created')
         else
-        record_activity(@authenticated_user.id, @issue.id, 'created')
+        record_activity(1, @issue.id, 'created')
         end
         issue_params[:watcher_ids].each do |user|
         IssueWatcher.create(issue_id: @issue.id, user_id: user)
