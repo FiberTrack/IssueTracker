@@ -76,8 +76,6 @@ end
     puts request.headers['Authorization']
     user_created = User.find_by(api_key: request.headers['Authorization'])
 
-    Rails.logger.debug 'Esta es mi id: #{user_created.id}'
-
     respond_to do |format|
       if @issue.save
         format.html { redirect_to issues_url, notice: "" }
@@ -85,7 +83,7 @@ end
         if current_user
           record_activity(current_user.id, @issue.id, 'created')
         else
-           record_activity(user_created.id, @issue.id, 'created')
+           record_activity(1, @issue.id, 'created')
         end
         issue_params[:watcher_ids].each do |user|
           IssueWatcher.create(issue_id: @issue.id, user_id: user)
