@@ -1,7 +1,7 @@
 require 'users_controller.rb'
 class IssuesController < ApplicationController
   before_action :set_issue, only: %i[show edit update destroy]
-  before_action :authenticate_api_key, only: [:destroy, :create]
+  before_action -> { authenticate_api_key(request.headers['Authorization'].present?) }, only: [:destroy, :create]
  rescue_from ActiveRecord::RecordNotFound, with: :issue_not_found
 
 
@@ -9,12 +9,14 @@ def issue_not_found
     render json: { error: 'Issue not found' }, status: :not_found
   end
 
-  def authenticate_api_key
-  @authenticated_user = UsersController.new.authenticate_api_key(request)
-  if @authenticated_user == :unauthorized
-    render json: { error: 'Unauthorized' }, status: :unauthorized
+  def authenticate_api_key(verify_key = true)
+  if verify_key
+    @authenticated_user = UsersController.new.authenticate_api_key(request)
+    if @authenticated_user == :unauthorized
+      render json: { error: 'Unauthorized' }, status: :unauthorized
+    end
   end
-  end
+end
 
   def index
     @issues = Issue.all
