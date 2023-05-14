@@ -74,9 +74,13 @@ end
     Rails.logger.info "issue_params: #{issue_params.inspect}"
     puts request.headers['Authorization']
 
-
-    record_activity(1, @issue.id, 'created')
-
+    if current_user
+    record_activity(current_user.id, @issue.id, 'created')
+    @issue.created_by = current_user.full_name
+    else
+    record_activity(@authenticated_user.id, @issue.id, 'created')
+    @issue.created_by = @authenticated_user.fullname
+    end
     issue_params[:watcher_ids].each do |user|
     IssueWatcher.create(issue_id: @issue.id, user_id: user)
     end
