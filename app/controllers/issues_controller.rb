@@ -72,6 +72,7 @@ end
     watcher_ids = params[:issue][:watcher_ids].presence || []
     @issue = Issue.new(issue_params.merge(watcher_ids: watcher_ids))
     Rails.logger.info "issue_params: #{issue_params.inspect}"
+    puts request.headers['Authorization']
 
     respond_to do |format|
       if @issue.save
@@ -80,7 +81,7 @@ end
         if current_user
         record_activity(current_user.id, @issue.id, 'created')
         else
-        record_activity(user.id, @issue.id, 'created')
+        record_activity(@authenticated_user.id, @issue.id, 'created')
         end
         issue_params[:watcher_ids].each do |user|
         IssueWatcher.create(issue_id: @issue.id, user_id: user)
