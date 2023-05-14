@@ -73,23 +73,22 @@ end
     watcher_ids = params[:issue][:watcher_ids].presence || []
     @issue = Issue.new(issue_params.merge(watcher_ids: watcher_ids))
     Rails.logger.info "issue_params: #{issue_params.inspect}"
+    puts request.headers['Authorization']
+    user_created = User.find_by(api_key: request.headers['Authorization'])
 
 
     respond_to do |format|
       if @issue.save
         format.html { redirect_to issues_url, notice: "" }
         format.json { render :show, status: :created, location: @issue }
-    if current_user
-      record_activity(current_user.id, @issue.id, 'created')
-    else
-       puts request.headers['Authorization']
-       user = User.find_by(api_key: request.headers['Authorization'])
-       record_activity(user.id, @issue.id, 'created')
-    end
-    issue_params[:watcher_ids].each do |user|
-      IssueWatcher.create(issue_id: @issue.id, user_id: user)
-    end
-
+        if current_user
+          record_activity(current_user.id, @issue.id, 'created')
+        else
+           record_activity(user_created.id, @issue.id, 'created')
+        end
+        issue_params[:watcher_ids].each do |user|
+          IssueWatcher.create(issue_id: @issue.id, user_id: user)
+        end
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @issue.errors, status: :unprocessable_entity }
