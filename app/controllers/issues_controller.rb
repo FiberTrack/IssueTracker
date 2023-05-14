@@ -82,6 +82,7 @@ end
     if current_user
       record_activity(current_user.id, @issue.id, 'created')
     else
+       puts request.headers['Authorization']
        user = User.find_by(api_key: request.headers['Authorization'])
        record_activity(user.id, @issue.id, 'created')
     end
@@ -110,23 +111,6 @@ end
   end
   redirect_to issues_path
 end
-
-  def issue_params
-    params.require(:issue).permit(
-      :subject,
-      :description,
-      :assign,
-      :severity,
-      :priority,
-      :issue_type,
-      :status,
-      watcher_ids: []
-    )
-  end
-
-
-
-
 
   # PATCH/PUT /issues/1 or /issues/1.json
   def update
