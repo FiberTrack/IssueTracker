@@ -81,7 +81,7 @@ end
         format.html { redirect_to issues_url, notice: "" }
         format.json { render :show, status: :created, location: @issue }
         if current_user
-          record_activity(current_user.id, @issue.id, 'created')
+          record_activity(1, @issue.id, 'created')
         else
            record_activity(1, @issue.id, 'created')
         end
