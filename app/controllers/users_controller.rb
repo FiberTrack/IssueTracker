@@ -68,12 +68,12 @@ def authenticate_api_key(request)
 
     if user.present?
       puts "authorized"
-      :ok
+      user
     else
       puts "unauthorized"
       :unauthorized
     end
-  end
+end
 
 
 
