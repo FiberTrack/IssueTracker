@@ -9,6 +9,11 @@ class CommentsController < ApplicationController
     @comment = @issue.comments.create(comment_params.merge(user: current_user))
     redirect_to issue_path(@issue)
   end
+  
+  def create_api (issue_id, user)
+    @issue = Issue.find(issue_id)
+    @comment = @issue.comments.new(comment_params.merge(user))
+  end
 
   def destroy
     @issue = Issue.find(params[:issue_id])
