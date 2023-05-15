@@ -1,7 +1,9 @@
 require 'users_controller.rb'
+require 'comments_controller.rb'
+
 class IssuesController < ApplicationController
   before_action :set_issue, only: %i[show edit update destroy]
-  before_action -> { authenticate_api_key(request.headers['Authorization'].present?) }, only: [:destroy, :create]
+  before_action -> { authenticate_api_key(request.headers['Authorization'].present?) }, only: [:destroy, :create, :create_comment]
  rescue_from ActiveRecord::RecordNotFound, with: :issue_not_found
 
 
@@ -17,6 +19,15 @@ def issue_not_found
     end
   end
 end
+
+  def create_comment
+    if current_user
+     CommentsController.new.create
+    else
+     puts request.headers['Authorization']
+     CommentsController.new.create_api(IssueId,@authenticated_user)
+    end
+  end
 
   def index
     @issues = Issue.all
