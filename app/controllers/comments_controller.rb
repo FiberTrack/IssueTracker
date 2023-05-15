@@ -16,10 +16,11 @@ class CommentsController < ApplicationController
 
     if @comment.save
       response = { comment: @comment }
-      render json: response, status: :created
+      response = render json: @comment, status: :created
     else
-      render json: @comment.errors, status: :unprocessable_entity
+      response = render json: @comment.errors, status: :unprocessable_entity
     end
+    response
   end
 
   def destroy
