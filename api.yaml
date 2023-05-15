@@ -6,7 +6,6 @@ info:
 servers:
   - url: 'https://issuetrackerv1.herokuapp.com/'
 
-
 paths:
   /issues:
     get:
@@ -186,10 +185,107 @@ paths:
                 errorExample:
                   $ref: '#/components/examples/error403'
 
+  /issues/{id}/block:
+    post:
+      tags:
+        - Issues -> Block/Unblock
+      summary: Block/Unblock an Issue
+      operationId: block
+      parameters:
+      - name: id
+        in: path
+        description: ID of the Issue to add a comment to
+        required: true
+        schema:
+          type: integer
+      security:
+        - api_key: []
+      responses:
+        200:
+          description: "Issue with deadline"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Issue'
+        401:
+          description: 'Error: Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error401'
+        403:
+          description: 'Error: Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error403'
+
+
+  /issues/{id}/deadline:
+    post:
+      tags:
+        - Issues -> Deadline
+      summary: Add/Delete deadline of an Issue
+      operationId: add_deadline
+      parameters:
+      - name: id
+        in: path
+        description: ID of the Issue to add a deadline
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        description: Provide the date of the deadline
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                deadline_date:
+                  type: string
+                  pattern: '^[0-9]{2}/[0-9]{2}/[0-9]{4}$'
+                  format: date-time
+                  example: '05/05/2023'
+
+      security:
+        - api_key: []
+      responses:
+        200:
+          description: "Issue blocked"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Issue'
+        401:
+          description: 'Error: Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error401'
+        403:
+          description: 'Error: Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error403'
+
+
   /issues/{id}/comments:
     get:
       tags:
-        - Comments
+        - Issues -> Comments
       summary: Finds comments by its IssueID
       description: Returns all the comments for the Issue with IssueID
       operationId: getcomments
@@ -214,7 +310,7 @@ paths:
   /issues/{IssueId}/comments/new:
     post:
       tags:
-        - Comments
+        - Issues -> Comments
       summary: Adds a new comment to an Issue
       operationId: create_comment
       parameters:
@@ -312,6 +408,7 @@ components:
           example: true
         deadline:
           type: string
+          pattern: '^[0-9]{2}/[0-9]{2}/[0-9]{4}$'
           format: date-time
           example: '05/05/2023'
         watcher:
