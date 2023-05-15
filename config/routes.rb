@@ -27,8 +27,8 @@ Rails.application.routes.draw do
 
   post '/issues/:issue_id/attachments', to: 'attachments#create', as: "create_at"
 
-
   get 'visualize_account', to: 'users#visualize'
+
 
   put '/issues/:id/block', to: 'issues#block', as: 'block_issue'
 
@@ -37,6 +37,12 @@ Rails.application.routes.draw do
   delete '/issues/:id', to: 'issues#destroy'
   get '/issues', to: 'issues#all_issues_as_json'
   post '/issues/new', to: 'issues#create'
+
+
+  get '/issues/:issue_id/attachments', to: 'attachments#get_attachments'
+
+
+
 
 
 

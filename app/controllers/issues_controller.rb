@@ -1,4 +1,6 @@
 require 'users_controller.rb'
+
+
 class IssuesController < ApplicationController
   before_action :set_issue, only: %i[show edit update destroy]
   before_action -> { authenticate_api_key(request.headers['Authorization'].present?) }, only: [:destroy, :create]
@@ -57,6 +59,7 @@ end
     @attachments = Attachment.new
     @watchers = User.where(id: @issue.watcher_ids).pluck(:full_name)
   end
+
 
   # GET /issues/new
   def new
@@ -190,9 +193,6 @@ end
       format.html { redirect_to issues_url, notice: "" }
       format.json {  render json: { message: "Issue deleted successfully" }, status: :ok  }
     end
-
-
-
 end
 
   def block
@@ -201,6 +201,8 @@ end
       record_activity(current_user.id, @issue.id, @issue.blocked ? 'blocked' : 'unblocked')
   redirect_to @issue
   end
+
+
 def destroy_single_attachment
       attachment = Attachment.find(params[:id])
       attachments_controller = AttachmentsController.new
@@ -229,11 +231,9 @@ end
   end
 
 
-    def record_activity(user, issue, action)
-          Activity.create(action: action, issue_id: issue, user_id: user)
-
-
-    end
+  def record_activity(user, issue, action)
+    Activity.create(action: action, issue_id: issue, user_id: user)
+  end
 
 
   def all_issues_as_json

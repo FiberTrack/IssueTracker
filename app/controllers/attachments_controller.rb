@@ -22,6 +22,14 @@ def authenticate_api_key(verify_key = true)
 end
 
 
+  def index
+    puts "PROVA FUNCIO"
+       @issue = Issue.find(params[:issue_id])
+    @attachments = @issue.attachments.select(:id, :name, :url)
+    render json: @attachments
+  end
+
+
 
   def create
     if request[:file].nil?
@@ -66,6 +74,9 @@ end
   end
 
 
+
+
+
   def destroy_attachment(attachment)
 
     old_url = attachment.url
@@ -82,8 +93,6 @@ end
 
 
   private
-
-
 
 
   def set_issue

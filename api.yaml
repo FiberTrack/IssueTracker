@@ -117,6 +117,36 @@ paths:
                   $ref: '#/components/schemas/Issue'
 
 
+/issues/{IssueId}/attachments:
+    post:
+      summary: Crear archivo adjunto
+      operationId: createFile
+      parameters:
+        - in: path
+          name: IssueId
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: Archivo adjunto creado exitosamente
+        '400':
+          description: Parámetros inválidos
+        '401':
+          description: No autorizado
+      security:
+        - api_key: []
+
 
   /issues/new:
     post:
