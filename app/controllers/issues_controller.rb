@@ -245,16 +245,17 @@ end
 
   def delete_deadline
     @issue = Issue.find(params[:id])
-    @issue.update(deadline: nil)
+    @issue.update_columns(deadline: nil)
     if current_user
     record_activity(current_user.id, @issue.id, 'removed deadline for')
     else
     record_activity(@authenticated_user.id, @issue.id, 'removed deadline for')
     end
+
     respond_to do |format|
-    format.html { redirect_to @issue, notice: "" }
-    format.json {  render json: @issue  }
-  end
+      format.html { redirect_to @issue, notice: "" }
+      format.json {  render json: @issue  }
+    end
   end
 
 
