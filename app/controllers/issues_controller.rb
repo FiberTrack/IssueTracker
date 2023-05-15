@@ -202,8 +202,12 @@ end
   @issue = Issue.find(params[:id])
   @issue.update(blocked: !@issue.blocked)
       record_activity(current_user.id, @issue.id, @issue.blocked ? 'blocked' : 'unblocked')
-  redirect_to @issue
+  respond_to do |format|
+    format.html { redirect_to @issue, notice: "" }
+    format.json {  render json: @issue  }
   end
+  end
+
 def destroy_single_attachment
       attachment = Attachment.find(params[:id])
       attachments_controller = AttachmentsController.new

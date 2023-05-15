@@ -39,5 +39,6 @@ Rails.application.routes.draw do
   post '/issues/new', to: 'issues#create'
   post '/issues/:id/comments/new', to: 'issues#create_comment'
   get '/issues/:id/comments', to: 'issues#get_comments'
+  post '/issues/:id/block', to: 'issues#block'
 
 end
