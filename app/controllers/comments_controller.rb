@@ -13,15 +13,11 @@ class CommentsController < ApplicationController
   def create_api (issue_id, user, content)
     @issue = Issue.find(issue_id)
     @comment = @issue.comments.new(content: content, user: user)
-    request.variant ||= :default
 
     respond_to do |format|
-    if @comment.save
-    format.json { render json: @comment.to_json, status: :created }
-    else
-    format.json { render json: @comment.errors, status: :unprocessable_entity }
+    format.json { render json: @comment }
     end
-    end
+
   end
 
   def destroy
