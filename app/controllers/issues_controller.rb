@@ -245,7 +245,7 @@ end
 
   def delete_deadline
     @issue = Issue.find(params[:id])
-    @issue.update_columns(deadline: nil)
+    @issue.deadline = nil
     if current_user
     record_activity(current_user.id, @issue.id, 'removed deadline for')
     else
