@@ -225,7 +225,7 @@ end
   #Deadlines
 
   def add_deadline
-  if params[:id] == ""
+  if params[:deadline_date] == ""
     redirect_to delete_deadline_path
   end
   @issue = Issue.find(params[:id])
