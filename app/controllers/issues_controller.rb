@@ -202,7 +202,7 @@ end
   @issue = Issue.find(params[:id])
   @issue.update(blocked: !@issue.blocked)
   if current_user
-      record_activity(current_user.id, @issue.id, @issue.blocked ? 'blocked' : 'unblocked')
+    record_activity(current_user.id, @issue.id, @issue.blocked ? 'blocked' : 'unblocked')
   else
     record_activity(@authenticated_user.id, @issue.id, @issue.blocked ? 'blocked' : 'unblocked')
   end
@@ -225,6 +225,9 @@ end
   #Deadlines
 
   def add_deadline
+  if params[:id] == ""
+    redirect_to delete_deadline_path
+  end
   @issue = Issue.find(params[:id])
   if params[:deadline_date].present?
     deadline_date = Date.parse(params[:deadline_date])
@@ -233,20 +236,20 @@ end
     end
     @issue.update(deadline: deadline_date)
     if current_user
-    record_activity(current_user.id, @issue.id, "added deadline of #{deadline_date} for")
+      record_activity(current_user.id, @issue.id, "added deadline of #{deadline_date} for")
     else
       record_activity(@authenticated_user.id, @issue.id, "added deadline of #{deadline_date} for")
     end
   end
   respond_to do |format|
     format.html { redirect_to @issue, notice: "" }
-    format.json {  render json: @issue  }
+    format.json { render json: @issue  }
   end
   end
 
   def delete_deadline
     @issue = Issue.find(params[:id])
-     @issue.update(deadline: nil)
+    @issue.update(deadline: nil)
     if current_user
     record_activity(current_user.id, @issue.id, 'removed deadline for')
     else
@@ -255,7 +258,7 @@ end
 
     respond_to do |format|
       format.html { redirect_to @issue, notice: "" }
-      format.json {  render json: @issue  }
+      format.json { render json: @issue  }
     end
   end
 

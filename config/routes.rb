@@ -41,6 +41,5 @@ Rails.application.routes.draw do
   get '/issues/:id/comments', to: 'issues#get_comments'
   post '/issues/:id/block', to: 'issues#block'
   post '/issues/:id/deadline', to: 'issues#add_deadline'
-  delete '/issues/:id/deadline', to: 'issues#delete_deadline'
 
 end
