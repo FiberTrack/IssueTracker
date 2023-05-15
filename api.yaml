@@ -5,6 +5,7 @@ info:
   description: "This is the Open API documentation for the REST API of our beloved application **IssueTracker** deployed at <https://issuetrackerv1.herokuapp.com/>. <br>All operations are executable. Operations that make changes to the domain require authentication. In this case, you must **Authorize** your request by providing the token value you got when you created the tweet."
 servers:
   - url: 'https://issuetrackerv1.herokuapp.com/'
+  - url: 'http://54.221.84.122:8080'
 
 
 paths:
@@ -117,8 +118,12 @@ paths:
                   $ref: '#/components/schemas/Issue'
 
 
-/issues/{IssueId}/attachments:
+
+
+  /issues/{IssueId}/attachments:
     post:
+      tags:
+        - Attachments
       summary: Crear archivo adjunto
       operationId: createFile
       parameters:
@@ -145,7 +150,48 @@ paths:
         '401':
           description: No autorizado
       security:
-        - api_key: []
+      - api_key: []
+
+
+    delete:
+      summary: Eliminar archivo adjunto de un Issue en concreto
+      tags:
+        - Attachments
+      operationId: deleteFile
+      parameters:
+        - in: path
+          name: IssueId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '201':
+          description: Archivo adjunto creado exitosamente
+        '400':
+          description: Parámetros inválidos
+        '401':
+          description: No autorizado
+      security:
+      - api_key: []
+
+    get:
+      summary: Obtener archivos adjuntos de un issue
+      tags:
+        - Attachments
+      operationId: get_attachments
+      parameters:
+        - in: path
+          name: IssueId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+        '404':
+          description: Issue no encontrado
+
+
 
 
   /issues/new:
@@ -300,6 +346,17 @@ components:
       required:
         - message
 
+    Attachment:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        url:
+          type: string
+
+
   examples:
     error400:
       value:
@@ -313,6 +370,8 @@ components:
     error404:
       value:
         message: "There is no tweet with 'id'=8"
+
+
 
   securitySchemes:
     api_key:

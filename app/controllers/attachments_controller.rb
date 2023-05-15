@@ -23,8 +23,7 @@ end
 
 
   def index
-    puts "PROVA FUNCIO"
-       @issue = Issue.find(params[:issue_id])
+    @issue = Issue.find(params[:issue_id])
     @attachments = @issue.attachments.select(:id, :name, :url)
     render json: @attachments
   end
