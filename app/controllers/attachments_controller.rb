@@ -1,12 +1,29 @@
 require 'aws-sdk-s3'
-
+require 'users_controller.rb'
 class AttachmentsController < ApplicationController
   before_action :set_issue, only: [:create]
   before_action :set_attachment, only: [:destroy]
+  before_action -> { authenticate_api_key(request.headers['Authorization'].present?) }, only: [:create]
+ rescue_from ActiveRecord::RecordNotFound, with: :issue_not_found
+
+
+def issue_not_found
+    render json: { error: 'Issue not found' }, status: :not_found
+end
+
+
+def authenticate_api_key(verify_key = true)
+  if verify_key
+    @authenticated_user = UsersController.new.authenticate_api_key(request)
+    if @authenticated_user == :unauthorized
+      render json: { error: 'Unauthorized' }, status: :unauthorized
+    end
+  end
+end
+
+
 
   def create
-
-
     if request[:file].nil?
       puts "Peticio UI"
       @attachment = @issue.attachments.new(name: params[:attachment][:file].original_filename)
@@ -43,7 +60,7 @@ class AttachmentsController < ApplicationController
       if request[:file].nil?
       format.html { redirect_to issue_path(@issue)}
       else
-      format.json {  render json: { message: "Attachment upload successfully" }, status: :ok  }
+      format.json {  render json: { message: "Attachment uploaded successfully" }, status: :ok  }
       end
     end
   end

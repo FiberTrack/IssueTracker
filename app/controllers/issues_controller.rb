@@ -7,7 +7,7 @@ class IssuesController < ApplicationController
 
 def issue_not_found
     render json: { error: 'Issue not found' }, status: :not_found
-  end
+end
 
   def authenticate_api_key(verify_key = true)
   if verify_key
