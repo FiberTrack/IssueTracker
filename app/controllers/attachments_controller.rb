@@ -1,17 +1,34 @@
+require 'aws-sdk-s3'
+
 class AttachmentsController < ApplicationController
   before_action :set_issue, only: [:create]
   before_action :set_attachment, only: [:destroy]
 
   def create
-    @attachment = @issue.attachments.new(name: params[:attachment][:file].original_filename)
+
+
+    if request[:file].nil?
+      puts "Peticio UI"
+      @attachment = @issue.attachments.new(name: params[:attachment][:file].original_filename)
+    else
+      puts "Peticio API"
+      @attachment = @issue.attachments.new(name: request.params[:file].original_filename)
+    end
 
     if @attachment.save
       puts "Attachment saved successfully."
       begin
-        s3_object = upload_to_s3(params[:attachment][:file])
 
+      if request[:file].nil?
+         puts "Peticio UI segona part"
+       s3_object = upload_to_s3(params[:attachment][:file])
+      else
+        puts "Peticio API segona part"
+       s3_object = upload_to_s3(request.params[:file])
+      end
 
         flash[:notice] = "Archivo subido correctamente."
+
       rescue => e
         puts "Error uploading to S3: #{e.message}"
         flash[:alert] = "Hubo un error al subir el archivo."
@@ -21,7 +38,14 @@ class AttachmentsController < ApplicationController
       flash[:alert] = "Hubo un error al guardar el archivo en el sistema."
     end
 
-    redirect_to issue_path(@issue)
+    #redirect_to issue_path(@issue)
+     respond_to do |format|
+      if request[:file].nil?
+      format.html { redirect_to issue_path(@issue)}
+      else
+      format.json {  render json: { message: "Attachment upload successfully" }, status: :ok  }
+      end
+    end
   end
 
 
