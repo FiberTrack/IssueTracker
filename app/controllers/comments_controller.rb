@@ -14,13 +14,13 @@ class CommentsController < ApplicationController
     @issue = Issue.find(issue_id)
     @comment = @issue.comments.new(content: content, user: user)
 
+    respond_to do |format|
     if @comment.save
-      response = { comment: @comment }
-      response = render json: @comment, status: :created
+    format.json { render json: @comment.to_json, status: :created }
     else
-      response = render json: @comment.errors, status: :unprocessable_entity
+    format.json { render json: @comment.errors, status: :unprocessable_entity }
     end
-    response
+    end
   end
 
   def destroy
