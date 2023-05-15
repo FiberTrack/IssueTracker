@@ -35,7 +35,7 @@ Rails.application.routes.draw do
 
   ##API
   delete '/issues/:id', to: 'issues#destroy'
-  get '/issues', to: 'issues#all_issues_as_json'
+  get '/issues', to: 'issues#index'
   post '/issues/new', to: 'issues#create'
   post '/issues/:id/comments/new', to: 'issues#create_comment'
   get '/issues/:id/comments', to: 'issues#get_comments'

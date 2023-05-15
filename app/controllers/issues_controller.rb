@@ -22,9 +22,10 @@ end
 
 
   def index
+    if params[:filtro] == "" and params[:options] == "" and params[:order_by] == "" and params[:direction] == ""
+      all_issues_as_json
+    else
     @issues = Issue.all
-
-
     if params[:filtro].present?
       @filtered_issues = @issues.where("lower(subject) LIKE ? OR lower(description) LIKE ?", "%#{params[:filtro].downcase}%", "%#{params[:filtro].downcase}%")
     elsif params[:options].present?
@@ -33,19 +34,17 @@ end
     else
       @filtered_issues = @issues
     end
-
     if params[:order_by].present? && params[:direction].present?
       @ordered_issues = @filtered_issues.order("#{params[:order_by]} #{params[:direction]}")
     else
       @ordered_issues = @filtered_issues
     end
-
-
     # agregar estas líneas para preservar los parámetros de búsqueda al ordenar
     @params_without_order_by = request.query_parameters.except(:order_by, :direction)
     @order_by_params = { order_by: params[:order_by], direction: params[:direction] }
 
     @issues = @ordered_issues
+  end
   end
 
 def inicial
