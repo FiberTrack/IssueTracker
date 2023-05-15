@@ -227,7 +227,7 @@ end
   def add_deadline
   if params[:deadline_date] == ""
     delete_deadline
-  end
+  else
   @issue = Issue.find(params[:id])
   if params[:deadline_date].present?
     deadline_date = Date.parse(params[:deadline_date])
@@ -244,6 +244,7 @@ end
   respond_to do |format|
     format.html { redirect_to @issue, notice: "" }
     format.json { render json: @issue  }
+  end
   end
   end
 
