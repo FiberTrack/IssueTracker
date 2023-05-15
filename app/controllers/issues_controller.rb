@@ -3,7 +3,7 @@ require 'comments_controller.rb'
 
 class IssuesController < ApplicationController
   before_action :set_issue, only: %i[show edit update destroy]
-  before_action -> { authenticate_api_key(request.headers['Authorization'].present?) }, only: [:destroy, :create, :create_comment, :get_comments]
+  before_action -> { authenticate_api_key(request.headers['Authorization'].present?) }, only: [:destroy, :create, :create_comment]
  rescue_from ActiveRecord::RecordNotFound, with: :issue_not_found
 
 
@@ -266,7 +266,7 @@ end
   end
 
   def get_comments
-    issue_id = params[:issue_id]
+    issue_id = params[:id]
     @comments = Issue.find(issue_id).comments
 
   respond_to do |format|
