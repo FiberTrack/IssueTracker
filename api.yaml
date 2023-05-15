@@ -11,11 +11,35 @@ paths:
     get:
       tags:
         - Issues
-      summary: Retrieves all the Issues
-      operationId: all_issues_as_json
+      summary: Get all the issues or a list of filtered, ordered or searched issues
+      operationId: index
+      parameters:
+        - in: query
+          name: direction
+          schema:
+            type: string
+          description: Direction to sort the issues by (asc or desc)
+        - in: query
+          name: order_by
+          schema:
+            type: string
+          description: Attribute to sort the issues by (Type, Severity, Priority, Subject, Status, Assign or Created)
+        - in: query
+          name: options[]
+          schema:
+            type: array
+            items:
+              type: string
+          description: List of options of Type, Severity, Priority, Subject, Status, Assign and Created to filter by
+        - in: query
+          name: filtro
+          schema:
+            type: string
+          description: Filter to search issues by subject or description
+
       responses:
         200:
-          description: successful operation
+          description: List of issues
           content:
             application/json:
               schema:
@@ -71,48 +95,6 @@ paths:
       security:
       - api_key: []
 
-  /issues/:
-    get:
-      tags:
-        - Issues
-      summary: Get a list of filtered, ordered or searched issues
-      operationId: index
-      parameters:
-        - in: query
-          name: direction
-          schema:
-            type: string
-          description: Direction to sort the issues by (asc or desc)
-        - in: query
-          name: order_by
-          schema:
-            type: string
-          description: Attribute to sort the issues by (Type, Severity, Priority, Subject, Status, Assign or Created)
-        - in: query
-          name: options[]
-          schema:
-            type: array
-            items:
-              type: string
-          description: List of options of Type, Severity, Priority, Subject, Status, Assign and Created to filter by
-        - in: query
-          name: filtro
-          schema:
-            type: string
-          description: Filter to search issues by subject or description
-
-      responses:
-        200:
-          description: List of issues
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Issue'
-
-
-
   /issues/new:
     post:
       tags:
@@ -134,7 +116,8 @@ paths:
                   example: 'Description'
                 assign:
                   type: string
-                  example: 'Assign'
+                  enum: ['Gabriel Del Valle, Arnau Gracia López', 'Abdelrahim Chelh El Azzaoui', 'Abel Batalla Ferrés']
+                  example: 'Gabriel Del Valle'
                 severity:
                   type: string
                   enum: ['Wishlist', 'Minor', 'Normal', 'Important', 'Critical']
