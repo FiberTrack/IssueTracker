@@ -15,10 +15,10 @@ class CommentsController < ApplicationController
     @comment = @issue.comments.new(content: content, user: user)
 
     respond_to do |format|
-      if @comment.save
-        format.json { render :show, status: :created, location: @comment }
+      if comment.save
+        render json: comment, status: :created, location: issue_comment_url(issue, comment, format: :json)
       else
-        format.json { render json: @comment.errors, status: :unprocessable_entity }
+        render json: comment.errors, status: :unprocessable_entity
       end
     end
   end
