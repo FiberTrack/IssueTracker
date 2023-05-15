@@ -12,7 +12,7 @@ class CommentsController < ApplicationController
 
   def create_api (user,request)
     @issue = Issue.find(params[:issue_id])
-    @comment = @issue.comments.new(comment_params.merge(user))
+    @comment = @issue.comments.new(comment_params.merge(user, content: params[:content]))
     if @comment.save
       render json: @comment, status: :created
     else
