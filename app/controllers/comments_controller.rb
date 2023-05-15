@@ -13,6 +13,11 @@ class CommentsController < ApplicationController
   def create_api (issue_id, user)
     @issue = Issue.find(issue_id)
     @comment = @issue.comments.new(comment_params.merge(user))
+    if @comment.save
+      render json: @comment, status: :created
+    else
+      render json: @comment.errors, status: :unprocessable_entity
+    end
   end
 
   def destroy
