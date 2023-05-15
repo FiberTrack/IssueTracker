@@ -47,62 +47,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Issue'
 
-    post:
-      tags:
-        - Comments
-      summary: Adds a new comment to an Issue
-      operationId: create_comment
-      parameters:
-      - name: IssueId
-        in: path
-        description: ID of the Issue to add a comment to
-        required: true
-        schema:
-          type: integer
-      requestBody:
-        description: Provide a comment for an issue
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                content:
-                  type: string
-                  example: "HOLAA"
-                issue_id:
-                  type: integer
-                  format: int64
-                  example: 50
-
-      security:
-        - api_key: []
-
-      responses:
-        200:
-          description: "Comment created"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Comment'
-        401:
-          description: 'Error: Unauthorized'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResult'
-              examples:
-                errorExample:
-                  $ref: '#/components/examples/error401'
-        403:
-          description: 'Error: Forbidden'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResult'
-              examples:
-                errorExample:
-                  $ref: '#/components/examples/error403'
-
     delete:
       tags:
       - Issues
@@ -127,10 +71,6 @@ paths:
           description: 'Error: Forbidden'
       security:
       - api_key: []
-
-
-
-
 
   /issues/:
     get:
@@ -227,6 +167,88 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Issue'
+        401:
+          description: 'Error: Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error401'
+        403:
+          description: 'Error: Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error403'
+
+  /issues/{id}/comments:
+    get:
+      tags:
+        - Comments
+      summary: Finds comments by its IssueID
+      description: Returns all the comments for the Issue with IssueID
+      operationId: getcomments
+      parameters:
+      - name: id
+        in: path
+        description: ID of Issue to search
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+
+  /issues/{IssueId}/comments/new:
+    post:
+      tags:
+        - Comments
+      summary: Adds a new comment to an Issue
+      operationId: create_comment
+      parameters:
+      - name: IssueId
+        in: path
+        description: ID of the Issue to add a comment to
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        description: Provide a comment for an issue
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                  example: "HOLAA"
+                issue_id:
+                  type: integer
+                  format: int64
+                  example: 50
+
+      security:
+        - api_key: []
+
+      responses:
+        200:
+          description: "Comment created"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
         401:
           description: 'Error: Unauthorized'
           content:
