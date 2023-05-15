@@ -222,6 +222,8 @@ def destroy_single_attachment
       redirect_to issue_path(attachment.issue)
 end
 
+  #Deadlines
+
   def add_deadline
   @issue = Issue.find(params[:id])
   if params[:deadline_date].present?
@@ -236,7 +238,6 @@ end
       record_activity(@authenticated_user.id, @issue.id, "added deadline of #{deadline_date} for")
     end
   end
-
   respond_to do |format|
     format.html { redirect_to @issue, notice: "" }
     format.json {  render json: @issue  }
@@ -245,7 +246,7 @@ end
 
   def delete_deadline
     @issue = Issue.find(params[:id])
-    @issue.deadline = nil
+     @issue.update(deadline: nil)
     if current_user
     record_activity(current_user.id, @issue.id, 'removed deadline for')
     else
