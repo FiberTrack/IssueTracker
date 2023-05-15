@@ -3,7 +3,7 @@ require 'comments_controller.rb'
 
 class IssuesController < ApplicationController
   before_action :set_issue, only: %i[show edit update destroy]
-  before_action -> { authenticate_api_key(request.headers['Authorization'].present?) }, only: [:destroy, :create, :create_comment]
+  before_action -> { authenticate_api_key(request.headers['Authorization'].present?) }, only: [:destroy, :create, :create_comment, :get_comments]
  rescue_from ActiveRecord::RecordNotFound, with: :issue_not_found
 
 
@@ -20,26 +20,6 @@ def issue_not_found
   end
 end
 
-  def create_comment
-    if current_user
-     CommentsController.new.create
-    else
-     puts request.headers['Authorization']
-     comments_controller = CommentsController.new
-     issue_id = params[:issue_id]
-     content = params[:content]
-     @issue = Issue.find(issue_id)
-     @comment = @issue.comments.new(content: content, user: @authenticated_user)
-
-      respond_to do |format|
-      if @comment.save
-        format.json { render json: @comment, status: :created }
-      else
-        format.json { render json: @comment.errors, status: :unprocessable_entity }
-      end
-      end
-      end
-  end
 
   def index
     @issues = Issue.all
@@ -254,14 +234,44 @@ end
 
     def record_activity(user, issue, action)
           Activity.create(action: action, issue_id: issue, user_id: user)
-
-
     end
-
 
   def all_issues_as_json
     @issues = Issue.all
     render json: @issues
+  end
+
+
+  #Comentaris
+
+  def create_comment
+    if current_user
+     CommentsController.new.create
+    else
+     puts request.headers['Authorization']
+     comments_controller = CommentsController.new
+     issue_id = params[:issue_id]
+     content = params[:content]
+     @issue = Issue.find(issue_id)
+     @comment = @issue.comments.new(content: content, user: @authenticated_user)
+
+      respond_to do |format|
+      if @comment.save
+        format.json { render json: @comment, status: :created }
+      else
+        format.json { render json: @comment.errors, status: :unprocessable_entity }
+      end
+      end
+      end
+  end
+
+  def get_comments
+    issue_id = params[:issue_id]
+    @comments = Issue.find(issue_id).comments
+
+  respond_to do |format|
+    format.json { render json: @comments }
+    end
   end
 
   private

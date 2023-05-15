@@ -38,5 +38,6 @@ Rails.application.routes.draw do
   get '/issues', to: 'issues#all_issues_as_json'
   post '/issues/new', to: 'issues#create'
   post '/issues/:id', to: 'issues#create_comment'
+  get '/issues/:id/comments', to: 'issues#getcomments'
 
 end
