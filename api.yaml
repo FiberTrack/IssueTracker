@@ -1,0 +1,376 @@
+openapi: 3.0.2
+info:
+  version: 1.0.0
+  title: IssueTracker
+  description: "This is the Open API documentation for the REST API of our beloved application **IssueTracker** deployed at <https://issuetrackerv1.herokuapp.com/>. <br>All operations are executable. Operations that make changes to the domain require authentication. In this case, you must **Authorize** your request by providing the token value you got when you created the tweet."
+servers:
+  - url: 'https://issuetrackerv1.herokuapp.com/'
+
+
+paths:
+  /issues:
+    get:
+      tags:
+        - Issues
+      summary: Retrieves all the Issues
+      operationId: all_issues_as_json
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Issue'
+
+  /issues/{IssueId}:
+    get:
+      tags:
+        - Issues
+      summary: Finds a Issue by its ID
+      description: Returns a single Issue
+      operationId: show
+      parameters:
+      - name: IssueId
+        in: path
+        description: ID of Issue to return
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Issue'
+
+    post:
+      tags:
+        - Comments
+      summary: Adds a new comment to an Issue
+      operationId: create_comment
+      parameters:
+      - name: IssueId
+        in: path
+        description: ID of the Issue to add a comment to
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        description: Provide a comment for an issue
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                  example: "HOLAA"
+                issue_id:
+                  type: integer
+                  format: int64
+                  example: 50
+
+      security:
+        - api_key: []
+
+      responses:
+        200:
+          description: "Comment created"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        401:
+          description: 'Error: Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error401'
+        403:
+          description: 'Error: Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error403'
+
+    delete:
+      tags:
+      - Issues
+      summary: If the Issue exists, deletes it if the token is present and valid. If it does not exist, returns 404 .
+      operationId: destroy
+      parameters:
+      - name: IssueId
+        in: path
+        description: Issue id to delete
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Issue deleted
+        404:
+          description: 'Error: Non-Existent'
+        401:
+          description: 'Error: Unauthorized'
+        403:
+          description: 'Error: Forbidden'
+      security:
+      - api_key: []
+
+
+
+
+
+  /issues/:
+    get:
+      tags:
+        - Issues
+      summary: Get a list of filtered, ordered or searched issues
+      operationId: index
+      parameters:
+        - in: query
+          name: direction
+          schema:
+            type: string
+          description: Direction to sort the issues by (asc or desc)
+        - in: query
+          name: order_by
+          schema:
+            type: string
+          description: Attribute to sort the issues by (Type, Severity, Priority, Subject, Status, Assign or Created)
+        - in: query
+          name: options[]
+          schema:
+            type: array
+            items:
+              type: string
+          description: List of options of Type, Severity, Priority, Subject, Status, Assign and Created to filter by
+        - in: query
+          name: filtro
+          schema:
+            type: string
+          description: Filter to search issues by subject or description
+
+      responses:
+        200:
+          description: List of issues
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Issue'
+
+
+
+  /issues/new:
+    post:
+      tags:
+        - Issues
+      summary: Adds a new Issues to the IssueTracker
+      operationId: create
+      requestBody:
+        description: Provide the Subject, Description, Assigned, Type, Severity, Priority Status and Watched of the new Issue
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                subject:
+                  type: string
+                  example: 'Subject'
+                description:
+                  type: string
+                  example: 'Description'
+                assign:
+                  type: string
+                  example: 'Assign'
+                severity:
+                  type: string
+                  enum: ['Wishlist', 'Minor', 'Normal', 'Important', 'Critical']
+                  example: 'Wishlist'
+                priority:
+                  type: string
+                  enum: ['Low', 'Normal', 'High']
+                  example: 'High'
+                issue_type:
+                  type: string
+                  enum: ['Bug', 'Question', 'Enhancement']
+                  example: 'Bug'
+                status:
+                  type: string
+                  enum: ['New', 'In Progress', 'Ready For Test', 'Postponed', 'Closed', 'Information Needed', 'Rejected']
+                  example: 'New'
+                watcher_ids:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1]
+      security:
+        - api_key: []
+
+      responses:
+        200:
+          description: Issue created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Issue'
+        401:
+          description: 'Error: Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error401'
+        403:
+          description: 'Error: Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error403'
+
+
+components:
+  schemas:
+    Issue:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 2
+        subject:
+          type: string
+          example: 'Subject'
+        description:
+          type: string
+          example: 'Description'
+        assign:
+          type: string
+          example: 'Assign'
+        created_at:
+          type: string
+          format: date-time
+          example: 'Wed, 12 Apr 2023 13:52:06.671832000 UTC +00:00'
+        updated_at:
+          type: string
+          format: date-time
+          example: 'Wed, 12 Apr 2023 13:52:06.671832000 UTC +00:00'
+        severity:
+          type: string
+          enum: ['Wishlist', 'Minor', 'Normal', 'Important', 'Critical']
+          example: 'Wishlist'
+        priority:
+          type: string
+          enum: ['Low', 'Normal', 'High']
+          example: 'High'
+        issue_type:
+          type: string
+          enum: ['Bug', 'Question', 'Enhancement']
+          example: 'Bug'
+        blocked:
+          type: boolean
+          example: true
+        deadline:
+          type: string
+          format: date-time
+          example: '05/05/2023'
+        watcher:
+          type: array
+          items:
+            type: string
+          example: ['Gabriel del Valle']
+        watcher_ids:
+          type: array
+          items:
+            type: integer
+            example: [1]
+        status:
+          type: string
+          enum: ['New', 'In Progress', 'Ready For Test', 'Postponed', 'Closed', 'Information Needed', 'Rejected']
+          example: 'New'
+        created_by:
+          type: string
+          example: 'Gabriel del Valle'
+      required:
+        - id
+        - created_at
+        - severity
+        - priority
+        - issue_type
+        - status
+
+    Comment:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 2
+        content:
+          type: string
+          default: null
+        issue_id:
+          type: integer
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        user_id:
+          type: integer
+          format: int64
+      required:
+        - id
+        - issue_id
+        - created_at
+        - user_id
+
+
+    ErrorResult:
+      type: object
+      properties:
+        message:
+          type: string
+          example: 'Content is too long (maximum is 280 characters)'
+      required:
+        - message
+
+  examples:
+    error400:
+      value:
+        message: "Content is too long (maximum is 280 characters)"
+    error401:
+      value:
+        message: "You provided no token"
+    error403:
+      value:
+        message: "You provided an invalid token"
+    error404:
+      value:
+        message: "There is no tweet with 'id'=8"
+
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: Authorization
+      in: header
