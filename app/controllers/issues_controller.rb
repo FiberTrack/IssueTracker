@@ -226,7 +226,7 @@ end
 
   def add_deadline
   if params[:deadline_date] == ""
-    redirect_to delete_deadline_path
+    delete_deadline
   end
   @issue = Issue.find(params[:id])
   if params[:deadline_date].present?
