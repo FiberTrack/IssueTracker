@@ -3,7 +3,7 @@ require 'comments_controller.rb'
 
 class IssuesController < ApplicationController
   before_action :set_issue, only: %i[show edit update destroy]
-  before_action -> { authenticate_api_key(request.headers['Authorization'].present?) }, only: [:destroy, :create, :create_comment]
+  before_action -> { authenticate_api_key(request.headers['Authorization'].present?) }, only: [:destroy, :create, :create_comment, :block]
  rescue_from ActiveRecord::RecordNotFound, with: :issue_not_found
 
 
@@ -201,9 +201,17 @@ end
   def block
   @issue = Issue.find(params[:id])
   @issue.update(blocked: !@issue.blocked)
+  if current_user
       record_activity(current_user.id, @issue.id, @issue.blocked ? 'blocked' : 'unblocked')
-  redirect_to @issue
+  else
+    record_activity(@authenticated_user.id, @issue.id, @issue.blocked ? 'blocked' : 'unblocked')
   end
+  respond_to do |format|
+    format.html { redirect_to @issue, notice: "" }
+    format.json {  render json: @issue  }
+  end
+  end
+
 def destroy_single_attachment
       attachment = Attachment.find(params[:id])
       attachments_controller = AttachmentsController.new
