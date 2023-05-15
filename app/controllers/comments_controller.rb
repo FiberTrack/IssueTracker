@@ -16,6 +16,7 @@ class CommentsController < ApplicationController
 
     if @comment.save
       render json: @comment, status: :created
+      redirect_to issue_path(@issue)
     else
       render json: @comment.errors, status: :unprocessable_entity
     end
