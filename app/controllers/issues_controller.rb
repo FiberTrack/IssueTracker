@@ -29,7 +29,7 @@ end
      issue_id = params[:issue_id]
      content = params[:content]
      @issue = Issue.find(issue_id)
-      @comment = @issue.comments.new(content: content, user: user)
+     @comment = @issue.comments.new(content: content, user: @authenticated_user)
 
       respond_to do |format|
       if @comment.save
