@@ -28,8 +28,17 @@ end
      comments_controller = CommentsController.new
      issue_id = params[:issue_id]
      content = params[:content]
-     comments_controller.create_api(issue_id,@authenticated_user, content)
-    end
+     @issue = Issue.find(issue_id)
+      @comment = @issue.comments.new(content: content, user: user)
+
+      respond_to do |format|
+      if @comment.save
+        format.json { render json: @comment, status: :created }
+      else
+        format.json { render json: @comment.errors, status: :unprocessable_entity }
+      end
+      end
+      end
   end
 
   def index
@@ -263,6 +272,10 @@ end
     # Only allow a list of trusted parameters through.
     def issue_params
       params.require(:issue).permit(:subject, :description, :assign, :issue_type, :severity, :priority, :status, :created_by, :watcher_ids => [])
+    end
+
+    def comment_params
+    params.require(:comment).permit(:content)
     end
 
 end
