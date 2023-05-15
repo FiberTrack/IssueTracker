@@ -27,7 +27,8 @@ end
      puts request.headers['Authorization']
      comments_controller = CommentsController.new
      issue_id = params[:issue_id]
-     comments_controller.create_api(issue_id,@authenticated_user,request)
+     content = params[:content]
+     comments_controller.create_api(issue_id,@authenticated_user, content)
     end
   end
 

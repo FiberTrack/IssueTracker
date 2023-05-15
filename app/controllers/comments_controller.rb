@@ -10,9 +10,9 @@ class CommentsController < ApplicationController
     redirect_to issue_path(@issue)
   end
 
-  def create_api (issue_id, user,request)
+  def create_api (issue_id, user, content)
     @issue = Issue.find(issue_id)
-    @comment = @issue.comments.new(comment_params.merge(user, content: params[:content]))
+    @comment = @issue.comments.new(comment_params.merge(user, content: :content))
     if @comment.save
       render json: @comment, status: :created
     else
