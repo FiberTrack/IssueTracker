@@ -3,7 +3,7 @@ require 'comments_controller.rb'
 
 class IssuesController < ApplicationController
   before_action :set_issue, only: %i[show edit update destroy]
-  before_action -> { authenticate_api_key(request.headers['Authorization'].present?) }, only: [:destroy, :create, :create_comment, :block]
+  before_action -> { authenticate_api_key(request.headers['Authorization'].present?) }, only: [:destroy, :create, :create_comment, :block, :add_deadline, :delete_deadline]
  rescue_from ActiveRecord::RecordNotFound, with: :issue_not_found
 
 
@@ -226,10 +226,20 @@ end
   @issue = Issue.find(params[:id])
   if params[:deadline_date].present?
     deadline_date = Date.parse(params[:deadline_date])
+    if deadline_date < Date.today
+      render json: { error: "Deadline must be greater than or equal to today's date" }, status: :unprocessable_entity
+    end
     @issue.update(deadline: deadline_date)
+    if current_user
     record_activity(current_user.id, @issue.id, "added deadline of #{deadline_date} for")
+    else
+      record_activity(@authenticated_user.id, @issue.id, "added deadline of #{deadline_date} for")
+    end
   end
-  redirect_to @issue
+
+  respond_to do |format|
+    format.json { render json: @issue }
+  end
   end
 
   def delete_deadline
