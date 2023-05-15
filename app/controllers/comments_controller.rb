@@ -15,7 +15,8 @@ class CommentsController < ApplicationController
     @comment = @issue.comments.new(content: content, user: user)
 
     if @comment.save
-      render json: @comment, status: :created
+      response = { comment: @comment }
+      render json: response, status: :created
     else
       render json: @comment.errors, status: :unprocessable_entity
     end
