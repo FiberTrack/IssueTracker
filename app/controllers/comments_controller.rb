@@ -14,11 +14,12 @@ class CommentsController < ApplicationController
     @issue = Issue.find(issue_id)
     @comment = @issue.comments.new(content: content, user: user)
 
+    respond_to do |format|
     if @comment.save
-      render json: @comment, status: :created
-      redirect_to issue_path(@issue)
+      format.json { render json: @comment, status: :created }
     else
-      render json: @comment.errors, status: :unprocessable_entity
+      format.json { render json: @comment.errors, status: :unprocessable_entity }
+    end
     end
   end
 
