@@ -26,7 +26,7 @@ end
     else
      puts request.headers['Authorization']
      comments_controller = CommentsController.new
-     comments_controller.create_api(@authenticated_user)
+     comments_controller.create_api(@authenticated_user,request)
     end
   end
 
