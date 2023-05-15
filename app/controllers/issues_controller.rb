@@ -1,7 +1,9 @@
 require 'users_controller.rb'
+require 'comments_controller.rb'
+
 class IssuesController < ApplicationController
   before_action :set_issue, only: %i[show edit update destroy]
-  before_action -> { authenticate_api_key(request.headers['Authorization'].present?) }, only: [:destroy, :create]
+  before_action -> { authenticate_api_key(request.headers['Authorization'].present?) }, only: [:destroy, :create, :create_comment]
  rescue_from ActiveRecord::RecordNotFound, with: :issue_not_found
 
 
@@ -17,6 +19,27 @@ def issue_not_found
     end
   end
 end
+
+  def create_comment
+    if current_user
+     CommentsController.new.create
+    else
+     puts request.headers['Authorization']
+     comments_controller = CommentsController.new
+     issue_id = params[:issue_id]
+     content = params[:content]
+     @issue = Issue.find(issue_id)
+     @comment = @issue.comments.new(content: content, user: @authenticated_user)
+
+      respond_to do |format|
+      if @comment.save
+        format.json { render json: @comment, status: :created }
+      else
+        format.json { render json: @comment.errors, status: :unprocessable_entity }
+      end
+      end
+      end
+  end
 
   def index
     @issues = Issue.all
@@ -249,6 +272,10 @@ end
     # Only allow a list of trusted parameters through.
     def issue_params
       params.require(:issue).permit(:subject, :description, :assign, :issue_type, :severity, :priority, :status, :created_by, :watcher_ids => [])
+    end
+
+    def comment_params
+    params.require(:comment).permit(:content)
     end
 
 end
