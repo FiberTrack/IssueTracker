@@ -266,7 +266,7 @@ end
   end
 
   def get_comments
-    issue_id = params[:issue_id]
+    issue_id = params[:id]
     @comments = Issue.find(issue_id).comments
 
   respond_to do |format|
