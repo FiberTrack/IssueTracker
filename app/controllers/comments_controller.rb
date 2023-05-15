@@ -13,6 +13,7 @@ class CommentsController < ApplicationController
   def create_api (issue_id, user, content)
     @issue = Issue.find(issue_id)
     @comment = @issue.comments.new(content: content, user: user)
+    request.variant ||= :default
 
     respond_to do |format|
     if @comment.save
