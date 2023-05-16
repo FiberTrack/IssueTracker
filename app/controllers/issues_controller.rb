@@ -4,7 +4,7 @@ require 'comments_controller.rb'
 
 class IssuesController < ApplicationController
   before_action :set_issue, only: %i[show edit update destroy]
-  before_action -> { authenticate_api_key(request.headers['Authorization'].present?) }, only: [:destroy, :create, :create_comment, :block, :add_deadline, :delete_deadline]
+  before_action -> { authenticate_api_key(request.headers['Authorization'].present?) }, only: [:destroy, :create, :create_comment, :block, :add_deadline, :delete_deadline, :create_multiple_issues]
  rescue_from ActiveRecord::RecordNotFound, with: :issue_not_found
 
 
@@ -105,16 +105,37 @@ end
 
 
   def create_multiple_issues
+  puts params[:subjects]
   subjects = params[:subjects].split("\n")
   issues_created = []
   subjects.each do |subject|
-    issue = Issue.new(subject: subject.strip, created_by: current_user.full_name, status: 'New')
+
+  subject.strip! # Eliminar espacios en blanco adicionales al inicio y al final del subject
+
+  next if subject.blank? # Saltar si el subject está vacío después de eliminar los espacios en blanco
+
+    if current_user
+      issue = Issue.new(subject: subject.strip, created_by: current_user.full_name, status: 'New')
+    else
+       issue = Issue.new(subject: subject.strip, created_by: @authenticated_user.full_name, status: 'New')
+    end
     if issue.save
       issues_created << issue
-    record_activity(current_user.id, issue.id, 'created in bulk')
+    if current_user
+      record_activity(current_user.id, issue.id, 'created in bulk')
+    else
+      record_activity(@authenticated_user.id, issue.id, 'created in bulk')
+    end
     end
   end
-  redirect_to issues_path
+
+  if !current_user
+  respond_to do |format|
+      format.json { render json: { message: "Attachments created successfully" }, status: :ok}
+  end
+  else
+    redirect_to issues_path
+  end
 end
 
   # PATCH/PUT /issues/1 or /issues/1.json

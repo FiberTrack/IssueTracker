@@ -22,8 +22,9 @@ Rails.application.routes.draw do
   post 'upload_avatar', to: 'users#update_avatar'
   post 'upload_bio', to: 'users#update_bio'
   post 'update_profile', to: 'users#update_profile'
-  post 'create_multiple_issues', to: 'issues#create_multiple_issues'
   get 'bulk_issues', to: 'issues#bulk_issues'
+
+
 
 
 
@@ -34,6 +35,10 @@ Rails.application.routes.draw do
 
 
   ##API
+
+  post '/issues/create_multiple', to: 'issues#create_multiple_issues', as: 'create_multiple_issues'
+
+
   delete '/issues/:id', to: 'issues#destroy'
   get '/issues', to: 'issues#index'
   post '/issues/new', to: 'issues#create'
