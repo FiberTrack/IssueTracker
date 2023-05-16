@@ -25,7 +25,7 @@ Rails.application.routes.draw do
   post 'create_multiple_issues', to: 'issues#create_multiple_issues'
   get 'bulk_issues', to: 'issues#bulk_issues'
 
-  post '/issues/:issue_id/attachments', to: 'attachments#create', as: "create_at"
+
 
   get 'visualize_account', to: 'users#visualize'
 
@@ -40,6 +40,9 @@ Rails.application.routes.draw do
 
 
   get '/issues/:issue_id/attachments', to: 'attachments#get_attachments'
+  post '/issues/:issue_id/attachments', to: 'attachments#create', as: "create_at"
+  delete '/attachments/:id', to: 'attachments#destroy_attachment', as: 'destroy_attachment'
+
 
 
 

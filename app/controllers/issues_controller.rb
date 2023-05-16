@@ -206,8 +206,7 @@ end
 def destroy_single_attachment
       attachment = Attachment.find(params[:id])
       attachments_controller = AttachmentsController.new
-      attachments_controller.destroy_attachment(attachment)
-
+      attachments_controller.destroy_attachment(params[:id])
 
       flash[:notice] = "Attachment successfully deleted."
       redirect_to issue_path(attachment.issue)

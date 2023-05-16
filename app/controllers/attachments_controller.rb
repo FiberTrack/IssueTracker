@@ -75,9 +75,9 @@ end
 
 
 
-
-  def destroy_attachment(attachment)
-
+  def destroy_attachment(id = nil)
+  attachment_id = id || params[:id]
+    attachment = Attachment.find(attachment_id)
     old_url = attachment.url
     if old_url.present?
       old_object_key = URI.parse(old_url).path[1..-1]
@@ -86,9 +86,14 @@ end
       object = bucket.object(old_object_key)
       object.delete
     end
-
     attachment.destroy
-  end
+
+    if id.nil?
+      respond_to do |format|
+        format.json {  render json: { message: "Attachment deleted successfully" }, status: :ok  }
+      end
+    end
+end
 
 
   private
