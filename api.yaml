@@ -347,6 +347,31 @@ paths:
                 errorExample:
                   $ref: '#/components/examples/error403'
 
+  /issues/{id}/activities:
+    get:
+      tags:
+        - Issues -> Activities
+      summary: Finds activites by its IssueID
+      description: Returns all the activites for the Issue with IssueID
+      operationId: get_activities
+      parameters:
+      - name: id
+        in: path
+        description: ID of Issue to search
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Activity'
+
 
 components:
   schemas:
@@ -446,6 +471,31 @@ components:
         - issue_id
         - created_at
         - user_id
+
+    Activity:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          format: int64
+        issue_id:
+          type: integer
+          format: int64
+        action:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - user_id
+      - issue_id
+      - action
+      - created_at
+      - updated_at
+
 
 
     ErrorResult:
