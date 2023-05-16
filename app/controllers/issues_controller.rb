@@ -125,12 +125,12 @@ end
     end
   end
 
+  if !current_user
   respond_to do |format|
-    if current_user
-      redirect_to issues_path
-    else
       format.json { render json: { message: "Attachments created successfully" }, status: :ok}
-    end
+  end
+  else
+    redirect_to issues_path
   end
 end
 
