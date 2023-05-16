@@ -3,7 +3,7 @@ require 'users_controller.rb'
 class AttachmentsController < ApplicationController
   before_action :set_issue, only: [:create]
   before_action :set_attachment, only: [:destroy]
-  before_action -> { authenticate_api_key(request.headers['Authorization'].present?) }, only: [:create]
+  before_action -> { authenticate_api_key(request.headers['Authorization'].present?) }, only: [:create, :destroy_attachment]
  rescue_from ActiveRecord::RecordNotFound, with: :issue_not_found
 
 
