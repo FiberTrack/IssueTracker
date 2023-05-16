@@ -110,6 +110,10 @@ end
   issues_created = []
   subjects.each do |subject|
 
+  subject.strip! # Eliminar espacios en blanco adicionales al inicio y al final del subject
+
+  next if subject.blank? # Saltar si el subject está vacío después de eliminar los espacios en blanco
+
     if current_user
       issue = Issue.new(subject: subject.strip, created_by: current_user.full_name, status: 'New')
     else
