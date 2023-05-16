@@ -305,6 +305,14 @@ end
     end
   end
 
+  def get_activities
+    @issue = Issue.find(params[:id])
+    @activities = @issue.activities
+    respond_to do |format|
+    format.json { render json: @activities }
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_issue
