@@ -1,17 +1,58 @@
+require 'aws-sdk-s3'
+require 'users_controller.rb'
 class AttachmentsController < ApplicationController
   before_action :set_issue, only: [:create]
   before_action :set_attachment, only: [:destroy]
+  before_action -> { authenticate_api_key(request.headers['Authorization'].present?) }, only: [:create, :destroy_attachment]
+ rescue_from ActiveRecord::RecordNotFound, with: :issue_not_found
+
+
+def issue_not_found
+    render json: { error: 'Issue not found' }, status: :not_found
+end
+
+
+def authenticate_api_key(verify_key = true)
+  if verify_key
+    @authenticated_user = UsersController.new.authenticate_api_key(request)
+    if @authenticated_user == :unauthorized
+      render json: { error: 'Unauthorized' }, status: :unauthorized
+    end
+  end
+end
+
+
+  def index
+    @issue = Issue.find(params[:issue_id])
+    @attachments = @issue.attachments.select(:id, :name, :url)
+    render json: @attachments
+  end
+
+
 
   def create
-    @attachment = @issue.attachments.new(name: params[:attachment][:file].original_filename)
+    if request[:file].nil?
+      puts "Peticio UI"
+      @attachment = @issue.attachments.new(name: params[:attachment][:file].original_filename)
+    else
+      puts "Peticio API"
+      @attachment = @issue.attachments.new(name: request.params[:file].original_filename)
+    end
 
     if @attachment.save
       puts "Attachment saved successfully."
       begin
-        s3_object = upload_to_s3(params[:attachment][:file])
 
+      if request[:file].nil?
+         puts "Peticio UI segona part"
+       s3_object = upload_to_s3(params[:attachment][:file])
+      else
+        puts "Peticio API segona part"
+       s3_object = upload_to_s3(request.params[:file])
+      end
 
         flash[:notice] = "Archivo subido correctamente."
+
       rescue => e
         puts "Error uploading to S3: #{e.message}"
         flash[:alert] = "Hubo un error al subir el archivo."
@@ -21,12 +62,22 @@ class AttachmentsController < ApplicationController
       flash[:alert] = "Hubo un error al guardar el archivo en el sistema."
     end
 
-    redirect_to issue_path(@issue)
+    #redirect_to issue_path(@issue)
+     respond_to do |format|
+      if request[:file].nil?
+      format.html { redirect_to issue_path(@issue)}
+      else
+      format.json {  render json: { message: "Attachment uploaded successfully" }, status: :ok  }
+      end
+    end
   end
 
 
-  def destroy_attachment(attachment)
 
+
+  def destroy_attachment(id = nil)
+  attachment_id = id || params[:id]
+    attachment = Attachment.find(attachment_id)
     old_url = attachment.url
     if old_url.present?
       old_object_key = URI.parse(old_url).path[1..-1]
@@ -35,14 +86,17 @@ class AttachmentsController < ApplicationController
       object = bucket.object(old_object_key)
       object.delete
     end
-
     attachment.destroy
-  end
+
+    if id.nil?
+      respond_to do |format|
+        format.json {  render json: { message: "Attachment deleted successfully" }, status: :ok  }
+      end
+    end
+end
 
 
   private
-
-
 
 
   def set_issue

@@ -1,4 +1,5 @@
 require 'users_controller.rb'
+
 require 'comments_controller.rb'
 
 class IssuesController < ApplicationController
@@ -9,7 +10,7 @@ class IssuesController < ApplicationController
 
 def issue_not_found
     render json: { error: 'Issue not found' }, status: :not_found
-  end
+end
 
   def authenticate_api_key(verify_key = true)
   if verify_key
@@ -59,6 +60,7 @@ end
     @attachments = Attachment.new
     @watchers = User.where(id: @issue.watcher_ids).pluck(:full_name)
   end
+
 
   # GET /issues/new
   def new
@@ -192,9 +194,6 @@ end
       format.html { redirect_to issues_url, notice: "" }
       format.json {  render json: { message: "Issue deleted successfully" }, status: :ok  }
     end
-
-
-
 end
 
   def block
@@ -211,11 +210,11 @@ end
   end
   end
 
+
 def destroy_single_attachment
       attachment = Attachment.find(params[:id])
       attachments_controller = AttachmentsController.new
-      attachments_controller.destroy_attachment(attachment)
-
+      attachments_controller.destroy_attachment(params[:id])
 
       flash[:notice] = "Attachment successfully deleted."
       redirect_to issue_path(attachment.issue)
@@ -261,6 +260,7 @@ end
       format.json { render json: @issue  }
     end
   end
+
 
 
     def record_activity(user, issue, action)
