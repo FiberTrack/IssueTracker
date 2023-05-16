@@ -7,17 +7,40 @@ servers:
   - url: 'https://issuetrackerv1.herokuapp.com/'
   - url: 'http://52.90.205.229:8080'
 
-
 paths:
   /issues:
     get:
       tags:
         - Issues
-      summary: Retrieves all the Issues
-      operationId: all_issues_as_json
+      summary: Get all the issues or a list of filtered, ordered or searched issues
+      operationId: index
+      parameters:
+        - in: query
+          name: direction
+          schema:
+            type: string
+          description: Direction to sort the issues by (asc or desc)
+        - in: query
+          name: order_by
+          schema:
+            type: string
+          description: Attribute to sort the issues by (Type, Severity, Priority, Subject, Status, Assign or Created)
+        - in: query
+          name: options[]
+          schema:
+            type: array
+            items:
+              type: string
+          description: List of options of Type, Severity, Priority, Subject, Status, Assign and Created to filter by
+        - in: query
+          name: filtro
+          schema:
+            type: string
+          description: Filter to search issues by subject or description
+
       responses:
         200:
-          description: successful operation
+          description: List of issues
           content:
             application/json:
               schema:
@@ -72,9 +95,6 @@ paths:
           description: 'Error: Forbidden'
       security:
       - api_key: []
-
-
-
 
 
   /issues/:
@@ -193,6 +213,7 @@ paths:
         - api_key: []
 
 
+
   /issues/new:
     post:
       tags:
@@ -214,7 +235,8 @@ paths:
                   example: 'Description'
                 assign:
                   type: string
-                  example: 'Assign'
+                  enum: ['Gabriel Del Valle, Arnau Gracia López', 'Abdelrahim Chelh El Azzaoui', 'Abel Batalla Ferrés']
+                  example: 'Gabriel Del Valle'
                 severity:
                   type: string
                   enum: ['Wishlist', 'Minor', 'Normal', 'Important', 'Critical']
@@ -265,6 +287,235 @@ paths:
                 errorExample:
                   $ref: '#/components/examples/error403'
 
+  /issues/{id}/block:
+    post:
+      tags:
+        - Issues -> Block/Unblock
+      summary: Block/Unblock an Issue
+      operationId: block
+      parameters:
+      - name: id
+        in: path
+        description: ID of the Issue to add a comment to
+        required: true
+        schema:
+          type: integer
+      security:
+        - api_key: []
+      responses:
+        200:
+          description: "Issue with deadline"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Issue'
+        401:
+          description: 'Error: Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error401'
+        403:
+          description: 'Error: Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error403'
+
+
+  /issues/{id}/deadline:
+    post:
+      tags:
+        - Issues -> Deadline
+      summary: Add/Delete deadline of an Issue
+      operationId: add_deadline
+      parameters:
+      - name: id
+        in: path
+        description: ID of the Issue to add a deadline
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        description: Provide the date of the deadline
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                deadline_date:
+                  type: string
+                  pattern: '^[0-9]{2}/[0-9]{2}/[0-9]{4}$'
+                  format: date-time
+                  example: '05/05/2023'
+
+      security:
+        - api_key: []
+      responses:
+        200:
+          description: "Issue blocked"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Issue'
+        401:
+          description: 'Error: Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error401'
+        403:
+          description: 'Error: Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error403'
+
+
+  /issues/{id}/comments:
+    get:
+      tags:
+        - Issues -> Comments
+      summary: Finds comments by its IssueID
+      description: Returns all the comments for the Issue with IssueID
+      operationId: getcomments
+      parameters:
+      - name: id
+        in: path
+        description: ID of Issue to search
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+
+  /issues/{IssueId}/comments/new:
+    post:
+      tags:
+        - Issues -> Comments
+      summary: Adds a new comment to an Issue
+      operationId: create_comment
+      parameters:
+      - name: IssueId
+        in: path
+        description: ID of the Issue to add a comment to
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        description: Provide a comment for an issue
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                  example: "HOLAA"
+                issue_id:
+                  type: integer
+                  format: int64
+                  example: 50
+
+      security:
+        - api_key: []
+
+      responses:
+        200:
+          description: "Comment created"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        401:
+          description: 'Error: Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error401'
+        403:
+          description: 'Error: Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error403'
+
+  /issues/{id}/activities:
+    get:
+      tags:
+        - Issues -> Activities
+      summary: Finds activites by its IssueID
+      description: Returns all the activites for the Issue with IssueID
+      operationId: get_activities
+      parameters:
+      - name: id
+        in: path
+        description: ID of Issue to search
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Activity'
+
+  /users/{usuari_id}/activities:
+    get:
+      tags:
+        - User -> Activities
+      summary: Finds activites by its UserID
+      description: Returns all the activites for the Issue with IssueID
+      operationId: get_activities_user
+      parameters:
+      - name: usuari_id
+        in: path
+        description: ID of Issue to search
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Activity'
+
 
 components:
   schemas:
@@ -309,6 +560,7 @@ components:
           example: true
         deadline:
           type: string
+          pattern: '^[0-9]{2}/[0-9]{2}/[0-9]{4}$'
           format: date-time
           example: '05/05/2023'
         watcher:
@@ -336,6 +588,96 @@ components:
         - issue_type
         - status
 
+    Comment:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 2
+        content:
+          type: string
+          default: null
+        issue_id:
+          type: integer
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        user_id:
+          type: integer
+          format: int64
+      required:
+        - id
+        - issue_id
+        - created_at
+        - user_id
+
+    Activity:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          format: int64
+        issue_id:
+          type: integer
+          format: int64
+        action:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - user_id
+      - issue_id
+      - action
+      - created_at
+      - updated_at
+
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        full_name:
+          type: string
+          example: 'Gabriel del Valle'
+        uid:
+          type: string
+          example: '1'
+        avatar_url:
+          type: string
+          format: uri
+          example: 'https://example.com/avatar.jpg'
+        provider:
+          type: string
+          example: 'google'
+        email:
+          type: string
+          format: email
+          example: 'gabri.del.valle@gmail.com'
+        bio:
+          type: string
+          example: 'Software Engineer'
+        api_key:
+          type: string
+          example: 'abcdefghijklmnopqrstuvwxyz'
+      required:
+        - id
+        - full_name
+        - email
+        - encrypted_password
+
+
+
     ErrorResult:
       type: object
       properties:
@@ -344,16 +686,6 @@ components:
           example: 'Content is too long (maximum is 280 characters)'
       required:
         - message
-
-    Attachment:
-      type: object
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        url:
-          type: string
 
 
   examples:

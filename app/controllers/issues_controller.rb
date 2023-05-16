@@ -1,9 +1,10 @@
 require 'users_controller.rb'
 
+require 'comments_controller.rb'
 
 class IssuesController < ApplicationController
   before_action :set_issue, only: %i[show edit update destroy]
-  before_action -> { authenticate_api_key(request.headers['Authorization'].present?) }, only: [:destroy, :create]
+  before_action -> { authenticate_api_key(request.headers['Authorization'].present?) }, only: [:destroy, :create, :create_comment, :block, :add_deadline, :delete_deadline]
  rescue_from ActiveRecord::RecordNotFound, with: :issue_not_found
 
 
@@ -20,10 +21,12 @@ end
   end
 end
 
+
   def index
+    if params[:filtro] == "" and params[:options] == "" and params[:order_by] == "" and params[:direction] == ""
+      all_issues_as_json
+    else
     @issues = Issue.all
-
-
     if params[:filtro].present?
       @filtered_issues = @issues.where("lower(subject) LIKE ? OR lower(description) LIKE ?", "%#{params[:filtro].downcase}%", "%#{params[:filtro].downcase}%")
     elsif params[:options].present?
@@ -32,19 +35,17 @@ end
     else
       @filtered_issues = @issues
     end
-
     if params[:order_by].present? && params[:direction].present?
       @ordered_issues = @filtered_issues.order("#{params[:order_by]} #{params[:direction]}")
     else
       @ordered_issues = @filtered_issues
     end
-
-
     # agregar estas líneas para preservar los parámetros de búsqueda al ordenar
     @params_without_order_by = request.query_parameters.except(:order_by, :direction)
     @order_by_params = { order_by: params[:order_by], direction: params[:direction] }
 
     @issues = @ordered_issues
+  end
   end
 
 def inicial
@@ -198,8 +199,15 @@ end
   def block
   @issue = Issue.find(params[:id])
   @issue.update(blocked: !@issue.blocked)
-      record_activity(current_user.id, @issue.id, @issue.blocked ? 'blocked' : 'unblocked')
-  redirect_to @issue
+  if current_user
+    record_activity(current_user.id, @issue.id, @issue.blocked ? 'blocked' : 'unblocked')
+  else
+    record_activity(@authenticated_user.id, @issue.id, @issue.blocked ? 'blocked' : 'unblocked')
+  end
+  respond_to do |format|
+    format.html { redirect_to @issue, notice: "" }
+    format.json {  render json: @issue  }
+  end
   end
 
 
@@ -212,32 +220,97 @@ def destroy_single_attachment
       redirect_to issue_path(attachment.issue)
 end
 
+  #Deadlines
+
   def add_deadline
+  if params[:deadline_date] == ""
+    delete_deadline
+  else
   @issue = Issue.find(params[:id])
   if params[:deadline_date].present?
     deadline_date = Date.parse(params[:deadline_date])
+    if deadline_date < Date.today
+      render json: { error: "Deadline must be greater than or equal to today's date" }, status: :unprocessable_entity
+    end
     @issue.update(deadline: deadline_date)
-    record_activity(current_user.id, @issue.id, "added deadline of #{deadline_date} for")
+    if current_user
+      record_activity(current_user.id, @issue.id, "added deadline of #{deadline_date} for")
+    else
+      record_activity(@authenticated_user.id, @issue.id, "added deadline of #{deadline_date} for")
+    end
   end
-  redirect_to @issue
+  respond_to do |format|
+    format.html { redirect_to @issue, notice: "" }
+    format.json { render json: @issue  }
+  end
+  end
   end
 
   def delete_deadline
     @issue = Issue.find(params[:id])
     @issue.update(deadline: nil)
+    if current_user
     record_activity(current_user.id, @issue.id, 'removed deadline for')
-    redirect_to @issue
+    else
+    record_activity(@authenticated_user.id, @issue.id, 'removed deadline for')
+    end
+
+    respond_to do |format|
+      format.html { redirect_to @issue, notice: "" }
+      format.json { render json: @issue  }
+    end
   end
 
 
-  def record_activity(user, issue, action)
-    Activity.create(action: action, issue_id: issue, user_id: user)
-  end
 
+    def record_activity(user, issue, action)
+          Activity.create(action: action, issue_id: issue, user_id: user)
+    end
 
   def all_issues_as_json
     @issues = Issue.all
     render json: @issues
+  end
+
+
+  #Comentaris
+
+  def create_comment
+    if current_user
+     CommentsController.new.create
+    else
+     puts request.headers['Authorization']
+     comments_controller = CommentsController.new
+     issue_id = params[:issue_id]
+     content = params[:content]
+     @issue = Issue.find(issue_id)
+     @comment = @issue.comments.new(content: content, user: @authenticated_user)
+
+      respond_to do |format|
+      if @comment.save
+        format.json { render json: @comment, status: :created }
+      else
+        format.json { render json: @comment.errors, status: :unprocessable_entity }
+      end
+      end
+      end
+  end
+
+  def get_comments
+    issue_id = params[:id]
+    @comments = Issue.find(issue_id).comments
+
+  respond_to do |format|
+    format.json { render json: @comments }
+    end
+  end
+
+  def get_activities
+    @issue = Issue.find(params[:id])
+    @activities = @issue.activities
+    respond_to do |format|
+    format.json { render json: @activities }
+    end
   end
 
   private
@@ -248,6 +321,10 @@ end
     # Only allow a list of trusted parameters through.
     def issue_params
       params.require(:issue).permit(:subject, :description, :assign, :issue_type, :severity, :priority, :status, :created_by, :watcher_ids => [])
+    end
+
+    def comment_params
+    params.require(:comment).permit(:content)
     end
 
 end

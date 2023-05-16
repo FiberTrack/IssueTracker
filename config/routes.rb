@@ -35,18 +35,21 @@ Rails.application.routes.draw do
 
   ##API
   delete '/issues/:id', to: 'issues#destroy'
-  get '/issues', to: 'issues#all_issues_as_json'
+  get '/issues', to: 'issues#index'
   post '/issues/new', to: 'issues#create'
-
-
+  
   get '/issues/:issue_id/attachments', to: 'attachments#get_attachments'
   post '/issues/:issue_id/attachments', to: 'attachments#create', as: "create_at"
   delete '/attachments/:id', to: 'attachments#destroy_attachment', as: 'destroy_attachment'
 
-
-
-
-
+  post '/issues/:id/comments/new', to: 'issues#create_comment'
+  get '/issues/:id/comments', to: 'issues#get_comments'
+  post '/issues/:id/block', to: 'issues#block'
+  post '/issues/:id/deadline', to: 'issues#add_deadline'
+  get '/issues/:id/activities', to: 'issues#get_activities'
+  get '/users', to: 'users#all_users_as_json'
+  get '/users/{usuari_id}', to: 'users#show_user'
+  get '/users/:usuari_id/activities', to: 'users#get_activities_user'
 
 
 end

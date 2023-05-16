@@ -10,6 +10,19 @@ class CommentsController < ApplicationController
     redirect_to issue_path(@issue)
   end
 
+  def create_api (issue_id, user, content)
+    @issue = Issue.find(issue_id)
+    @comment = @issue.comments.new(content: content, user: user)
+
+    respond_to do |format|
+    if @comment.save
+      format.json { render json: @comment, status: :created }
+    else
+      format.json { render json: @comment.errors, status: :unprocessable_entity }
+    end
+    end
+  end
+
   def destroy
     @issue = Issue.find(params[:issue_id])
     @comment = @issue.comments.find(params[:id])
@@ -19,6 +32,6 @@ class CommentsController < ApplicationController
 
   private
     def comment_params
-      params.require(:comment).permit(:content)
+      params.require(:comment).permit(:content,)
     end
 end
