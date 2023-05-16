@@ -60,6 +60,14 @@ def update_profile
   redirect_to root_path
 end
 
+def get_activities_user
+  @user = User.find(params[:usuari_id])
+  @activities = @user.activities
+  respond_to do |format|
+  format.json { render json: @activities }
+  end
+end
+
 
 # UsersController
 def authenticate_api_key(request)
