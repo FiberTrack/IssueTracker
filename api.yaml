@@ -517,6 +517,28 @@ paths:
                   $ref: '#/components/schemas/Activity'
 
 
+  /issues/create_multiple:
+      post:
+        summary: Create Multiple Issues
+        requestBody:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  subjects:
+                    type: string
+                    description: Subjects of the issues separated by new lines
+                required:
+                  - subjects
+        responses:
+          '200':
+            description: Issues created successfully
+          '400':
+            description: Invalid request body
+        security:
+          - api_key: []
+
 components:
   schemas:
     Issue:
