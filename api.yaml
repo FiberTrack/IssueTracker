@@ -498,6 +498,73 @@ paths:
               schema:
                 $ref: '#/components/schemas/User'
 
+  /users/{usuari_id}/update:
+    post:
+      tags:
+        - Users
+      summary: Update user profile
+      operationId: update_user
+      parameters:
+      - name: usuari_id
+        in: path
+        description: ID of the User to update
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: Provide updated user data
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                full_name:
+                  type: string
+                  example: "John Doe"
+                bio:
+                  type: string
+                  example: "I am a developer"
+              required:
+                - full_name
+                - bio
+      security:
+        - api_key: []
+      responses:
+        200:
+          description: User profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        400:
+          description: "Error: Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error400'
+        401:
+          description: 'Error: Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error401'
+        403:
+          description: 'Error: Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error403'
+
 
   /users/{usuari_id}/activities:
     get:
