@@ -103,7 +103,6 @@ end
     end
     end
   end
-  end
 
   def valid_params_new
     subject = params[:subject]
@@ -111,7 +110,6 @@ end
       render json: { error: 'The value subject is required.' }, status: :bad_request
       return false
     end
-
     assign = params[:assign]
     if assign.present?
       user = User.find_by(full_name: assign)
@@ -125,25 +123,22 @@ end
       render json: { error: 'Invalid value severity.' }, status: :bad_request
       return false
     end
-
     priority = params[:priority]
     if priority.blank? || !%w[Low Normal High].include?(priority)
       render json: { error: 'Invalid value priority.' }, status: :bad_request
       return false
     end
-
     issue_type = params[:issue_type]
     if issue_type.blank? || !%w[Bug Question Enhancement].include?(issue_type)
       render json: { error: 'Invalid value issue_type.' }, status: :bad_request
       return false
     end
-
     status_issue = params[:status]
     if status_issue.blank? || !%w['New', 'In Progress', 'Ready For Test', 'Postponed', 'Closed', 'Information Needed', 'Rejected'].include?(status_issue)
       render json: { error: 'Invalid value status.' }, status: :bad_request
       return false
     end
-
+    return true
   end
 
 
