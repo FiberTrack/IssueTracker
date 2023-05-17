@@ -75,6 +75,11 @@ end
 
   # POST /issues or /issues.json
   def create
+    subject1 = issue_params[:subject]
+    subject2 = params[:subject]
+    if subject1 == "" or subject2 == "" or subject2 == nil
+      render json: { error: 'The value subject is required.' }, status: :bad_request
+    else
     watcher_ids = params[:issue][:watcher_ids].presence || []
     @issue = Issue.new(issue_params.merge(watcher_ids: watcher_ids))
     Rails.logger.info "issue_params: #{issue_params.inspect}"
@@ -99,6 +104,7 @@ end
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @issue.errors, status: :unprocessable_entity }
       end
+    end
     end
   end
 
