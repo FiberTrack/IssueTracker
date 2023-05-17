@@ -152,7 +152,7 @@ end
 
       if @issue.update(issue_params)
         format.html { redirect_to issue_url(@issue), notice: "" }
-        format.json { render :show, status: :ok, location: @issue }
+      format.json { render :show, status: :created, location: @issue }
 
       if (subject_antic != issue_params[:subject])
         record_activity(current_user.id, @issue.id, "changed subject from #{subject_antic} to #{issue_params[:subject]} of")
