@@ -179,16 +179,6 @@ end
         return false
       end
     end
-    watcher_ids = issue_params[:watcher_ids]
-    if watcher_ids.present?
-      watcher_ids.each do |w_id|
-        user = User.find_by(uid: w_id)
-        if user.nil? && !w_id.empty?
-          render json: { error: 'Invalid value watcher_ids.' }, status: :bad_request
-          return false
-        end
-      end
-    end
     return true
   end
 
