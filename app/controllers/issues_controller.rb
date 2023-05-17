@@ -105,19 +105,26 @@ end
   end
 
   def valid_params_new
+    ##Aquest primer if només ho faig per poder crear desde la intercie
+    if issue_params[:status].present?
+      return true
+    end
     subject = params[:subject]
     if subject.nil? || subject.empty?
       render json: { error: 'The value subject is required.' }, status: :bad_request
       return false
     end
     assign = params[:assign]
-    if assign.present?
+      if assign.blank?
+        render json: { error: 'The value assign must be the full name of one of the logged users.' }, status: :bad_request
+        return false
+      end
       user = User.find_by(full_name: assign)
       unless user.present?
         render json: { error: 'The value assign must be the full name of one of the logged users.' }, status: :bad_request
         return false
       end
-    end
+
     severity = params[:severity]
     if severity.blank? || !%w[Wishlist Minor Normal Important Critical].include?(severity)
       render json: { error: 'Invalid value severity.' }, status: :bad_request
