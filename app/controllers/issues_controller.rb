@@ -180,11 +180,13 @@ end
       end
     end
     watcher_ids = issue_params[:watcher_ids]
-    watcher_ids.each do |uid|
-      user = User.find_by(uid: uid)
-      if user.nil? and !uid.empty?
-        render json: { error: 'Invalid value watcher_ids.' }, status: :bad_request
-        return false
+    if watcher_ids.present?
+      watcher_ids.each do |uid|
+        user = User.find_by(uid: uid)
+        if user.nil? and !uid.empty?
+          render json: { error: 'Invalid value watcher_ids.' }, status: :bad_request
+          return false
+        end
       end
     end
     return true
