@@ -180,6 +180,7 @@ end
       end
     end
     total_usuarios = User.count
+    watcher_ids = issue_params[:watcher_ids]
     if watcher_ids.present?
       watcher_ids = issue_params[:watcher_ids].map(&:to_i)
       if !watcher_ids.all? { |id| id.between?(1, total_usuarios) }
