@@ -78,6 +78,8 @@ end
     if valid_params_new
     watcher_ids = params[:issue][:watcher_ids].presence || []
     @issue = Issue.new(issue_params.merge(watcher_ids: watcher_ids))
+    @issue.status = 'New' if @issue.status.blank?
+    Rails.logger.info "issue_params: #{issue_params.inspect}"
     Rails.logger.info "issue_params: #{issue_params.inspect}"
     puts request.headers['Authorization']
 
@@ -146,9 +148,6 @@ end
       end
     end
     status_issue = issue_params[:status]
-    if status_issue.nil? || status_issue.empty?
-      issue_params[:status] = 'New'
-    end
     if status_issue.present?
       if status_issue.blank? || !%w[New In\ Progress Ready\ For\ Test Postponed Closed Information\ Needed Rejected].include?(status_issue)
         render json: { error: 'Invalid value status.' }, status: :bad_request
