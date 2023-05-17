@@ -97,49 +97,6 @@ paths:
       - api_key: []
 
 
-  /issues/:
-    get:
-      tags:
-        - Issues
-      summary: Get a list of filtered, ordered or searched issues
-      operationId: index
-      parameters:
-        - in: query
-          name: direction
-          schema:
-            type: string
-          description: Direction to sort the issues by (asc or desc)
-        - in: query
-          name: order_by
-          schema:
-            type: string
-          description: Attribute to sort the issues by (Type, Severity, Priority, Subject, Status, Assign or Created)
-        - in: query
-          name: options[]
-          schema:
-            type: array
-            items:
-              type: string
-          description: List of options of Type, Severity, Priority, Subject, Status, Assign and Created to filter by
-        - in: query
-          name: filtro
-          schema:
-            type: string
-          description: Filter to search issues by subject or description
-
-      responses:
-        200:
-          description: List of issues
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Issue'
-
-
-
-
   /issues/{IssueId}/attachments:
     post:
       tags:
@@ -256,8 +213,10 @@ paths:
                 watcher_ids:
                   type: array
                   items:
-                    type: integer
-                  example: [1]
+                    type: string
+                  example: ["1"]
+              required:
+                  - subject
       security:
         - api_key: []
 
@@ -268,6 +227,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Issue'
+        400:
+          description: "Error: Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error400'
         401:
           description: 'Error: Unauthorized'
           content:
@@ -593,8 +561,8 @@ components:
         watcher_ids:
           type: array
           items:
-            type: integer
-            example: [1]
+            type: string
+            example: ["1"]
         status:
           type: string
           enum: ['New', 'In Progress', 'Ready For Test', 'Postponed', 'Closed', 'Information Needed', 'Rejected']
