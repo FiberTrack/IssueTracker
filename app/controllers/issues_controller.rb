@@ -123,24 +123,32 @@ end
       end
     end
     severity = issue_params[:severity]
-    if severity.blank? || !%w[Wishlist Minor Normal Important Critical].include?(severity)
-      render json: { error: 'Invalid value severity.' }, status: :bad_request
-      return false
+    if severity.present?
+      if severity.blank? || !%w[Wishlist Minor Normal Important Critical].include?(severity)
+        render json: { error: 'Invalid value severity.' }, status: :bad_request
+        return false
+      end
     end
     priority = issue_params[:priority]
-    if priority.blank? || !%w[Low Normal High].include?(priority)
-      render json: { error: 'Invalid value priority.' }, status: :bad_request
-      return false
+    if priority.present?
+      if priority.blank? || !%w[Low Normal High].include?(priority)
+        render json: { error: 'Invalid value priority.' }, status: :bad_request
+        return false
+      end
     end
     issue_type = issue_params[:issue_type]
-    if issue_type.blank? || !%w[Bug Question Enhancement].include?(issue_type)
-      render json: { error: 'Invalid value issue_type.' }, status: :bad_request
-      return false
+    if issue_type.present?
+      if issue_type.blank? || !%w[Bug Question Enhancement].include?(issue_type)
+        render json: { error: 'Invalid value issue_type.' }, status: :bad_request
+        return false
+      end
     end
     status_issue = issue_params[:status]
-    if status_issue.blank? || !%w[New In\ Progress Ready\ For\ Test Postponed Closed Information\ Needed Rejected].include?(status_issue)
-      render json: { error: 'Invalid value status.' }, status: :bad_request
-      return false
+    if status_issue.present?
+      if status_issue.blank? || !%w[New In\ Progress Ready\ For\ Test Postponed Closed Information\ Needed Rejected].include?(status_issue)
+        render json: { error: 'Invalid value status.' }, status: :bad_request
+        return false
+      end
     end
     return true
   end
