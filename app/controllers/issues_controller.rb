@@ -75,9 +75,11 @@ end
 
   # POST /issues or /issues.json
   def create
+    if valid_params_new
     watcher_ids = params[:issue][:watcher_ids].presence || []
     @issue = Issue.new(issue_params.merge(watcher_ids: watcher_ids))
-    Rails.logger.info "issue_params: #{issue_params.inspect}"
+    @issue.status = 'New' if @issue.status.blank?
+
     puts request.headers['Authorization']
 
     if current_user
@@ -87,8 +89,10 @@ end
     record_activity(@authenticated_user.id, @issue.id, 'created')
     @issue.created_by = @authenticated_user.full_name
     end
+    if !issue_params[:watcher_ids].nil?
     issue_params[:watcher_ids].each do |user|
     IssueWatcher.create(issue_id: @issue.id, user_id: user)
+    end
     end
 
     respond_to do |format|
@@ -100,6 +104,91 @@ end
         format.json { render json: @issue.errors, status: :unprocessable_entity }
       end
     end
+    end
+  end
+
+  def valid_params_new
+    subject = issue_params[:subject]
+    if subject.nil? || subject.empty?
+      render json: { error: 'The value subject is required.' }, status: :bad_request
+      return false
+    end
+    assign = issue_params[:assign]
+    if !assign.nil?
+      if assign.empty?
+        render json: { error: 'The value assign must be the full name of one of the logged users.' }, status: :bad_request
+        return false
+      end
+    end
+    if assign.present?
+      user = User.find_by(full_name: assign)
+      unless user.present?
+        render json: { error: 'The value assign must be the full name of one of the logged users.' }, status: :bad_request
+        return false
+      end
+    end
+    severity = issue_params[:severity]
+    if !severity.nil?
+      if severity.empty?
+        render json: { error: 'Invalid value severity.' }, status: :bad_request
+        return false
+      end
+    end
+    if severity.present?
+      if severity.blank? || !%w[Wishlist Minor Normal Important Critical].include?(severity)
+        render json: { error: 'Invalid value severity.' }, status: :bad_request
+        return false
+      end
+    end
+    priority = issue_params[:priority]
+    if !priority.nil?
+      if priority.empty?
+        render json: { error: 'Invalid value priority.' }, status: :bad_request
+        return false
+      end
+    end
+    if priority.present?
+      if priority.blank? || !%w[Low Normal High].include?(priority)
+        render json: { error: 'Invalid value priority.' }, status: :bad_request
+        return false
+      end
+    end
+    issue_type = issue_params[:issue_type]
+    if !issue_type.nil?
+      if issue_type.empty?
+        render json: { error: 'Invalid value issue_type.' }, status: :bad_request
+        return false
+      end
+    end
+    if issue_type.present?
+      if issue_type.blank? || !%w[Bug Question Enhancement].include?(issue_type)
+        render json: { error: 'Invalid value issue_type.' }, status: :bad_request
+        return false
+      end
+    end
+    status_issue = issue_params[:status]
+    if !status_issue.nil?
+      if status_issue.empty?
+        render json: { error: 'Invalid value status_issue.' }, status: :bad_request
+        return false
+      end
+    end
+    if status_issue.present?
+      if status_issue.blank? || !%w[New In\ Progress Ready\ For\ Test Postponed Closed Information\ Needed Rejected].include?(status_issue)
+        render json: { error: 'Invalid value status.' }, status: :bad_request
+        return false
+      end
+    end
+    total_usuarios = User.count
+    watcher_ids = issue_params[:watcher_ids]
+    if watcher_ids.present?
+      watcher_ids = issue_params[:watcher_ids].map(&:to_i)
+      if !watcher_ids.all? { |id| id.between?(1, total_usuarios) }
+      render json: { error: 'Invalid watcher_ids.' }, status: :bad_request
+      return false
+    end
+    end
+    return true
   end
 
 
