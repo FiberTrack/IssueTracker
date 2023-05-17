@@ -53,7 +53,7 @@ Rails.application.routes.draw do
   post '/issues/:id/deadline', to: 'issues#add_deadline'
   get '/issues/:id/activities', to: 'issues#get_activities'
   get '/users', to: 'users#all_users_as_json'
-  get '/users/{usuari_id}', to: 'users#show_user'
+  get '/users/:usuari_id', to: 'users#show_user'
   get '/users/:usuari_id/activities', to: 'users#get_activities_user'
 
 

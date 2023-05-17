@@ -68,6 +68,16 @@ def get_activities_user
   end
 end
 
+def all_users_as_json
+    @users = User.all
+    render json: @users
+end
+
+def show_user
+     @user = User.find(params[:usuari_id])
+    render json: @user
+end
+
 
 # UsersController
 def authenticate_api_key(request)
