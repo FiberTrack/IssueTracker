@@ -49,7 +49,7 @@ def update_profile
   biog = params[:bio]
   avatar = params[:avatar]
   name = params[:full_name]
-  if (@current_user.api_key == @user.api_key)
+
     if avatar.present?
       update_avatar(avatar)
     end
@@ -61,7 +61,7 @@ def update_profile
     if name.present?
       current_user.update_attribute(:full_name, name)
     end
-  end
+
   redirect_to root_path
 end
 
