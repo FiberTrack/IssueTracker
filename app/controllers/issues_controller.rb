@@ -179,6 +179,12 @@ end
         return false
       end
     end
+    watcher_ids = issue_params[:watcher_ids].map(&:to_i)
+    total_usuarios = User.count
+    if watcher_ids.present? && !watcher_ids.all? { |id| id.between?(1, total_usuarios) }
+      render json: { error: 'Invalid watcher_ids.' }, status: :bad_request
+      return false
+    end
     return true
   end
 
