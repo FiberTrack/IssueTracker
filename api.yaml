@@ -70,6 +70,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Issue'
+        404:
+          description: 'Issue not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/issue_not_found'
+
 
     delete:
       tags:
@@ -87,12 +97,19 @@ paths:
       responses:
         200:
           description: Issue deleted
-        404:
-          description: 'Error: Non-Existent'
         401:
           description: 'Error: Unauthorized'
         403:
           description: 'Error: Forbidden'
+        404:
+          description: 'Issue not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/issue_not_found'
       security:
       - api_key: []
 
@@ -719,6 +736,9 @@ components:
 
 
   examples:
+    issue_not_found:
+      value:
+        message: "There is no issue with the provided ID"
     error400:
       value:
         message: "Content is too long (maximum is 280 characters)"
