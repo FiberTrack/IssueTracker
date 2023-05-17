@@ -57,4 +57,5 @@ Rails.application.routes.draw do
   get '/users/:usuari_id/activities', to: 'users#get_activities_user'
 
 
+
 end
