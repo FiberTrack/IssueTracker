@@ -75,7 +75,7 @@ end
 
   # POST /issues or /issues.json
   def create
-    if valid_params_new?
+    if valid_params_new
     watcher_ids = params[:issue][:watcher_ids].presence || []
     @issue = Issue.new(issue_params.merge(watcher_ids: watcher_ids))
     Rails.logger.info "issue_params: #{issue_params.inspect}"
