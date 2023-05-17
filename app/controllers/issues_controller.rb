@@ -79,8 +79,7 @@ end
     watcher_ids = params[:issue][:watcher_ids].presence || []
     @issue = Issue.new(issue_params.merge(watcher_ids: watcher_ids))
     @issue.status = 'New' if @issue.status.blank?
-    Rails.logger.info "issue_params: #{issue_params.inspect}"
-    Rails.logger.info "issue_params: #{issue_params.inspect}"
+
     puts request.headers['Authorization']
 
     if current_user
