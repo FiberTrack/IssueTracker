@@ -55,7 +55,7 @@ Rails.application.routes.draw do
   get '/users', to: 'users#all_users_as_json'
   get '/users/:usuari_id', to: 'users#show_user'
   get '/users/:usuari_id/activities', to: 'users#get_activities_user'
-
+  post '/users/:usuari_id/update', to: 'users#update_profile'
 
 
 end
