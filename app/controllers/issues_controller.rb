@@ -114,12 +114,6 @@ end
       return false
     end
     assign = issue_params[:assign]
-    if !assign.nil?
-      if assign.empty?
-        render json: { error: 'The value assign must be the full name of one of the logged users.' }, status: :bad_request
-        return false
-      end
-    end
     if assign.present?
       user = User.find_by(full_name: assign)
       unless user.present?
@@ -181,12 +175,14 @@ end
     end
     total_usuarios = User.count
     watcher_ids = issue_params[:watcher_ids]
-    if watcher_ids.present?
-      watcher_ids = issue_params[:watcher_ids].map(&:to_i)
-      if !watcher_ids.all? { |id| id.between?(1, total_usuarios) }
-      render json: { error: 'Invalid watcher_ids.' }, status: :bad_request
-      return false
-    end
+    if !watcher_ids.nil?
+      if !watcher_ids.empty?
+        user_fullnames = User.pluck(:full_name)
+        if !watcher_ids.all? { |id| id == "Not watched" || id.blank? || (id.to_i.between?(1, total_usuarios) && id != "") }
+          render json: { error: 'Invalid watcher_ids.' }, status: :bad_request
+        return false
+      end
+     end
     end
     return true
   end
