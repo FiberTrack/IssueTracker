@@ -179,12 +179,7 @@ end
         return false
       end
     end
-    watcher_ids = issue_params[:watcher_ids]
-    total_users = User.count
-    if watcher_ids.present? && watcher_ids.any? { |uid| !uid.is_a?(Integer) || uid < 1 || uid > total_users }
-      render json: { error: 'Invalid value watcher_ids.' }, status: :bad_request
-      return false
-    end
+
     return true
   end
 
