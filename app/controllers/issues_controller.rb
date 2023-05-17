@@ -115,11 +115,13 @@ end
       return false
     end
     assign = issue_params[:assign]
-    if assign.present?
+    if !assign.nil?
       if assign.empty?
         render json: { error: 'The value assign must be the full name of one of the logged users.' }, status: :bad_request
         return false
       end
+    end
+    if assign.present?
       user = User.find_by(full_name: assign)
       unless user.present?
         render json: { error: 'The value assign must be the full name of one of the logged users.' }, status: :bad_request
