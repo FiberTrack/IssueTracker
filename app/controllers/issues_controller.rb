@@ -105,8 +105,8 @@ end
   end
 
   def valid_params_new
-    ##Aquest primer if només ho faig per poder crear desde la intercie
-    if issue_params[:status].present?
+    ##Este if es para poder crear en la interficie
+    if !issue_params[:subject].empty?
       return true
     end
     subject = params[:subject]
