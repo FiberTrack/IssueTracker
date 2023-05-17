@@ -221,7 +221,7 @@ paths:
         - api_key: []
 
       responses:
-        200:
+        201:
           description: Issue created
           content:
             application/json:
