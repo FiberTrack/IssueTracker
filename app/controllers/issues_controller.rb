@@ -105,16 +105,12 @@ end
   end
 
   def valid_params_new
-    ##Este if es para poder crear en la interficie
-    if !issue_params[:subject].nil? && !issue_params[:subject].empty?
-      return true
-    end
-    subject = params[:subject]
+    subject = issue_params[:subject]
     if subject.nil? || subject.empty?
       render json: { error: 'The value subject is required.' }, status: :bad_request
       return false
     end
-    assign = params[:assign]
+    assign = issue_params[:assign]
     if assign.empty?
       render json: { error: 'The value assign must be the full name of one of the logged users.' }, status: :bad_request
       return false
@@ -126,22 +122,22 @@ end
         return false
       end
     end
-    severity = params[:severity]
+    severity = issue_params[:severity]
     if severity.blank? || !%w[Wishlist Minor Normal Important Critical].include?(severity)
       render json: { error: 'Invalid value severity.' }, status: :bad_request
       return false
     end
-    priority = params[:priority]
+    priority = issue_params[:priority]
     if priority.blank? || !%w[Low Normal High].include?(priority)
       render json: { error: 'Invalid value priority.' }, status: :bad_request
       return false
     end
-    issue_type = params[:issue_type]
+    issue_type = issue_params[:issue_type]
     if issue_type.blank? || !%w[Bug Question Enhancement].include?(issue_type)
       render json: { error: 'Invalid value issue_type.' }, status: :bad_request
       return false
     end
-    status_issue = params[:status]
+    status_issue = issue_params[:status]
     if status_issue.blank? || !%w[New In\ Progress Ready\ For\ Test Postponed Closed Information\ Needed Rejected].include?(status_issue)
       render json: { error: 'Invalid value status.' }, status: :bad_request
       return false
