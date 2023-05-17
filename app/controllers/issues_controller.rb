@@ -88,8 +88,10 @@ end
     record_activity(@authenticated_user.id, @issue.id, 'created')
     @issue.created_by = @authenticated_user.full_name
     end
+    if !issue_params[:watcher_ids].nil?
     issue_params[:watcher_ids].each do |user|
     IssueWatcher.create(issue_id: @issue.id, user_id: user)
+    end
     end
 
     respond_to do |format|
