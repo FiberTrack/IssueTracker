@@ -146,8 +146,8 @@ end
       end
     end
     status_issue = issue_params[:status]
-    if status_issue.nil?
-      issue_params[:status] = 'New'
+    if status_issue.nil? || status_issue.empty?
+      issue_params[:status] = "New"
     end
     if status_issue.present?
       if status_issue.blank? || !%w[New In\ Progress Ready\ For\ Test Postponed Closed Information\ Needed Rejected].include?(status_issue)
