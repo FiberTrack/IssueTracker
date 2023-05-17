@@ -115,16 +115,17 @@ end
       return false
     end
     assign = params[:assign]
-      if assign.blank?
-        render json: { error: 'The value assign must be the full name of one of the logged users.' }, status: :bad_request
-        return false
-      end
+    if assign.empty?
+      render json: { error: 'The value assign must be the full name of one of the logged users.' }, status: :bad_request
+      return false
+    end
+    if assign.present?
       user = User.find_by(full_name: assign)
       unless user.present?
         render json: { error: 'The value assign must be the full name of one of the logged users.' }, status: :bad_request
         return false
       end
-
+    end
     severity = params[:severity]
     if severity.blank? || !%w[Wishlist Minor Normal Important Critical].include?(severity)
       render json: { error: 'Invalid value severity.' }, status: :bad_request
