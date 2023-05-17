@@ -134,7 +134,7 @@ end
       return false
     end
     status_issue = params[:status]
-    if status_issue.blank? || !%w['New', 'In Progress', 'Ready For Test', 'Postponed', 'Closed', 'Information Needed', 'Rejected'].include?(status_issue)
+    if status_issue.blank? || !%w[New In\ Progress Ready\ For\ Test Postponed Closed Information\ Needed Rejected].include?(status_issue)
       render json: { error: 'Invalid value status.' }, status: :bad_request
       return false
     end
