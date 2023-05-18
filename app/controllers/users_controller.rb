@@ -82,7 +82,7 @@ def update_profile
       end
 
       if biog.present?
-        @authenticated_user.full_name.update_attribute(:bio, biog)
+        @authenticated_user.update_attribute(:bio, biog)
       end
 
       if name.present?
