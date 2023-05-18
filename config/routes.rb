@@ -56,6 +56,7 @@ Rails.application.routes.draw do
   get '/users/:usuari_id', to: 'users#show_user'
   get '/users/:usuari_id/activities', to: 'users#get_activities_user'
   post '/user/update', to: 'users#update_profile'
+  put '/issues/:id', to: 'issues#update'
 
 
 end

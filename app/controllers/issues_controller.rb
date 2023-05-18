@@ -4,8 +4,8 @@ require 'comments_controller.rb'
 
 class IssuesController < ApplicationController
   before_action :set_issue, only: %i[show edit update destroy]
-  before_action -> { authenticate_api_key(request.headers['Authorization'].present?) }, only: [:destroy, :create, :create_comment, :block, :add_deadline, :delete_deadline, :create_multiple_issues]
-  before_action :api_key_no_buida, only: [:destroy, :create, :create_comment, :block, :add_deadline, :delete_deadline, :create_multiple_issues]
+  before_action -> { authenticate_api_key(request.headers['Authorization'].present?) }, only: [:destroy, :create, :create_comment, :block, :add_deadline, :delete_deadline, :create_multiple_issues, :update]
+  before_action :api_key_no_buida, only: [:destroy, :create, :create_comment, :block, :add_deadline, :delete_deadline, :create_multiple_issues, :update]
  rescue_from ActiveRecord::RecordNotFound, with: :issue_not_found
 
 
@@ -217,6 +217,8 @@ end
 
 
 
+
+
   def create_multiple_issues
   puts params[:subjects]
   subjects = params[:subjects].split("\n")
@@ -251,62 +253,130 @@ end
   end
 end
 
+
+def valid_params_upd
+  errors = []
+
+  subject = issue_params[:subject]
+  if subject&.empty?
+    errors << 'The value subject is required.'
+  end
+
+  assign = issue_params[:assign]
+  if assign.present?
+    user = User.find_by(full_name: assign)
+    unless user.present?
+      errors << 'The value assign must be the full name of one of the logged users.'
+    end
+  end
+
+  severity = issue_params[:severity]
+  unless severity.blank? || %w[Wishlist Minor Normal Important Critical].include?(severity)
+    errors << 'Invalid value severity.'
+  end
+
+  priority = issue_params[:priority]
+  unless priority.blank? || %w[Low Normal High].include?(priority)
+    errors << 'Invalid value priority.'
+  end
+
+  issue_type = issue_params[:issue_type]
+  unless issue_type.blank? || %w[Bug Question Enhancement].include?(issue_type)
+    errors << 'Invalid value issue_type.'
+  end
+
+  status_issue = issue_params[:status]
+  unless status_issue.blank? || %w[New In\ Progress Ready\ For\ Test Postponed Closed Information\ Needed Rejected].include?(status_issue)
+    errors << 'Invalid value status.'
+  end
+
+  total_usuarios = User.count
+  watcher_ids = issue_params[:watcher_ids]
+  unless watcher_ids.blank? || watcher_ids.all? { |id| id == "Not watched" || id.blank? || (id.to_i.between?(1, total_usuarios) && id != "") }
+    errors << 'Invalid watcher_ids.'
+  end
+
+  errors
+end
+
+
+
   # PATCH/PUT /issues/1 or /issues/1.json
   def update
-    respond_to do |format|
-      type_antic = @issue.issue_type
-      severity_antic = @issue.severity
-      priority_antic = @issue.priority
-      subject_antic = @issue.subject
-      description_antic = @issue.description
-      assign_antic = @issue.assign
-      status_antic = @issue.status
-      watcher_ids_antic = @issue.watcher_ids
+  type_antic = @issue.issue_type
+  severity_antic = @issue.severity
+  priority_antic = @issue.priority
+  subject_antic = @issue.subject
+  description_antic = @issue.description
+  assign_antic = @issue.assign
+  status_antic = @issue.status
+  watcher_ids_antic = @issue.watcher_ids
+  respond_to do |format|
 
-      if @issue.update(issue_params)
-        format.html { redirect_to issue_url(@issue), notice: "" }
-        format.json { render :show, status: :ok, location: @issue }
+    issue_params.reject! { |_, value| value.nil? || value.empty?}
+    errors = valid_params_upd
+    user_id = current_user&.id || @authenticated_user&.id
 
-      if (subject_antic != issue_params[:subject])
-        record_activity(current_user.id, @issue.id, "changed subject from #{subject_antic} to #{issue_params[:subject]} of")
+
+    if errors.empty? && @issue.update(issue_params)
+      # Lógica para actualizar el issue exitosamente
+
+      if issue_params[:subject].present? && !issue_params[:subject].empty? && subject_antic != issue_params[:subject]
+        record_activity(user_id, @issue.id, "changed subject from #{subject_antic} to #{issue_params[:subject]} of")
       end
-      if (description_antic != issue_params[:description])
-        record_activity(current_user.id, @issue.id, 'changed description of')
+      if issue_params[:description].present? && !issue_params[:description].empty? && description_antic != issue_params[:description]
+        record_activity(user_id, @issue.id, 'changed description of')
       end
-      if (assign_antic != issue_params[:assign])
-        if (assign_antic.nil? or assign_antic.empty?)
-          assign_antic = "unassigned"
-        end
-        record_activity(current_user.id, @issue.id, "changed assignation from #{assign_antic} to #{issue_params[:assign]} of")
+      if issue_params[:assign].present? && !issue_params[:assign].empty? && assign_antic != issue_params[:assign]
+        assign_antic ||= "unassigned"
+        record_activity(user_id, @issue.id, "changed assignation from #{assign_antic} to #{issue_params[:assign]} of")
       end
-      if (type_antic != issue_params[:issue_type])
-        record_activity(current_user.id, @issue.id, "changed type from #{type_antic} to #{issue_params[:issue_type]} of")
+      if issue_params[:issue_type].present? && !issue_params[:issue_type].empty? && type_antic != issue_params[:issue_type]
+        record_activity(user_id, @issue.id, "changed type from #{type_antic} to #{issue_params[:issue_type]} of")
       end
-      if (severity_antic != issue_params[:severity])
-        record_activity(current_user.id, @issue.id, "changed severity from #{severity_antic} to #{issue_params[:severity]} of")
+      if issue_params[:severity].present? && !issue_params[:severity].empty? && severity_antic != issue_params[:severity]
+        record_activity(user_id, @issue.id, "changed severity from #{severity_antic} to #{issue_params[:severity]} of")
       end
-      if (priority_antic != issue_params[:priority])
-        record_activity(current_user.id, @issue.id, "changed priority from #{priority_antic} to #{issue_params[:priority]} of")
+      if issue_params[:priority].present? && !issue_params[:priority].empty? && priority_antic != issue_params[:priority]
+        record_activity(user_id, @issue.id, "changed priority from #{priority_antic} to #{issue_params[:priority]} of")
       end
-      if (status_antic != issue_params[:status])
-        record_activity(current_user.id, @issue.id, "changed status from #{status_antic} to #{issue_params[:status]} of")
+      if issue_params[:status].present? && !issue_params[:status].empty? && status_antic != issue_params[:status]
+        record_activity(user_id, @issue.id, "changed status from #{status_antic} to #{issue_params[:status]} of")
       end
-      if (watcher_ids_antic != issue_params[:watcher_ids])
-        record_activity(current_user.id, @issue.id, "changed watchers of")
-        #borrar totes les antigues
-        @watchs = IssueWatcher.where(issue_id: @issue.id)
+      if issue_params[:watcher_ids].present? && !issue_params[:watcher_ids].empty? && watcher_ids_antic != issue_params[:watcher_ids]
+        record_activity(user_id, @issue.id, "changed watchers of")
+
+
+         @watchs = IssueWatcher.where(issue_id: @issue.id)
         @watchs.each(&:destroy!)
         issue_params[:watcher_ids].each do |user|
           IssueWatcher.create(issue_id: @issue.id, user_id: user)
         end
-      end      #record_activity(current_user.id, @issue.id, 'modified')
+      end
 
+      if current_user
+      format.html { redirect_to issue_url(@issue), notice: "" }
       else
+      format.json {  render json: { message: "Issue updated successfully" }, status: :ok  }
+      end
+    else
+      # Renderizar errores de validación
+      if current_user
         format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @issue.errors, status: :unprocessable_entity }
+      else
+        format.json { render json: { errors: errors }, status: 422 }
       end
     end
   end
+end
+
+
+
+
+
+
+
+
 
   # DELETE /issues/1 or /issues/1.json
   def destroy
