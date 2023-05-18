@@ -26,7 +26,7 @@ end
       render json: { error: 'Wrong api_key. Unauthorized' }, status: :unauthorized
     end
   end
-end
+  end
 
 
   def index
@@ -74,7 +74,7 @@ end
     @order_by_params = { order_by: params[:order_by], direction: params[:direction] }
 
     @issues = @ordered_issues
-  end
+    end
   end
 
 def inicial
@@ -249,7 +249,7 @@ end
   else
     redirect_to issues_path
   end
-end
+  end
 
   # PATCH/PUT /issues/1 or /issues/1.json
   def update
@@ -328,7 +328,7 @@ end
       format.html { redirect_to issues_url, notice: "" }
       format.json {  render json: { message: "Issue deleted successfully" }, status: :ok  }
     end
-end
+  end
 
   def block
   @issue = Issue.find(params[:id])
@@ -427,7 +427,7 @@ end
         format.json { render json: @comment.errors, status: :unprocessable_entity }
       end
       end
-      end
+    end
   end
 
   def get_comments
