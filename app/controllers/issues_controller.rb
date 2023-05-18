@@ -209,8 +209,8 @@ end
         if !watcher_ids.all? { |id| id == "Not watched" || id.blank? || (id.to_i.between?(1, total_usuarios) && id != "") }
           render json: { error: 'Invalid watcher_ids.' }, status: :bad_request
         return false
+        end
       end
-     end
     end
     return true
   end
