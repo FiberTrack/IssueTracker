@@ -29,13 +29,23 @@ end
     @issues = Issue.all
     if params[:filtro].present?
       @filtered_issues = @issues.where("lower(subject) LIKE ? OR lower(description) LIKE ?", "%#{params[:filtro].downcase}%", "%#{params[:filtro].downcase}%")
+
     elsif params[:options].present?
+      opcions = params[:options]
+      if !opcions.all? { |id| !id.blank? && %w[Wishlist Minor Normal Important Critical Bug Question Enhancement Low Normal High New In\ Progress Ready\ For\ Test Postponed Closed Information\ Needed Rejected ].include?(id) || User.exists?(full_name: id) }
+        render json: { error: 'Each option parameter must be one of the following:\nFor Severity: Wishlist Minor Normal Important Critical\nFor Issue_type: Bug Question Enhancement\nFor Priority: Low Normal High\n For Status: New In\ Progress Ready\ For\ Test Postponed Closed Information\ Needed Rejected\nFor Assign: The full_name of one of the logged in users' }, status: :bad_request
+      end
       options = params[:options].map(&:downcase)
-      @filtered_issues = @issues.where("severity IN (?) OR issue_type IN (?) OR priority IN (?) OR assign IN (?) OR status IN (?) OR created_by IN (?)" , options.map(&:capitalize), options.map(&:capitalize), options.map(&:capitalize), options.map(&:titleize), options.map(&:capitalize),options.map(&:titleize))
+      @filtered_issues = @issues.where("severity IN (?) OR issue_type IN (?) OR priority IN (?) OR assign IN (?) OR status IN (?)" , options.map(&:capitalize), options.map(&:capitalize), options.map(&:capitalize), options.map(&:titleize), options.map(&:capitalize))
     else
       @filtered_issues = @issues
     end
-    if params[:order_by].present? && params[:direction].present?
+
+    if params[:order_by].present? && !params[:direction].present?
+      render json: { error: 'If you indicate the order_by attribute you also have to indicate the direction attribute' }, status: :bad_request
+    elsif !params[:order_by].present? && params[:direction].present?
+      render json: { error: 'If you indicate the direction attribute you also have to indicate the order_by attribute' }, status: :bad_request
+    elsif params[:order_by].present? && params[:direction].present?
       @ordered_issues = @filtered_issues.order("#{params[:order_by]} #{params[:direction]}")
     else
       @ordered_issues = @filtered_issues
