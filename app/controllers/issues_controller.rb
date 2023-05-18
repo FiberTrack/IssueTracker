@@ -18,6 +18,9 @@ end
     if @authenticated_user == :unauthorized
       render json: { error: 'Wrong api_key. Unauthorized' }, status: :unauthorized
     end
+    if current_user.nil? && @authenticated_user.nil?
+      render json: { error: 'That operation needs an api_key.' }, status: :unauthorized
+    end
   end
 end
 
