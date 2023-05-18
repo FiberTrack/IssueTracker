@@ -203,8 +203,22 @@ paths:
           description: 'Issue deleted'
         401:
           description: 'Error: Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error401'
         403:
           description: 'Error: Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error403'
         404:
           description: 'Issue not found'
           content:
@@ -251,8 +265,15 @@ paths:
               examples:
                 errorExample:
                   $ref: '#/components/examples/error400'
-        '401':
-          description: No autorizado
+        401:
+          description: 'Error: Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error401'
         404:
           description: 'Issue not found'
           content:
@@ -314,8 +335,15 @@ paths:
               examples:
                 errorExample:
                   $ref: '#/components/examples/error400'
-        '401':
-          description: No autorizado
+        401:
+          description: 'Error: Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error401'
         404:
           description: 'Issue not found'
           content:
