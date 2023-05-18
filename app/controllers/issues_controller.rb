@@ -9,11 +9,9 @@ class IssuesController < ApplicationController
  rescue_from ActiveRecord::RecordNotFound, with: :issue_not_found
 
 
-
-
-  def issue_not_found
-      render json: { error: 'Issue not found' }, status: :not_found
-  end
+def issue_not_found
+    render json: { error: 'Issue not found' }, status: :not_found
+end
 
 def api_key_no_buida
     if current_user.nil? && @authenticated_user.nil?
@@ -27,6 +25,7 @@ end
     if @authenticated_user == :unauthorized
       render json: { error: 'Wrong api_key. Unauthorized' }, status: :unauthorized
     end
+  end
   end
 
 
@@ -75,7 +74,7 @@ end
     @order_by_params = { order_by: params[:order_by], direction: params[:direction] }
 
     @issues = @ordered_issues
-  end
+    end
   end
 
 def inicial
@@ -210,8 +209,8 @@ end
         if !watcher_ids.all? { |id| id == "Not watched" || id.blank? || (id.to_i.between?(1, total_usuarios) && id != "") }
           render json: { error: 'Invalid watcher_ids.' }, status: :bad_request
         return false
+        end
       end
-     end
     end
     return true
   end
@@ -250,7 +249,7 @@ end
   else
     redirect_to issues_path
   end
-end
+  end
 
   # PATCH/PUT /issues/1 or /issues/1.json
   def update
@@ -329,7 +328,7 @@ end
       format.html { redirect_to issues_url, notice: "" }
       format.json {  render json: { message: "Issue deleted successfully" }, status: :ok  }
     end
-end
+  end
 
   def block
   @issue = Issue.find(params[:id])
@@ -428,7 +427,7 @@ end
         format.json { render json: @comment.errors, status: :unprocessable_entity }
       end
       end
-      end
+    end
   end
 
   def get_comments
