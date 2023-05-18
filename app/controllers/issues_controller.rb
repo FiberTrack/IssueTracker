@@ -5,11 +5,18 @@ require 'comments_controller.rb'
 class IssuesController < ApplicationController
   before_action :set_issue, only: %i[show edit update destroy]
   before_action -> { authenticate_api_key(request.headers['Authorization'].present?) }, only: [:destroy, :create, :create_comment, :block, :add_deadline, :delete_deadline, :create_multiple_issues]
+  before_action :api_key_no_buida, only: [:destroy, :create, :create_comment, :block, :add_deadline, :delete_deadline, :create_multiple_issues]
  rescue_from ActiveRecord::RecordNotFound, with: :issue_not_found
 
 
 def issue_not_found
     render json: { error: 'Issue not found' }, status: :not_found
+end
+
+def api_key_no_buida
+    if current_user.nil? && @authenticated_user.nil?
+      render json: { error: "It is mandatory to provide an api_key" }, status: :unauthorized
+    end
 end
 
   def authenticate_api_key(verify_key = true)
