@@ -111,23 +111,22 @@ end
 
     puts request.headers['Authorization']
 
-    if current_user
-    record_activity(current_user.id, @issue.id, 'created')
-    @issue.created_by = current_user.full_name
-    else
-    record_activity(@authenticated_user.id, @issue.id, 'created')
-    @issue.created_by = @authenticated_user.full_name
-    end
-    if !issue_params[:watcher_ids].nil?
-    issue_params[:watcher_ids].each do |user|
-    IssueWatcher.create(issue_id: @issue.id, user_id: user)
-    end
-    end
-
     respond_to do |format|
       if @issue.save
         format.html { redirect_to issues_url, notice: "" }
         format.json { render :show, status: :created, location: @issue }
+        if current_user
+        record_activity(current_user.id, @issue.id, 'created')
+        @issue.created_by = current_user.full_name
+        else
+        record_activity(@authenticated_user.id, @issue.id, 'created')
+        @issue.created_by = @authenticated_user.full_name
+        end
+        if !issue_params[:watcher_ids].nil?
+        issue_params[:watcher_ids].each do |user|
+        IssueWatcher.create(issue_id: @issue.id, user_id: user)
+        end
+        end
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @issue.errors, status: :unprocessable_entity }
