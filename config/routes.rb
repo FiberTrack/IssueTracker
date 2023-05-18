@@ -41,7 +41,7 @@ Rails.application.routes.draw do
 
   delete '/issues/:id', to: 'issues#destroy'
   get '/issues', to: 'issues#index'
-  post '/issues/new', to: 'issues#create'
+  post '/issues', to: 'issues#create'
 
   get '/issues/:issue_id/attachments', to: 'attachments#get_attachments'
   post '/issues/:issue_id/attachments', to: 'attachments#create', as: "create_at"
