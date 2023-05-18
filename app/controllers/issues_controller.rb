@@ -33,7 +33,7 @@ end
     elsif params[:options].present?
       opcions = params[:options]
       if !opcions.all? { |id| !id.blank? && %w[Wishlist Minor Normal Important Critical Bug Question Enhancement Low Normal High New In\ Progress Ready\ For\ Test Postponed Closed Information\ Needed Rejected ].include?(id) || User.exists?(full_name: id) }
-        render json: { error: 'Each option parameter must be one of the following:\u2028For Severity: Wishlist Minor Normal Important Critical\u2028For Issue_type: Bug Question Enhancement\u2028For Priority: Low Normal High\u2028For Status: New In\ Progress Ready\ For\ Test Postponed Closed Information\ Needed Rejected\u2028For Assign: The full_name of one of the logged in users' }, status: :bad_request
+        render json: { error: 'Each option parameter must be one of the following:\\nFor Severity: Wishlist Minor Normal Important Critical\\nFor Issue_type: Bug Question Enhancement\\nFor Priority: Low Normal High\\nFor Status: New In\ Progress Ready\ For\ Test Postponed Closed Information\ Needed Rejected\\nFor Assign: The full_name of one of the logged in users' }, status: :bad_request
       end
       options = params[:options].map(&:downcase)
       @filtered_issues = @issues.where("severity IN (?) OR issue_type IN (?) OR priority IN (?) OR assign IN (?) OR status IN (?)" , options.map(&:capitalize), options.map(&:capitalize), options.map(&:capitalize), options.map(&:titleize), options.map(&:capitalize))
@@ -49,7 +49,7 @@ end
       order =  params[:order_by]
       direc = params[:direction]
       if !%w[severity issue_type priority assign status].include?(order) || !%w[asc desc].include?(direc)
-        render json: { error: 'Invalid order_by or direction parameter. Remember:\u2028order_by must be one of the following strings: severity, issue_type, priority, assign, status\u2028direction must be asc or desc' }, status: :bad_request
+        render json: { error: 'Invalid order_by or direction parameter. Remember:\\norder_by must be one of the following strings: severity, issue_type, priority, assign, status\\ndirection must be asc or desc' }, status: :bad_request
       else
       @ordered_issues = @filtered_issues.order("#{params[:order_by]} #{params[:direction]}")
       end
