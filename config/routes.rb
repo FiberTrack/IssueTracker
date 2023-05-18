@@ -47,7 +47,7 @@ Rails.application.routes.draw do
   post '/issues/:issue_id/attachments', to: 'attachments#create', as: "create_at"
   delete '/attachments/:id', to: 'attachments#destroy_attachment', as: 'destroy_attachment'
 
-  post '/issues/:id/comments/new', to: 'issues#create_comment'
+  post '/issues/:id/comments', to: 'issues#create_comment'
   get '/issues/:id/comments', to: 'issues#get_comments'
   post '/issues/:id/block', to: 'issues#block'
   post '/issues/:id/deadline', to: 'issues#add_deadline'
