@@ -242,8 +242,15 @@ paths:
       responses:
         '201':
           description: Archivo adjunto creado exitosamente
-        '400':
-          description: Parámetros inválidos
+        400:
+          description: "Error: Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error400'
         '401':
           description: No autorizado
         404:
@@ -298,8 +305,15 @@ paths:
       responses:
         '201':
           description: Archivo adjunto creado exitosamente
-        '400':
-          description: Parámetros inválidos
+        400:
+          description: "Error: Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error400'
         '401':
           description: No autorizado
         404:
@@ -718,8 +732,16 @@ paths:
         responses:
           '200':
             description: Issues created successfully
-          '400':
-            description: Invalid request body
+          400:
+            description: "Error: Bad Request"
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResult'
+                examples:
+                  errorExample:
+                    $ref: '#/components/examples/error400'
+            
         security:
           - api_key: []
 
