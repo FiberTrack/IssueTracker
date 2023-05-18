@@ -102,6 +102,10 @@ def update_profile
       end
 
     else
+      if avatar.blank? &&	 biog.blank? &&	name.blank?
+        render json: { error: 'The data is required.' }, status: :bad_request
+        return false
+      end
       if avatar.present?
         update_avatar(avatar)
       end
