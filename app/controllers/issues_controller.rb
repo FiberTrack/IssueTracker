@@ -5,7 +5,6 @@ require 'comments_controller.rb'
 class IssuesController < ApplicationController
   before_action :set_issue, only: %i[show edit update destroy]
   before_action -> { authenticate_api_key(request.headers['Authorization'].present?) }, only: [:destroy, :create, :create_comment, :block, :add_deadline, :delete_deadline, :create_multiple_issues]
-  before_action :api_key_no_buida, only: [:destroy, :create, :create_comment, :block, :add_deadline, :delete_deadline, :create_multiple_issues]
  rescue_from ActiveRecord::RecordNotFound, with: :issue_not_found
 
 
@@ -15,17 +14,12 @@ class IssuesController < ApplicationController
       render json: { error: 'Issue not found' }, status: :not_found
   end
 
-def api_key_no_buida
-    if current_user.nil? && @authenticated_user.nil?
-      render json: { error: "It is mandatory to provide an api_key" }, status: :unauthorized
-    end
-end
-
   def authenticate_api_key(verify_key = true)
-  if verify_key
-    @authenticated_user = UsersController.new.authenticate_api_key(request)
-    if @authenticated_user == :unauthorized
-      render json: { error: 'Wrong api_key. Unauthorized' }, status: :unauthorized
+    if verify_key
+      @authenticated_user = UsersController.new.authenticate_api_key(request)
+      if @authenticated_user == :unauthorized
+        render json: { error: 'Unauthorized' }, status: :unauthorized
+      end
     end
   end
 
@@ -37,36 +31,14 @@ end
     @issues = Issue.all
     if params[:filtro].present?
       @filtered_issues = @issues.where("lower(subject) LIKE ? OR lower(description) LIKE ?", "%#{params[:filtro].downcase}%", "%#{params[:filtro].downcase}%")
-
     elsif params[:options].present?
-      opcions = params[:options]
-      if !opcions.all? { |id| !id.blank? && %w[Wishlist Minor Normal Important Critical Bug Question Enhancement Low Normal High New In\ Progress Ready\ For\ Test Postponed Closed Information\ Needed Rejected ].include?(id) || User.exists?(full_name: id) }
-        response = {error: "Each option parameter must be one of the following:         " \
-         "FOR SEVERITY: Wishlist Minor Normal Important Critical       " \
-         "FOR ISSUE_TYPE: Bug Question Enhancement        " \
-         "FOR PRIORITY: Low Normal High       " \
-         "FOR STATUS: New In Progress Ready For Test Postponed Closed Information Needed Rejected       " \
-         "FOR ASSIGN: The full_name of one of the logged in users"}
-        render json: response.as_json , status: :bad_request
-      end
       options = params[:options].map(&:downcase)
-      @filtered_issues = @issues.where("severity IN (?) OR issue_type IN (?) OR priority IN (?) OR assign IN (?) OR status IN (?)" , options.map(&:capitalize), options.map(&:capitalize), options.map(&:capitalize), options.map(&:titleize), options.map(&:capitalize))
+      @filtered_issues = @issues.where("severity IN (?) OR issue_type IN (?) OR priority IN (?) OR assign IN (?) OR status IN (?) OR created_by IN (?)" , options.map(&:capitalize), options.map(&:capitalize), options.map(&:capitalize), options.map(&:titleize), options.map(&:capitalize),options.map(&:titleize))
     else
       @filtered_issues = @issues
     end
-
-    if params[:order_by].present? && !params[:direction].present?
-      render json: { error: 'If you indicate the order_by attribute you also have to indicate the direction attribute' }, status: :bad_request
-    elsif !params[:order_by].present? && params[:direction].present?
-      render json: { error: 'If you indicate the direction attribute you also have to indicate the order_by attribute' }, status: :bad_request
-    elsif params[:order_by].present? && params[:direction].present?
-      order =  params[:order_by]
-      direc = params[:direction]
-      if !%w[severity issue_type priority assign status].include?(order) || !%w[asc desc].include?(direc)
-        render json: { error: 'Invalid order_by or direction parameter. Remember:\\norder_by must be one of the following strings: severity, issue_type, priority, assign, status\\ndirection must be asc or desc' }, status: :bad_request
-      else
+    if params[:order_by].present? && params[:direction].present?
       @ordered_issues = @filtered_issues.order("#{params[:order_by]} #{params[:direction]}")
-      end
     else
       @ordered_issues = @filtered_issues
     end
@@ -112,22 +84,23 @@ end
 
     puts request.headers['Authorization']
 
+    if current_user
+    record_activity(current_user.id, @issue.id, 'created')
+    @issue.created_by = current_user.full_name
+    else
+    record_activity(@authenticated_user.id, @issue.id, 'created')
+    @issue.created_by = @authenticated_user.full_name
+    end
+    if !issue_params[:watcher_ids].nil?
+    issue_params[:watcher_ids].each do |user|
+    IssueWatcher.create(issue_id: @issue.id, user_id: user)
+    end
+    end
+
     respond_to do |format|
       if @issue.save
         format.html { redirect_to issues_url, notice: "" }
         format.json { render :show, status: :created, location: @issue }
-        if current_user
-        record_activity(current_user.id, @issue.id, 'created')
-        @issue.created_by = current_user.full_name
-        else
-        record_activity(@authenticated_user.id, @issue.id, 'created')
-        @issue.created_by = @authenticated_user.full_name
-        end
-        if !issue_params[:watcher_ids].nil?
-        issue_params[:watcher_ids].each do |user|
-        IssueWatcher.create(issue_id: @issue.id, user_id: user)
-        end
-        end
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @issue.errors, status: :unprocessable_entity }
@@ -143,6 +116,12 @@ end
       return false
     end
     assign = issue_params[:assign]
+    if !assign.nil?
+      if assign.empty?
+        render json: { error: 'The value assign must be the full name of one of the logged users.' }, status: :bad_request
+        return false
+      end
+    end
     if assign.present?
       user = User.find_by(full_name: assign)
       unless user.present?
@@ -204,14 +183,12 @@ end
     end
     total_usuarios = User.count
     watcher_ids = issue_params[:watcher_ids]
-    if !watcher_ids.nil?
-      if !watcher_ids.empty?
-        user_fullnames = User.pluck(:full_name)
-        if !watcher_ids.all? { |id| id == "Not watched" || id.blank? || (id.to_i.between?(1, total_usuarios) && id != "") }
-          render json: { error: 'Invalid watcher_ids.' }, status: :bad_request
-        return false
-      end
-     end
+    if watcher_ids.present?
+      watcher_ids = issue_params[:watcher_ids].map(&:to_i)
+      if !watcher_ids.all? { |id| id.between?(1, total_usuarios) }
+      render json: { error: 'Invalid watcher_ids.' }, status: :bad_request
+      return false
+    end
     end
     return true
   end
@@ -463,4 +440,3 @@ end
     end
 
 end
-

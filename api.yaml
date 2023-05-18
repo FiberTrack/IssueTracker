@@ -549,7 +549,7 @@ paths:
       tags:
         - Users
       summary: Update user profile
-      operationId: update_user
+      operationId: update_profile
       requestBody:
         description: Provide updated user data
         content:
