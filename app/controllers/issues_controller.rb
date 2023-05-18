@@ -50,8 +50,9 @@ end
       direc = params[:direction]
       if !%w[severity issue_type priority assign status].include?(order) || !%w[asc desc].include?(direc)
         render json: { error: 'Invalid order_by or direction parameter. Remember:\u2028order_by must be one of the following strings: severity, issue_type, priority, assign, status\u2028direction must be asc or desc' }, status: :bad_request
-      end
+      else
       @ordered_issues = @filtered_issues.order("#{params[:order_by]} #{params[:direction]}")
+      end
     else
       @ordered_issues = @filtered_issues
     end
