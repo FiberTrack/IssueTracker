@@ -525,6 +525,10 @@ paths:
                 bio:
                   type: string
                   example: "I am a developer"
+                avatar_url:
+                  type: string
+                  format: uri
+                  example: 'https://example.com/avatar.jpg'
               required:
                 - full_name
                 - bio
