@@ -534,7 +534,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-         404:
+        404:
           description: 'Error: Not Found'
           content:
             application/json:
@@ -652,6 +652,53 @@ paths:
             description: Invalid request body
         security:
           - api_key: []
+
+
+
+  /issues/{issue_id}:
+    put:
+      tags:
+        - Issues
+      summary: Actualizar un issue
+      parameters:
+        - name: issue_id
+          in: path
+          description: ID del issue a actualizar
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                subject:
+                  type: string
+                description:
+                  type: string
+                assign:
+                  type: string
+                issue_type:
+                  type: string
+                severity:
+                  type: string
+                priority:
+                  type: string
+                status:
+                  type: string
+                watcher_ids:
+                  type: array
+                  items:
+                    type: integer
+      responses:
+        '200':
+          description: Issue actualizado exitosamente
+        '422':
+          description: Error de validación, ver detalles en la respuesta JSON
+      security:
+        - api_key: []
 
 components:
   schemas:
