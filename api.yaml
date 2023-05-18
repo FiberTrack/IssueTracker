@@ -24,14 +24,14 @@ paths:
           name: order_by
           schema:
             type: string
-          description: Attribute to sort the issues by (Type, Severity, Priority, Subject, Status, Assign or Created)
+          description: Attribute to sort the issues by (severity, issue_type, priority, assign, status)
         - in: query
           name: options[]
           schema:
             type: array
             items:
               type: string
-          description: List of options of Type, Severity, Priority, Subject, Status, Assign and Created to filter by
+          description: List of options of Type, Severity, Priority, Subject, Status and Assign to filter by
         - in: query
           name: filtro
           schema:
@@ -47,6 +47,101 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Issue'
+        400:
+          description: "Error: Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error400'
+
+    post:
+      tags:
+        - Issues
+      summary: Adds a new Issues to the IssueTracker
+      operationId: create
+      requestBody:
+        description: Provide the Subject, Description, Assigned, Type, Severity, Priority Status and Watched of the new Issue
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                subject:
+                  type: string
+                  example: 'Subject'
+                description:
+                  type: string
+                  example: 'Description'
+                assign:
+                  type: string
+                  enum: ['Gabriel Del Valle, Arnau Gracia López', 'Abdelrahim Chelh El Azzaoui', 'Abel Batalla Ferrés']
+                  example: 'Gabriel Del Valle'
+                severity:
+                  type: string
+                  enum: ['Wishlist', 'Minor', 'Normal', 'Important', 'Critical']
+                  example: 'Wishlist'
+                priority:
+                  type: string
+                  enum: ['Low', 'Normal', 'High']
+                  example: 'High'
+                issue_type:
+                  type: string
+                  enum: ['Bug', 'Question', 'Enhancement']
+                  example: 'Bug'
+                status:
+                  type: string
+                  enum: ['New', 'In progress', 'Ready for test', 'Postponed', 'Closed', 'Information needed', 'Rejected']
+                  example: 'New'
+                watcher_ids:
+                  type: array
+                  items:
+                    type: string
+                  example: ["1"]
+              required:
+                  - subject
+      security:
+        - api_key: []
+
+      responses:
+        201:
+          description: Issue created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Issue'
+        400:
+          description: "Error: Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error400'
+        401:
+          description: 'Error: Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error401'
+        403:
+          description: 'Error: Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error403'
+
+
+
 
   /issues/{IssueId}:
     get:
@@ -96,7 +191,7 @@ paths:
           format: int64
       responses:
         200:
-          description: Issue deleted
+          description: 'Issue deleted'
         401:
           description: 'Error: Unauthorized'
         403:
@@ -112,7 +207,6 @@ paths:
                   $ref: '#/components/examples/issue_not_found'
       security:
       - api_key: []
-
 
   /issues/{IssueId}/attachments:
     post:
@@ -188,89 +282,6 @@ paths:
 
 
 
-  /issues/new:
-    post:
-      tags:
-        - Issues
-      summary: Adds a new Issues to the IssueTracker
-      operationId: create
-      requestBody:
-        description: Provide the Subject, Description, Assigned, Type, Severity, Priority Status and Watched of the new Issue
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                subject:
-                  type: string
-                  example: 'Subject'
-                description:
-                  type: string
-                  example: 'Description'
-                assign:
-                  type: string
-                  enum: ['Gabriel Del Valle, Arnau Gracia López', 'Abdelrahim Chelh El Azzaoui', 'Abel Batalla Ferrés']
-                  example: 'Gabriel Del Valle'
-                severity:
-                  type: string
-                  enum: ['Wishlist', 'Minor', 'Normal', 'Important', 'Critical']
-                  example: 'Wishlist'
-                priority:
-                  type: string
-                  enum: ['Low', 'Normal', 'High']
-                  example: 'High'
-                issue_type:
-                  type: string
-                  enum: ['Bug', 'Question', 'Enhancement']
-                  example: 'Bug'
-                status:
-                  type: string
-                  enum: ['New', 'In Progress', 'Ready For Test', 'Postponed', 'Closed', 'Information Needed', 'Rejected']
-                  example: 'New'
-                watcher_ids:
-                  type: array
-                  items:
-                    type: string
-                  example: ["1"]
-              required:
-                  - subject
-      security:
-        - api_key: []
-
-      responses:
-        201:
-          description: Issue created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Issue'
-        400:
-          description: "Error: Bad Request"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResult'
-              examples:
-                errorExample:
-                  $ref: '#/components/examples/error400'
-        401:
-          description: 'Error: Unauthorized'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResult'
-              examples:
-                errorExample:
-                  $ref: '#/components/examples/error401'
-        403:
-          description: 'Error: Forbidden'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResult'
-              examples:
-                errorExample:
-                  $ref: '#/components/examples/error403'
 
   /issues/{id}/block:
     post:

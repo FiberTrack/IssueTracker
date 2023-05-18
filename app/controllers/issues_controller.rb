@@ -16,7 +16,7 @@ end
   if verify_key
     @authenticated_user = UsersController.new.authenticate_api_key(request)
     if @authenticated_user == :unauthorized
-      render json: { error: 'Unauthorized' }, status: :unauthorized
+      render json: { error: 'Wrong api_key. Unauthorized' }, status: :unauthorized
     end
   end
 end
