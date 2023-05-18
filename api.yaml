@@ -534,7 +534,76 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+         404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error404'
 
+  /user/update:
+    post:
+      tags:
+        - Users
+      summary: Update user profile
+      operationId: update_user
+      requestBody:
+        description: Provide updated user data
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                full_name:
+                  type: string
+                  example: "John Doe"
+                bio:
+                  type: string
+                  example: "I am a developer"
+                avatar_url:
+                  type: string
+                  format: binary
+                  example: 'https://example.com/avatar.jpg'
+
+      security:
+        - api_key: []
+      responses:
+        200:
+          description: User profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        400:
+          description: "Error: Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error400'
+        401:
+          description: 'Error: Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error401'
+        403:
+          description: 'Error: Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error403'
 
   /users/{usuari_id}/activities:
     get:
