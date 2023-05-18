@@ -2,7 +2,7 @@ openapi: 3.0.2
 info:
   version: 1.0.0
   title: IssueTracker
-  description: "This is the Open API documentation for the REST API of our beloved application **IssueTracker** deployed at <https://issuetrackerv1.herokuapp.com/>. <br>All operations are executable. Operations that make changes to the domain require authentication. In this case, you must **Authorize** your request by providing the token value you got when you created the tweet."
+  description: "This is the Open API documentation for the REST API of our beloved application **IssueTracker** deployed at <https://issuetrackerv1.herokuapp.com/>. <br>All operations are executable. Operations that make changes to the domain require authentication. In this case, you must **Authorize** your request by providing your users API key."
 servers:
   - url: 'https://issuetrackerv1.herokuapp.com/'
   - url: 'http://52.90.205.229:8080'
@@ -246,6 +246,15 @@ paths:
           description: Parámetros inválidos
         '401':
           description: No autorizado
+        404:
+          description: 'Issue not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/issue_not_found'
       security:
       - api_key: []
 
@@ -264,8 +273,15 @@ paths:
       responses:
         '200':
           description: successful operation
-        '404':
-          description: Issue no encontrado
+        404:
+          description: 'Issue not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/issue_not_found'
 
   /attachments/{AttachmentID}:
     delete:
@@ -286,6 +302,15 @@ paths:
           description: Parámetros inválidos
         '401':
           description: No autorizado
+        404:
+          description: 'Issue not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/issue_not_found'
       security:
         - api_key: []
 
@@ -332,6 +357,15 @@ paths:
               examples:
                 errorExample:
                   $ref: '#/components/examples/error403'
+        404:
+          description: 'Issue not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/issue_not_found'
 
 
   /issues/{id}/deadline:
@@ -387,6 +421,15 @@ paths:
               examples:
                 errorExample:
                   $ref: '#/components/examples/error403'
+        404:
+          description: 'Issue not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/issue_not_found'
 
 
   /issues/{id}/comments:
@@ -413,6 +456,15 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Comment'
+        404:
+          description: 'Issue not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/issue_not_found'
 
   /issues/{IssueId}/comments/new:
     post:
@@ -470,6 +522,15 @@ paths:
               examples:
                 errorExample:
                   $ref: '#/components/examples/error403'
+        404:
+          description: 'Issue not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/issue_not_found'
 
   /issues/{id}/activities:
     get:
@@ -495,6 +556,15 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Activity'
+        404:
+          description: 'Issue not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/issue_not_found'
 
   /users:
     get:
@@ -534,7 +604,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-         404:
+        404:
           description: 'Error: Not Found'
           content:
             application/json:
@@ -839,7 +909,7 @@ components:
         message: "You provided an invalid token"
     error404:
       value:
-        message: "There is no tweet with 'id'=8"
+        message: "There is no user with the provided ID"
 
 
 
