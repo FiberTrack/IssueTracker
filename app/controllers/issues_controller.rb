@@ -33,7 +33,7 @@ end
     elsif params[:options].present?
       opcions = params[:options]
       if !opcions.all? { |id| !id.blank? && %w[Wishlist Minor Normal Important Critical Bug Question Enhancement Low Normal High New In\ Progress Ready\ For\ Test Postponed Closed Information\ Needed Rejected ].include?(id) || User.exists?(full_name: id) }
-        response = {error: "Each option parameter must be one of the following:\nFor Severity: Wishlist Minor Normal Important Critical\nFor Issue_type: Bug Question Enhancement\nFor Priority: Low Normal High\nFor Status: New In\ Progress Ready\ For\ Test Postponed Closed Information\ Needed Rejected\nFor Assign: The full_name of one of the logged in users"}
+        response = {error: "Each option parameter must be one of the following:\r\nFor Severity: Wishlist Minor Normal Important Critical\r\nFor Issue_type: Bug Question Enhancement\r\nFor Priority: Low Normal High\r\nFor Status: New In\ Progress Ready\ For\ Test Postponed Closed Information\ Needed Rejected\r\nFor Assign: The full_name of one of the logged in users"}
         render json: response.as_json , status: :bad_request
       end
       options = params[:options].map(&:downcase)
