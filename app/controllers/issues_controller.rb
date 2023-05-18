@@ -415,7 +415,7 @@ end
     else
      puts request.headers['Authorization']
      comments_controller = CommentsController.new
-     issue_id = params[:issue_id]
+     issue_id = params[:id]
      content = params[:content]
      @issue = Issue.find(issue_id)
      @comment = @issue.comments.new(content: content, user: @authenticated_user)
