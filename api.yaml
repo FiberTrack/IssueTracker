@@ -56,6 +56,15 @@ paths:
               examples:
                 errorExample:
                   $ref: '#/components/examples/error400'
+        401:
+          description: 'Error: Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error401'
 
     post:
       tags:
