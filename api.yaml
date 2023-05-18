@@ -508,14 +508,13 @@ paths:
                 errorExample:
                   $ref: '#/components/examples/issue_not_found'
 
-  /issues/{IssueId}/comments/new:
     post:
       tags:
         - Issues -> Comments
       summary: Adds a new comment to an Issue
       operationId: create_comment
       parameters:
-      - name: IssueId
+      - name: id
         in: path
         description: ID of the Issue to add a comment to
         required: true
