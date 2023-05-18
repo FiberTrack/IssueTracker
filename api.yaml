@@ -508,6 +508,7 @@ paths:
                 errorExample:
                   $ref: '#/components/examples/issue_not_found'
 
+  /issues/{id}/comments/new:
     post:
       tags:
         - Issues -> Comments
@@ -530,10 +531,6 @@ paths:
                 content:
                   type: string
                   example: "HOLAA"
-                issue_id:
-                  type: integer
-                  format: int64
-                  example: 50
 
       security:
         - api_key: []
@@ -768,7 +765,7 @@ paths:
                 examples:
                   errorExample:
                     $ref: '#/components/examples/error400'
-            
+
         security:
           - api_key: []
 
