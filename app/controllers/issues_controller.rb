@@ -8,18 +8,20 @@ class IssuesController < ApplicationController
  rescue_from ActiveRecord::RecordNotFound, with: :issue_not_found
 
 
-def issue_not_found
-    render json: { error: 'Issue not found' }, status: :not_found
-end
+
+
+  def issue_not_found
+      render json: { error: 'Issue not found' }, status: :not_found
+  end
 
   def authenticate_api_key(verify_key = true)
-  if verify_key
-    @authenticated_user = UsersController.new.authenticate_api_key(request)
-    if @authenticated_user == :unauthorized
-      render json: { error: 'Unauthorized' }, status: :unauthorized
+    if verify_key
+      @authenticated_user = UsersController.new.authenticate_api_key(request)
+      if @authenticated_user == :unauthorized
+        render json: { error: 'Unauthorized' }, status: :unauthorized
+      end
     end
   end
-end
 
 
   def index

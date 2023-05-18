@@ -1,9 +1,22 @@
+require 'issues_controller.rb'
 
 class UsersController < ApplicationController
+  before_action -> { authenticate_api_key_2(request.headers['Authorization'].present?) }, only: [:update_profile]
+
+
+def authenticate_api_key_2(verify_key = true)
+    if verify_key
+      @authenticated_user = authenticate_api_key(request)
+      if @authenticated_user == :unauthorized
+        render json: { error: 'Unauthorized' }, status: :unauthorized
+      end
+    end
+  end
 
   def index
     @users = User.all
   end
+
 
 
 def update_avatar(avatar)
@@ -50,17 +63,34 @@ def update_profile
   avatar = params[:avatar]
   name = params[:full_name]
 
-    if avatar.present?
-      update_avatar(avatar)
+    if current_user
+      if avatar.present?
+        update_avatar(avatar)
+      end
+
+      if biog.present?
+        current_user.update_attribute(:bio, biog)
+      end
+
+      if name.present?
+        current_user.update_attribute(:full_name, name)
+      end
+
+    else
+      if avatar.present?
+        update_avatar(avatar)
+      end
+
+      if biog.present?
+        @authenticated_user.full_name.update_attribute(:bio, biog)
+      end
+
+      if name.present?
+        @authenticated_user.update_attribute(:full_name, name)
+      end
     end
 
-    if biog.present?
-      current_user.update_attribute(:bio, biog)
-    end
 
-    if name.present?
-      current_user.update_attribute(:full_name, name)
-    end
 
   redirect_to root_path
 end
