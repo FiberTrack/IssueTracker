@@ -246,7 +246,7 @@ end
 
   if !current_user
   respond_to do |format|
-      format.json { render json: { message: "Attachments created successfully" }, status: :ok}
+      format.json { render json: { message: "Issues created successfully" }, status: :ok}
   end
   else
     redirect_to issues_path
