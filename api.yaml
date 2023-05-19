@@ -778,6 +778,7 @@ paths:
                   subjects:
                     type: string
                     description: Subjects of the issues separated by new lines
+                    example: "a1\nb2\nc3\nd4"
                 required:
                   - subjects
         responses:
