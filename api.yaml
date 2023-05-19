@@ -267,7 +267,7 @@ paths:
               examples:
                 errorExample:
                   $ref: '#/components/examples/issue_not_found'
-          
+
         403:
           description: 'Error: Forbidden'
           content:
@@ -277,7 +277,7 @@ paths:
               examples:
                 errorExample:
                   $ref: '#/components/examples/error403'
-          
+
         '401':
           description: 'Error: Unauthorized'
           content:
@@ -628,7 +628,7 @@ paths:
     get:
       tags:
         - Users
-      summary: Retrieves all users      
+      summary: Retrieves all users
       description: Returns all the registered users.
       operationId: all_users_as_json
       responses:
@@ -778,6 +778,7 @@ paths:
                   subjects:
                     type: string
                     description: Subjects of the issues separated by new lines
+                    example: "a1\nb2\nc3\nd4"
                 required:
                   - subjects
         responses:
@@ -1015,7 +1016,7 @@ components:
         - full_name
         - email
         - encrypted_password
-        
+
     Attachment:
       type: object
       properties:
