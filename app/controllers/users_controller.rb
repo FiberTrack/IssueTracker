@@ -1,7 +1,7 @@
 require 'issues_controller.rb'
 
 class UsersController < ApplicationController
-  before_action -> { authenticate_api_key_2(request.headers['Authorization'].present?) }, only: [:update_profile]
+  before_action -> { authenticate_api_key_2(request.headers['Authorization'].present?) }, only: [:update_profile, :update_avatar]
 
 
 def authenticate_api_key_2(verify_key = true)
