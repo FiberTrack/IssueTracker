@@ -126,6 +126,7 @@ end
         IssueWatcher.create(issue_id: @issue.id, user_id: user)
         end
         end
+        puts @issue.created_by
         format.html { redirect_to issues_url, notice: "" }
         format.json { render :show, status: :created, location: @issue }
       else
