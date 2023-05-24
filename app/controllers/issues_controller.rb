@@ -113,8 +113,7 @@ end
 
     respond_to do |format|
       if @issue.save
-        format.html { redirect_to issues_url, notice: "" }
-        format.json { render :show, status: :created, location: @issue }
+        
         if current_user
         record_activity(current_user.id, @issue.id, 'created')
         @issue.created_by = current_user.full_name
@@ -127,6 +126,8 @@ end
         IssueWatcher.create(issue_id: @issue.id, user_id: user)
         end
         end
+        format.html { redirect_to issues_url, notice: "" }
+        format.json { render :show, status: :created, location: @issue }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @issue.errors, status: :unprocessable_entity }
