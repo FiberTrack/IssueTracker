@@ -107,10 +107,11 @@ end
     if valid_params_new
     watcher_ids = params[:issue][:watcher_ids].presence || []
     if !current_user
-      issue = Issue.new(issue_params.merge(watcher_ids: watcher_ids, created_by: @authenticated_user.full_name))
+      @issue = Issue.new(issue_params.merge(watcher_ids: watcher_ids, created_by: @authenticated_user.full_name))
     else
     @issue = Issue.new(issue_params.merge(watcher_ids: watcher_ids))
     end
+
     @issue.status = 'New' if @issue.status.blank?
 
     puts request.headers['Authorization']
