@@ -145,6 +145,14 @@ def get_activities_user
   end
 end
 
+def get_watchers_user
+  @user = User.find(params[:usuari_id])
+  @watchs = @user.issue_watchers
+  respond_to do |format|
+  format.json { render json: @watchs }
+  end
+end
+
 def all_users_as_json
     @users = User.all
     render json: @users
