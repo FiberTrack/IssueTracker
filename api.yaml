@@ -762,6 +762,45 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Activity'
+                  
+  /users/{usuari_id}/watchers:
+    get:
+      tags:
+        - User -> Watchers
+      summary: Finds watched issues by its UserID
+      description: Returns all the issues watched by the specified user.
+      operationId: get_watchers_user
+      parameters:
+      - name: usuari_id
+        in: path
+        description: ID of user to search
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    issue_id:
+                      type: integer
+                    user_id:
+                      type: integer
+              example:
+                - id: 113
+                  issue_id: 303
+                  user_id: 2
+                - id: 122
+                  issue_id: 305
+                  user_id: 2
 
 
   /issues/create_multiple:
