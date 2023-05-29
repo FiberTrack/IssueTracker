@@ -114,15 +114,19 @@ end
   def create
     if valid_params_new
     watcher_ids = params[:issue][:watcher_ids].presence || []
+    if !current_user
+      @issue = Issue.new(issue_params.merge(watcher_ids: watcher_ids, created_by: @authenticated_user.full_name))
+    else
     @issue = Issue.new(issue_params.merge(watcher_ids: watcher_ids))
+    end
+
     @issue.status = 'New' if @issue.status.blank?
 
     puts request.headers['Authorization']
 
     respond_to do |format|
       if @issue.save
-        format.html { redirect_to issues_url, notice: "" }
-        format.json { render :show, status: :created, location: @issue }
+        
         if current_user
         record_activity(current_user.id, @issue.id, 'created')
         @issue.created_by = current_user.full_name
@@ -135,6 +139,9 @@ end
         IssueWatcher.create(issue_id: @issue.id, user_id: user)
         end
         end
+        puts @issue.created_by
+        format.html { redirect_to issues_url, notice: "" }
+        format.json { render :show, status: :created, location: @issue }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @issue.errors, status: :unprocessable_entity }
@@ -152,7 +159,7 @@ end
     assign = issue_params[:assign]
     if assign.present?
       user = User.find_by(full_name: assign)
-      unless user.present?
+      unless user.present? or assign == "Not Assigned"
         render json: { error: 'The value assign must be the full name of one of the logged users.' }, status: :bad_request
         return false
       end
@@ -254,7 +261,7 @@ end
 
   if !current_user
   respond_to do |format|
-      format.json { render json: { message: "Attachments created successfully" }, status: :ok}
+      format.json { render json: { message: "Issues created successfully" }, status: :ok}
   end
   else
     redirect_to issues_path
@@ -273,7 +280,7 @@ def valid_params_upd
   assign = issue_params[:assign]
   if assign.present?
     user = User.find_by(full_name: assign)
-    unless user.present?
+    unless user.present? or assign == "Not Assigned"
       errors << 'The value assign must be the full name of one of the logged users.'
     end
   end

@@ -1,16 +1,25 @@
 require 'issues_controller.rb'
 
 class UsersController < ApplicationController
-  before_action -> { authenticate_api_key_2(request.headers['Authorization'].present?) }, only: [:update_profile]
+  before_action -> { authenticate_api_key_3(request.headers['Authorization'].present?) }, only: [:update_profile, :update_avatar]
+  before_action :api_key_no_buida, only: [:update_profile, :update_avatar]
 
 
-def authenticate_api_key_2(verify_key = true)
-    if verify_key
-      @authenticated_user = authenticate_api_key(request)
-      if @authenticated_user == :unauthorized
-        render json: { error: 'Unauthorized' }, status: :unauthorized
-      end
+  def api_key_no_buida
+    if current_user.nil? && @authenticated_user.nil?
+      render json: { error: "It is mandatory to provide an api_key" }, status: :unauthorized
     end
+end
+
+
+
+   def authenticate_api_key_3(verify_key = true)
+  if verify_key
+    @authenticated_user = authenticate_api_key(request)
+    if @authenticated_user == :unauthorized
+      render json: { error: 'Wrong api_key. Unauthorized' }, status: :unauthorized
+    end
+  end
   end
 
   def index
@@ -70,6 +79,7 @@ def update_avatar(avatar)
     object.upload_file(file.tempfile)
 
     # Actualizar la URL de la imagen en la base de datos del usuario
+    puts "PROVA canvi foto"
     @authenticated_user.update_attribute(:avatar_url, object.public_url)
   end
 
@@ -102,6 +112,7 @@ def update_profile
       end
 
     else
+      avatar = params[:avatar_url]
       if avatar.blank? &&	 biog.blank? &&	name.blank?
         render json: { error: 'The data is required.' }, status: :bad_request
         return false
@@ -117,6 +128,8 @@ def update_profile
       if name.present?
         @authenticated_user.update_attribute(:full_name, name)
       end
+      render json: @authenticated_user
+      return true
     end
 
 
@@ -129,6 +142,14 @@ def get_activities_user
   @activities = @user.activities
   respond_to do |format|
   format.json { render json: @activities }
+  end
+end
+
+def get_watchers_user
+  @user = User.find(params[:usuari_id])
+  @watchs = @user.issue_watchers
+  respond_to do |format|
+  format.json { render json: @watchs }
   end
 end
 
