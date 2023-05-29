@@ -35,22 +35,26 @@
   </div>
   <div id="checkbox-container" style="display: none; background-color: #E9EFFC;">
     <div>
-      <h4>Severities:</h4>
-      <% severities = ['Wishlist', 'Minor', 'Normal', 'Important', 'Critical'] %>
-      <% severities.each do |option| %>
-        <div style="display: inline-block; margin-right: 10px;">
-          <%= check_box_tag "options[]", option, params[:options].present? && params[:options].include?(option) %>
-          <%= label_tag "options[]", option %>
-        </div>
-      <% end %>
+  <h4>Severities:</h4>
+  <% severities = ['Wishlist', 'Minor', 'Normal', 'Important', 'Critical'] %>
+  <% severities.each do |option| %>
+    <div style="display: inline-block; margin-right: 10px;">
+      <% checked = params[:options].present? && params[:options].include?(option) %>
+      <%= check_box_tag "options[]", option, checked %>
+      <%= label_tag "options[]", option %>
+      <%= hidden_field_tag "severity[]", option, { value: option, disabled: !checked } %>
     </div>
+  <% end %>
+</div>
     <div>
       <h4>Types:</h4>
       <% types = ['Bug', 'Question', 'Enhancement'] %>
       <% types.each do |option| %>
         <div style="display: inline-block; margin-right: 10px;">
-          <%= check_box_tag "options[]", option, params[:options].present? && params[:options].include?(option) %>
+          <% checked = params[:options].present? && params[:options].include?(option) %>
+          <%= check_box_tag "options[]", option, checked %>
           <%= label_tag "options[]", option %>
+          <%= hidden_field_tag "type[]", option, { value: option, disabled: !checked } %>
         </div>
       <% end %>
     </div>

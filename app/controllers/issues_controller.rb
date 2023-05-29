@@ -49,7 +49,15 @@ end
         render json: response.as_json , status: :bad_request
       end
       options = params[:options].map(&:downcase)
-      @filtered_issues = @issues.where("severity IN (?) OR issue_type IN (?) OR priority IN (?) OR assign IN (?) OR status IN (?)" , options.map(&:capitalize), options.map(&:capitalize), options.map(&:capitalize), options.map(&:titleize), options.map(&:capitalize))
+      if params[:severity].present? || params[:type].present? || params[:priority].present? || params[:assign].present? || params[:status].present?
+          options2_severity = params[:severity].to_a.map(&:downcase)
+          options2_type = params[:type].to_a.map(&:downcase)
+          options2_priority = params[:priority].to_a.map(&:downcase)
+          options2_assign = params[:assign].to_a.map(&:downcase)
+          options2_status = params[:status].to_a.map(&:downcase)
+
+          @filtered_issues = @issues.where("severity IN (?) OR issue_type IN (?) OR priority IN (?) OR assign IN (?) OR status IN (?)", options2_severity.map(&:capitalize), options2_type.map(&:capitalize),options2_priority.map(&:capitalize), options2_assign.map(&:titleize),options2_status.map(&:capitalize))
+      end
     else
       @filtered_issues = @issues
     end
@@ -61,7 +69,7 @@ end
     elsif params[:order_by].present? && params[:direction].present?
       order =  params[:order_by]
       direc = params[:direction]
-      if !%w[severity issue_type priority assign status].include?(order) || !%w[asc desc].include?(direc)
+      if !%w[severity issue_type priority assign status subject created_at].include?(order) || !%w[asc desc].include?(direc)
         render json: { error: 'Invalid order_by or direction parameter. Remember:\\norder_by must be one of the following strings: severity, issue_type, priority, assign, status\\ndirection must be asc or desc' }, status: :bad_request
       else
       @ordered_issues = @filtered_issues.order("#{params[:order_by]} #{params[:direction]}")
