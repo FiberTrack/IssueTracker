@@ -8,7 +8,7 @@ servers:
   - url: 'http://52.90.205.229:8080'
 
 paths:
-  /issues:
+/issues:
     get:
       tags:
         - Issues
@@ -27,6 +27,36 @@ paths:
           description: Attribute to sort the issues by (severity, issue_type, priority, assign, status)
         - in: query
           name: options[]
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: severity[]
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: type[]
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: priority[]
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: status[]
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: assign[]
           schema:
             type: array
             items:
@@ -801,6 +831,15 @@ paths:
                 - id: 122
                   issue_id: 305
                   user_id: 2
+        404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error404'
 
 
   /issues/create_multiple:
