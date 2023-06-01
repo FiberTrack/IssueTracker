@@ -8,7 +8,7 @@ servers:
   - url: 'http://52.90.205.229:8080'
 
 paths:
-/issues:
+  /issues:
     get:
       tags:
         - Issues
